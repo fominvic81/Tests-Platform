@@ -12,7 +12,9 @@ class TestController extends Controller
      */
     public function index()
     {
-        return view('test.index');
+        return view('test.index', [
+            'tests' => Test::paginate(15),
+        ]);
     }
 
     /**
@@ -28,7 +30,25 @@ class TestController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => ['required', 'min:3'],
+            'description' => [],
+            'course' => ['numeric'],
+        ]);
+
+        $test = new Test([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'user_id' => $request->user()->id,
+        ]);
+
+        if ($data['course'] > 0) {
+            $test['course_id'] = $data['course'];
+        }
+
+        $test->save();
+
+        return redirect()->route('test.edit', $test->id);
     }
 
     /**
@@ -36,7 +56,7 @@ class TestController extends Controller
      */
     public function show(Test $test)
     {
-        return view('test.show', ['test' => $test]);
+        return view('test.show', [ 'test' => $test ]);
     }
 
     /**
@@ -44,7 +64,7 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
-        //
+        return view('test.edit', [ 'test' => $test ]);
     }
 
     /**

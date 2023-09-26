@@ -7,7 +7,8 @@
             </a>
             <div class="md:flex hidden h-full">
                 <a class="h-full flex items-center px-4" href="{{ route('home') }}">Головна</a>
-                <a class="h-full flex items-center px-4" href="">Тести</a>
+                <a class="h-full flex items-center px-4" href="{{ route('course.index') }}">Курси</a>
+                <a class="h-full flex items-center px-4" href="{{ route('test.index') }}">Тести</a>
                 <a class="h-full flex items-center px-4" href="">ЗНО</a>
             </div>
         </div>

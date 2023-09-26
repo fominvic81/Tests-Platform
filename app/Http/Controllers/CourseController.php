@@ -12,7 +12,9 @@ class CourseController extends Controller
      */
     public function index()
     {
-        return view('course.index');
+        return view('course.index', [
+            'courses' => Course::paginate(15),
+        ]);
     }
 
     /**
@@ -48,7 +50,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        return view('course.show', ['course' => $course]);
+        return view('course.show', [ 'course' => $course ]);
     }
 
     /**

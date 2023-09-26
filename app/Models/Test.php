@@ -13,6 +13,8 @@ class Test extends Model
     protected $fillable = [
         'name',
         'description',
+        'user_id',
+        'course_id',
     ];
 
     public function user(): BelongsTo

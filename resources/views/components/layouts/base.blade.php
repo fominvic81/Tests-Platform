@@ -8,8 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title> {{ $title ?? 'Title' }}</title>
 
+    @viteReactRefresh()
     @vite('resources/css/app.css')
-    @vite('resources/js/app.ts')
+    @vite('resources/js/app.tsx')
 
 </head>
 <body {{ $attributes->merge(['class' => 'w-screen h-screen']) }}>
