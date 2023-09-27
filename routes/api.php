@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\TestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +21,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::get('/token', function (Request $request) {
+        return $request->user()->createToken('token')->plainTextToken;
+    });
+
+    Route::apiResource('test', TestController::class)->except(['index', 'store']);
+    Route::apiResource('question', QuestionController::class)->except(['index']);
 
 });
