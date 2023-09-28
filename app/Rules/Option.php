@@ -33,7 +33,9 @@ class Option implements ValidationRule
             case QuestionType::MultipleCorrectAmountShown:
                 $result = Validator::make($value, [
                     'options' => ['required', 'array', 'between:2,20'],
+                    'options.*' => ['array:text,image,correct'],
                     'options.*.text' => ['required', 'string'],
+                    'options.*.image' => ['string'],
                     'options.*.correct' => ['required', 'boolean'],
                 ]);
                 if (!$result->passes()) break;
@@ -54,13 +56,17 @@ class Option implements ValidationRule
             case QuestionType::Match:
                 $result = Validator::make($value, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['string'],
-
+                    'options.*' => ['array:text,string'],
+                    'options.*.text' => ['required', 'string'],
+                    'options.*.image' => ['string'],
+                    
                     'variants' => ['required', 'array', 'between:2,20'],
-                    'variants.*' => ['string'],
+                    'variants.*' => ['array:text,string'],
+                    'variants.*.text' => ['required', 'string'],
+                    'variants.*.image' => ['string'],
 
                     'matchTable' => ['required', 'array', 'between:2,20'],
-                    'matchTable.*' => ['numeric'],
+                    'matchTable.*' => ['integer'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
@@ -68,7 +74,7 @@ class Option implements ValidationRule
                 break;
             case QuestionType::TextInput:
                 $result = Validator::make($value, [
-                    'options' => ['required', 'array', 'between:2,20'],
+                    'options' => ['required', 'array', 'between:1,20'],
                     'options.*' => ['string'],
                 ]);
                 if (!$result->passes()) break;
@@ -78,14 +84,30 @@ class Option implements ValidationRule
             case QuestionType::Sequense:
                 $result = Validator::make($value, [
                     'options' => ['required', 'array', 'between:2,20'],
+                    'options.*' => ['array:text,index'],
                     'options.*.text' => ['required', 'string'],
-                    'options.*.index' => ['required', 'numeric'],
+                    'options.*.image' => ['string'],
+                    'options.*.index' => ['required', 'integer'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
+                $optionsSize = count($data['options']);
 
+                $flags = array_fill(0, $optionsSize, false);
+                $count = 0;
                 foreach ($data['options'] as $option) {
-                    
+                    $index = $option['index'];
+                    if ($index < 0 || $index >= $optionsSize) {
+                        $fail('Не коректна послідовність елементів');
+                        break 2;
+                    }
+                    if (!$flags[$index]) {
+                        $flags[$index] = true;
+                        ++$count;
+                    }
+                }
+                if ($count != $optionsSize) {
+                    $fail('Не коректна послідовність елементів');
                 }
 
                 break;

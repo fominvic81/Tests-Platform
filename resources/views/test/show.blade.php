@@ -1,7 +1,13 @@
 <x-layouts.feed>
     <div class="p-5 bg-white shadow-md">
         <h1 class="text-2xl">{{ $test->name }}</h1>
-
+        @isset($test->subject)
+            {{ $test->subject->name }}
+        @endisset
+        @isset($test->grade)
+            {{ $test->grade->name }}
+        @endisset
+        <br>
         <span>Автор: </span><a href="" class="text-blue-600 hover:underline hover:text-blue-400">{{ $test->user->fullname }}</a>
         <br>
         @isset($test->course)

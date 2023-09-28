@@ -15,6 +15,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $this->call([
+            GradeSeeder::class,
+            SubjectSeeder::class,
+        ]);
+
         User::factory(3)->
             has(Test::factory()->count(10))->
             has(Course::factory()->

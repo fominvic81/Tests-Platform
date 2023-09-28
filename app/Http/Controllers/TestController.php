@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Grade;
+use App\Models\Subject;
 use App\Models\Test;
 use Illuminate\Http\Request;
 
@@ -13,7 +15,7 @@ class TestController extends Controller
     public function index()
     {
         return view('test.index', [
-            'tests' => Test::paginate(15),
+            'tests' => Test::query()->latest('id')->paginate(15),
         ]);
     }
 
@@ -22,7 +24,10 @@ class TestController extends Controller
      */
     public function create()
     {
-        return view('test.create');
+        return view('test.create', [
+            'subjects' => Subject::all(),
+            'grades' => Grade::all(),
+        ]);
     }
 
     /**
@@ -33,7 +38,9 @@ class TestController extends Controller
         $data = $request->validate([
             'name' => ['required', 'min:3'],
             'description' => [],
-            'course' => ['numeric'],
+            'course' => ['integer'],
+            'subject' => ['integer'],
+            'grade' => ['integer'],
         ]);
 
         $test = new Test([
@@ -42,9 +49,9 @@ class TestController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
-        if ($data['course'] > 0) {
-            $test['course_id'] = $data['course'];
-        }
+        if ($data['course'] > 0) $test['course_id'] = $data['course'];
+        if ($data['subject'] > 0) $test['subject_id'] = $data['subject'];
+        if ($data['grade'] > 0) $test['grade_id'] = $data['grade'];
 
         $test->save();
 
