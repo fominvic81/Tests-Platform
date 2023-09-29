@@ -23,6 +23,18 @@ class Test extends Model
         'course_id',
     ];
 
+    protected $hidden = [
+        'subject_id',
+        'grade_id',
+        'user_id',
+        'course_id',
+    ];
+
+    protected $with = [
+        'subject',
+        'grade',
+    ];
+
     public function questions(): HasMany
     {
         return $this->hasMany(Question::class);

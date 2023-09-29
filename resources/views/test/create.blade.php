@@ -16,7 +16,6 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <x-form.select name="subject" label="Предмет">
-                        <option class="font-bold" value="0">Виберіть предмет</option>
                         @foreach ($subjects as $subject)
                             <option value="{{ $subject->id }}" @selected(old('subject') === strval($subject->id))>{{ $subject->name }}</option>
                         @endforeach
@@ -24,7 +23,6 @@
                 </div>
                 <div>
                     <x-form.select name="grade" label="Клас">
-                        <option class="font-bold" value="0">Виберіть клас</option>
                         @foreach ($grades as $grade)
                             <option value="{{ $grade->id }}" @selected(old('grade') === strval($grade->id))>{{ $grade->name }}</option>
                         @endforeach

@@ -22,7 +22,8 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::resource('course', CourseController::class)->except(['index', 'show']);
-    Route::resource('test', TestController::class)->except(['index', 'show']);
+    Route::resource('test', TestController::class)->except(['index', 'show', 'edit']);
+    Route::get('test/{test}/edit/{react?}', [TestController::class, 'edit'])->name('test.edit');
 });
 
 Route::resource('course', CourseController::class)->only(['index', 'show']);

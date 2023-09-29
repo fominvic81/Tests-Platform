@@ -9,34 +9,30 @@ use Illuminate\Http\Request;
 class TestController extends Controller
 {
 
+    public function index()
+    {
+        //
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(Test $test)
     {
-        return response()->json([
-            ...$test->toArray(),
-            'questions' => $test->questions,
-        ]);
+        $data = $test->toArray();
+        $data['questions'] = $test->questions->toArray();
+        if (($test->course)) $data['course'] = [
+            ...$test->course->toArray(),
+            'topics' => $test->course->topics->toArray(),
+        ];
+
+        return response()->json($data);
     }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Test $test)
-    {
-        $data = $request->validate([
-            'name' => ['required', 'min:3'],
-            'description' => [],
-        ]);
-
-        return response()->json($data);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Test $test)
     {
         //
     }

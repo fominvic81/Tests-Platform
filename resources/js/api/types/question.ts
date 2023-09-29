@@ -35,10 +35,14 @@ export type QuestionDataMatch = {
 }
 
 export type QuestionDataTextInput = {
-
+    options: string[];
 }
 export type QuestionDataSequense = {
-
+    options: {
+        text: string;
+        image?: string;
+        index: number;
+    }
 }
 export type QuestionDataTextGapsTextInput = {
 
@@ -62,11 +66,12 @@ type QuestionDataByType<T extends QuestionType> =
     T extends QuestionType.TextGapsVariantMultipleLists ? QuestionDataTextGapsVariantMultipleLists : unknown;
 
 export interface Question<T extends QuestionType = QuestionType> {
+    id: number;
     text: string;
     image?: string;
     type: T;
     data: QuestionDataByType<T>;
     topics: Topic[];
     points: number;
-    explanation: string;
+    explanation?: string;
 }

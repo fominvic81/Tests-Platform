@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('type');
             $table->json('data');
             $table->integer('points');
-            $table->string('explanation');
+            $table->text('explanation')->nullable();
             $table->foreignId('test_id');
             $table->timestamps();
         });

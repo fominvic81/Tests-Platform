@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('subject_id')->nullable();
-            $table->foreignId('grade_id')->nullable();
+            $table->foreignId('subject_id');
+            $table->foreignId('grade_id');
             $table->foreignId('user_id');
             $table->foreignId('course_id')->nullable();
             $table->timestamps();

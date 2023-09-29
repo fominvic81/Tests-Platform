@@ -13,6 +13,7 @@ class GradeSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('grades')->insert(['name' => '...']);
         DB::table('grades')->insert(['name' => '1 клас']);
         DB::table('grades')->insert(['name' => '2 клас']);
         DB::table('grades')->insert(['name' => '3 клас']);

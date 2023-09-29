@@ -32,6 +32,8 @@ class TestFactory extends Factory
         return [
             'name' => fake()->company(),
             'description' => fake()->text(),
+            'subject_id' => fake()->numberBetween(1, 4),
+            'grade_id' => fake()->numberBetween(1, 17),
         ];
     }
 }

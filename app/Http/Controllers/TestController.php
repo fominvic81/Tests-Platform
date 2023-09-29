@@ -36,8 +36,8 @@ class TestController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required', 'min:3'],
-            'description' => [],
+            'name' => ['required', 'string', 'min:3'],
+            'description' => ['string', 'nullable'],
             'course' => ['integer'],
             'subject' => ['integer'],
             'grade' => ['integer'],
@@ -47,11 +47,11 @@ class TestController extends Controller
             'name' => $data['name'],
             'description' => $data['description'],
             'user_id' => $request->user()->id,
+            'subject_id' => $data['subject'],
+            'grade_id' => $data['grade'],
         ]);
 
         if ($data['course'] > 0) $test['course_id'] = $data['course'];
-        if ($data['subject'] > 0) $test['subject_id'] = $data['subject'];
-        if ($data['grade'] > 0) $test['grade_id'] = $data['grade'];
 
         $test->save();
 
@@ -79,7 +79,24 @@ class TestController extends Controller
      */
     public function update(Request $request, Test $test)
     {
-        //
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:3'],
+            'description' => ['string', 'nullable'],
+            'course' => ['integer'],
+            'subject' => ['integer'],
+            'grade' => ['integer'],
+        ]); 
+
+        $test->name = $data['name'];
+        $test->description = $data['description'];
+        $test->subject_id = $data['subject'];
+        $test->grade_id = $data['grade'];
+
+        $test['course_id'] = $data['course'] > 0 ? $data['course'] : null;
+
+        $test->save();
+
+        return redirect()->refresh();
     }
 
     /**

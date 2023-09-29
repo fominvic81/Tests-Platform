@@ -1,4 +1,6 @@
 
-export * from './question';
-export * from './test';
-export * from './topic';
+
+export * from './types';
+
+export * from './getTest';
+export * from './getTestOptions';

@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\TestController;
+use App\Models\Grade;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,7 +28,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user()->createToken('token')->plainTextToken;
     });
 
-    Route::apiResource('test', TestController::class)->except(['index', 'store']);
+    Route::apiResource('course', CourseController::class)->only(['index', 'show']);
+    Route::apiResource('test', TestController::class)->only(['index', 'show', 'update']);
     Route::apiResource('question', QuestionController::class)->except(['index']);
+
+    Route::get('/test-options', function (Request $request) {
+        return response()->json([
+            'courses' => $request->user()->courses->toArray(),
+            'subjects' => Subject::all()->toArray(),
+            'grades' => Grade::all()->toArray(),
+        ]);
+    });
 
 });

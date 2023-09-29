@@ -18,9 +18,10 @@ class QuestionController extends Controller
     {
         $data = $request->validate([
             'type' => ['required', new Enum(QuestionType::class)],
-            'text' => ['required'],
+            'text' => ['required', 'string'],
             'points' => ['required', 'numeric'],
-            'test_id' => ['required', 'exists:tests,id'],
+            'explanation' => ['string', 'nullable'],
+            'test_id' => ['required', 'numeric', 'exists:tests,id'],
         ]);
 
         $questionData = $request->validate([
@@ -32,6 +33,7 @@ class QuestionController extends Controller
             'text' => $data['text'],
             'data' => $questionData,
             'points' => $data['points'],
+            'explanation' => isset($data['explanation']) ? $data['explanation'] : null,
             'test_id' => $data['test_id'],
         ]);
 
