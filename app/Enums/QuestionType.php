@@ -5,12 +5,11 @@ namespace App\Enums;
 enum QuestionType: int
 {
     case OneCorrect = 0;
-    case MultipleCorrectAmountHidden = 1;
-    case MultipleCorrectAmountShown = 2;
-    case Match = 3;
-    case TextInput = 4;
-    case Sequense = 5;
-    case TextGapsTextInput = 6;
-    case TextGapsVariantSingleList = 7;
-    case TextGapsVariantMultipleLists = 8;
+    case MultipleCorrect = 1;
+    case Match = 2;
+    case TextInput = 3;
+    case Sequense = 4;
+    case TextGapsTextInput = 5;
+    case TextGapsVariantSingleList = 6;
+    case TextGapsVariantMultipleLists = 7;
 }

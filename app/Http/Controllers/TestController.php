@@ -71,7 +71,11 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
-        return view('test.edit', [ 'test' => $test ]);
+        return view('test.edit', [
+            'test' => $test,
+            'subjects' => Subject::all(),
+            'grades' => Grade::all(),
+        ]);
     }
 
     /**

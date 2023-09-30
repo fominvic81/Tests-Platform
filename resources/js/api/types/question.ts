@@ -2,14 +2,13 @@ import { Topic } from './topic';
 
 export enum QuestionType {
     OneCorrect = 0,
-    MultipleCorrectAmountHidden = 1,
-    MultipleCorrectAmountShown = 2,
-    Match = 3,
-    TextInput = 4,
-    Sequense = 5,
-    TextGapsTextInput = 6,
-    TextGapsVariantSingleList = 7,
-    TextGapsVariantMultipleLists = 8,
+    MultipleCorrect = 1,
+    Match = 2,
+    TextInput = 3,
+    Sequense = 4,
+    TextGapsTextInput = 5,
+    TextGapsVariantSingleList = 6,
+    TextGapsVariantMultipleLists = 7,
 }
 
 export type QuestionDataOneCorrect = {
@@ -19,8 +18,14 @@ export type QuestionDataOneCorrect = {
         correct: boolean;
     }[];
 }
-export type QuestionDataMultipleCorrectAmountHidden = QuestionDataOneCorrect;
-export type QuestionDataMultipleCorrectAmountShown = QuestionDataOneCorrect;
+export type QuestionDataMultipleCorrect = {
+    showAmountOfCorrect: boolean;
+    options: {
+        text: string;
+        image?: string;
+        correct: boolean;
+    }[];
+}
 
 export type QuestionDataMatch = {
     options: {
@@ -35,6 +40,8 @@ export type QuestionDataMatch = {
 }
 
 export type QuestionDataTextInput = {
+    registerMatters: boolean;
+    whitespaceMatters: boolean;
     options: string[];
 }
 export type QuestionDataSequense = {
@@ -42,7 +49,7 @@ export type QuestionDataSequense = {
         text: string;
         image?: string;
         index: number;
-    }
+    }[];
 }
 export type QuestionDataTextGapsTextInput = {
 
@@ -54,10 +61,9 @@ export type QuestionDataTextGapsVariantMultipleLists = {
 
 }
 
-type QuestionDataByType<T extends QuestionType> =
+export type QuestionDataByType<T extends QuestionType> =
     T extends QuestionType.OneCorrect ? QuestionDataOneCorrect :
-    T extends QuestionType.MultipleCorrectAmountHidden ? QuestionDataMultipleCorrectAmountHidden :
-    T extends QuestionType.MultipleCorrectAmountShown ? QuestionDataMultipleCorrectAmountShown :
+    T extends QuestionType.MultipleCorrect ? QuestionDataMultipleCorrect :
     T extends QuestionType.Match ? QuestionDataMatch :
     T extends QuestionType.TextInput ? QuestionDataTextInput :
     T extends QuestionType.Sequense ? QuestionDataSequense :

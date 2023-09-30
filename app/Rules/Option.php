@@ -29,9 +29,9 @@ class Option implements ValidationRule
 
         switch ($this->type) {
             case QuestionType::OneCorrect:
-            case QuestionType::MultipleCorrectAmountHidden:
-            case QuestionType::MultipleCorrectAmountShown:
+            case QuestionType::MultipleCorrect:
                 $result = Validator::make($value, [
+                    'showAmountOfCorrect' => $this->type === QuestionType::MultipleCorrect ? ['required', 'boolean'] : [],
                     'options' => ['required', 'array', 'between:2,20'],
                     'options.*' => ['array:text,image,correct'],
                     'options.*.text' => ['required', 'string'],
@@ -56,12 +56,12 @@ class Option implements ValidationRule
             case QuestionType::Match:
                 $result = Validator::make($value, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:text,string'],
+                    'options.*' => ['array:text,image'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['string'],
                     
                     'variants' => ['required', 'array', 'between:2,20'],
-                    'variants.*' => ['array:text,string'],
+                    'variants.*' => ['array:text,image'],
                     'variants.*.text' => ['required', 'string'],
                     'variants.*.image' => ['string'],
 
@@ -74,6 +74,8 @@ class Option implements ValidationRule
                 break;
             case QuestionType::TextInput:
                 $result = Validator::make($value, [
+                    'registerMatters' => ['required', 'boolean'],
+                    'whitespaceMatters' => ['required', 'boolean'],
                     'options' => ['required', 'array', 'between:1,20'],
                     'options.*' => ['string'],
                 ]);
@@ -84,7 +86,7 @@ class Option implements ValidationRule
             case QuestionType::Sequense:
                 $result = Validator::make($value, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:text,index'],
+                    'options.*' => ['array:text,image,index'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['string'],
                     'options.*.index' => ['required', 'integer'],

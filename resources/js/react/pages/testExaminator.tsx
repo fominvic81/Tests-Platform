@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { testExaminatorId } from '..';
+import { testExaminatorComponentId } from '..';
 
-const Examinator: React.FC = () => {
+const Component: React.FC = () => {
 
     return <></>;
 }
 
-const root = createRoot(document.getElementById(testExaminatorId)!);
-root.render(
-    <Examinator></Examinator>
-);
+const root = createRoot(document.getElementById(testExaminatorComponentId)!);
+root.render(<Component></Component>);

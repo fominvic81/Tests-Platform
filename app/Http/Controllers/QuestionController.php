@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Enums\QuestionType;
-use App\Http\Controllers\Controller;
 use App\Models\Question;
+use App\Models\Test;
 use App\Rules\Option;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
@@ -12,9 +12,25 @@ use Illuminate\Validation\Rules\Enum;
 class QuestionController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Test $test)
+    {
+        return view('question.create', ['test' => $test]);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Test $test)
     {
         $data = $request->validate([
             'type' => ['required', new Enum(QuestionType::class)],
@@ -39,9 +55,8 @@ class QuestionController extends Controller
 
         $question->save();
 
-        return response()->json([
-            'id' => $question['id'],
-        ]);
+        // return redirect()->to('test.edit', $test->id);
+        return redirect()->to('test.edit', $test->id);
     }
 
     /**
@@ -49,7 +64,15 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        return response()->json($question->toArray());
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Question $question)
+    {
+        //
     }
 
     /**
@@ -65,6 +88,6 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        $question->delete();
+        //
     }
 }

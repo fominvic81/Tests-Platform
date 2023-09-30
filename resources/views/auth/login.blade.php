@@ -2,8 +2,8 @@
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
-        <x-form.input name="email" label="Email">Email</x-form.input>
-        <x-form.input type="password" name="password" label="Пароль">Пароль</x-form.input>
+        <x-form.input name="email" label="Email" value="old()">Email</x-form.input>
+        <x-form.input type="password" name="password" label="Пароль" value="old()">Пароль</x-form.input>
 
         <x-form.errors></x-form.errors>
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,8 +23,8 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::resource('course', CourseController::class)->except(['index', 'show']);
-    Route::resource('test', TestController::class)->except(['index', 'show', 'edit']);
-    Route::get('test/{test}/edit/{react?}', [TestController::class, 'edit'])->name('test.edit');
+    Route::resource('test', TestController::class)->except(['index', 'show']);
+    Route::resource('test.question', QuestionController::class)->shallow()->except('index', 'show');
 });
 
 Route::resource('course', CourseController::class)->only(['index', 'show']);
