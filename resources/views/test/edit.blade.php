@@ -55,4 +55,8 @@
             <x-question :question="$question" :index="$loop->index"></x-question>
         @endforeach
     </div>
+
+    <a href="{{ route('test.question.create', $test->id) }}" class="flex justify-center items-center text-2xl p-5 mb-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200">
+        Створити питання
+    </a>
 </x-layouts.feed>

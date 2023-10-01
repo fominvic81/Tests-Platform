@@ -4,8 +4,8 @@
     <div>
         <div class="flex justify-between">
             <div>
-                <code class="bg-gray-200 border border-gray-300 px-2 rounded mr-2">№{{ $index + 1 }}</code>
-                <span class="text-lg indent-2">{{ $question->text }}</span>
+                <code class="bg-gray-200 border border-gray-300 px-2 rounded mr-2">Завдання №{{ $index + 1 }}</code>
+                <div class="ml-3 mt-1">{!! clean($question->text) !!}</div>
             </div>
             <div>
                 <a href="" class="mx-2 p-1 bg-sky-500 hover:bg-sky-600 border border-gray-500 rounded">Редагувати</a>

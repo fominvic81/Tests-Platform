@@ -35,10 +35,12 @@ class QuestionController extends Controller
         $data = $request->validate([
             'type' => ['required', new Enum(QuestionType::class)],
             'text' => ['required', 'string'],
+            'image' => ['image', 'nullable'],
             'points' => ['required', 'numeric'],
             'explanation' => ['string', 'nullable'],
-            'test_id' => ['required', 'numeric', 'exists:tests,id'],
         ]);
+
+        $data['text'] = clean($data['text']);
 
         $questionData = $request->validate([
             'data' => ['required', 'array', new Option(QuestionType::from($request->post('type')))],
@@ -50,13 +52,12 @@ class QuestionController extends Controller
             'data' => $questionData,
             'points' => $data['points'],
             'explanation' => isset($data['explanation']) ? $data['explanation'] : null,
-            'test_id' => $data['test_id'],
+            'test_id' => $test->id,
         ]);
 
         $question->save();
 
-        // return redirect()->to('test.edit', $test->id);
-        return redirect()->to('test.edit', $test->id);
+        return redirect()->to(route('test.edit', $test->id));
     }
 
     /**
