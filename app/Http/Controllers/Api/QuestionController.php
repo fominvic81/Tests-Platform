@@ -33,15 +33,13 @@ class QuestionController extends Controller
             'text' => $data['text'],
             'data' => $questionData,
             'points' => $data['points'],
-            'explanation' => isset($data['explanation']) ? $data['explanation'] : null,
+            'explanation' => $data['explanation'] ?? null,
             'test_id' => $data['test_id'],
         ]);
 
         $question->save();
 
-        return response()->json([
-            'id' => $question['id'],
-        ]);
+        return response()->json($question->toArray());
     }
 
     /**

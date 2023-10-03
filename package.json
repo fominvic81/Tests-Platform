@@ -17,9 +17,17 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@tiptap/extension-color": "^2.1.11",
+        "@tiptap/extension-placeholder": "^2.1.11",
+        "@tiptap/extension-subscript": "^2.1.11",
+        "@tiptap/extension-superscript": "^2.1.11",
+        "@tiptap/extension-text-style": "^2.1.11",
+        "@tiptap/extension-underline": "^2.1.11",
+        "@tiptap/pm": "^2.1.11",
+        "@tiptap/react": "^2.1.11",
+        "@tiptap/starter-kit": "^2.1.11",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-quill": "^2.0.0",
         "react-router-dom": "^6.16.0"
     }
 }

@@ -18,10 +18,11 @@
                     <span class="h-full flex items-center mx-2 whitespace-nowrap">{{ Auth::user()->fullname }}</span>
                     <img class="h-full" src="{{ URL::to('/images/profile.png') }}" alt="Profile">
                 </div>
-            @else
+            @endauth
+            @guest
                 <a class="h-full flex items-center px-4" href="{{ route('login') }}">Вхід</a>
                 <a class="h-full flex items-center px-4" href="{{ route('registration') }}">Реєстрація</a>
-            @endauth
+            @endguest
         </div>
     </div>
 </header>

@@ -15,6 +15,7 @@ class Question extends Model
     protected $fillable = [
         'type',
         'text',
+        'image',
         'data',
         'points',
         'explanation',

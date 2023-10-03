@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Question, QuestionType, QuestionTypeInitialData, QuestionTypeName } from '../../../api';
 import { QuestionOneCorrect } from './OneCorrect';
 import { CSRF, Method } from '../../utils';
-import { EditorComponent } from '../Editor';
+import { Editor } from '../Editor';
+import axios from 'axios';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: QuestionOneCorrect,
@@ -18,8 +19,6 @@ const questionComponentByType: Record<QuestionType, React.FC<any>> = {
 interface Props {
     question?: Question;
 }
-
-
 
 export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
 
@@ -47,7 +46,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
         </div>
         <div>
             <div className='text-2xl indent-1'>{ create ? 'Створити' : 'Редагувати' } питання</div>
-            <form action={action} method='POST'>
+            <form action={action} method='POST' encType='multipart/form-data'>
                 <CSRF></CSRF>
                 <Method method={method}></Method>
                 <input type='hidden' name='type' value={ type } />
@@ -55,7 +54,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
                     <div>
                         <label htmlFor='text'>Питання</label>
                         {/* <input type='text' name='text' id='text' defaultValue={ question?.text } placeholder='Питання' className='block border bg-gray-50 indent-1 h-8 w-full' /> */}
-                        <EditorComponent name='text' id='text'></EditorComponent>
+                        <Editor name='text' id='text'></Editor>
                     </div>
                     <div className='w-48 row-span-6'>
                         <div className={`aspect-square mx-3 mt-6 border-2 ${!image ? 'border-dashed' : ''}`}>
@@ -70,9 +69,11 @@ export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
                                 accept='image/*'
                                 className='hidden'
                                 onClick={(event) => {
-                                    if (image) event.preventDefault();
-                                    setImg(undefined);
-                                    event.currentTarget.value = "";
+                                    if (image) {
+                                        event.preventDefault();
+                                        setImg(undefined);
+                                        event.currentTarget.value = "";
+                                    }
                                 }}
                                 onChange={(event) => {
                                     const file = event.target.files?.item(0);

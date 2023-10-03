@@ -1,37 +1,88 @@
-// import React, { PropsWithChildren, Ref, useMemo } from 'react';
-// import { createEditor, Descendant, Editor } from 'slate';
-// import { Slate, Editable, withReact, useSlate } from 'slate-react';
+import React, { useState } from 'react';
+import { EditorProvider, useCurrentEditor, ChainedCommands } from '@tiptap/react'
+import ListItem from '@tiptap/extension-list-item';
+import { Color } from '@tiptap/extension-color';
+import TextStyle from '@tiptap/extension-text-style';
+import StarterKit from '@tiptap/starter-kit';
+import Placeholder from '@tiptap/extension-placeholder';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
+import Underline from '@tiptap/extension-underline';
 
-// const initialValue: Descendant[] = [
-//     {
-//         children: [
-//             { text: 'This is editable plain text, just like a <textarea>!' },
-//         ],
-//     },
-// ];
+interface MenuButtonProps extends React.PropsWithChildren {
+    action: (chain: ChainedCommands) => ChainedCommands;
+    name?: string;
+}
 
-// export const EditorComponent: React.FC = () => {
-//     const editor = useMemo(() => withReact(createEditor()), []);
-    
+const MenuButton: React.FC<MenuButtonProps> = ({ action, children, name }) => {
+    const { editor } = useCurrentEditor();
 
-//     return <Slate editor={ editor } initialValue={initialValue} onChange={(value) => {
-//         console.log(value);
-//     }}>
-//         <Editable className='border bg-gray-50 p-1'></Editable>
-//     </Slate>
-// }
-import React, { useMemo, useState } from 'react';
-import ReactQuill from 'react-quill';
-// import 'react-quill/dist/react-quill';
-import 'react-quill/dist/quill.snow.css';
-import Quill from 'quill';
+    if (!editor) return;
 
-const colors = [
-    '#000000', '#e60000', '#ff9900', '#ffff00', '#008a00', '#0066cc', '#9933ff', 
-    '#ffffff', '#facccc', '#ffebcc', '#ffffcc', '#cce8cc', '#cce0f5', '#ebd6ff',
-    '#bbbbbb', '#f06666', '#ffc266', '#ffff66', '#66b966', '#66a3e0', '#c285ff',
-    '#888888', '#a10000', '#b26b00', '#b2b200', '#006100', '#0047b2', '#6b24b2',
-    '#444444', '#5c0000', '#663d00', '#666600', '#003700', '#002966', '#3d1466',
+    return <button type='button' 
+        onClick={() => action(editor.chain().focus()).run()}
+        disabled={!action(editor.can().chain().focus()).run()}
+        className={`px-2 mx-1 rounded ${name && editor.isActive(name) ? 'font-bold bg-gray-200' : 'bg-gray-50'}`}>{ children }</button>
+}
+
+const MenuBar: React.FC = () => {
+    const { editor } = useCurrentEditor()
+
+    if (!editor) return;
+
+    return (
+        <div className='bg-gray-50 border-2 border-b-0 p-2 '>
+            <MenuButton action={(chain) => chain.toggleBold()} name='bold'>B</MenuButton>
+            <MenuButton action={(chain) => chain.toggleItalic()} name='italic'>I</MenuButton>
+            <MenuButton action={(chain) => chain.toggleStrike()} name='strike'>S</MenuButton>
+            <MenuButton action={(chain) => chain.toggleUnderline()} name='underline'>U</MenuButton>
+            <MenuButton action={(chain) => chain.toggleBulletList()} name='bulletList'>-</MenuButton>
+            <MenuButton action={(chain) => chain.toggleOrderedList()} name='orderedList'>1</MenuButton>
+            <MenuButton action={(chain) => chain.toggleCodeBlock()} name='codeBlock'>C</MenuButton>
+            <MenuButton action={(chain) => chain.toggleBlockquote()} name='blockquote'>q</MenuButton>
+            <MenuButton
+                action={(chain) => {
+                    chain.unsetSubscript();
+                    return chain.toggleSuperscript();
+                }}
+                name='superscript'
+            >2</MenuButton>
+            <MenuButton
+                action={(chain) => {
+                    chain.unsetSuperscript();
+                    return chain.toggleSubscript();
+                }}
+                name='subscript'
+            >s</MenuButton>
+            <MenuButton action={(chain) => chain.setHorizontalRule()}>H</MenuButton>
+            <MenuButton action={(chain) => chain.setHardBreak()}>N</MenuButton>
+            <MenuButton action={(chain) => chain.undo()} name='undo'>U</MenuButton>
+            <MenuButton action={(chain) => chain.redo()} name='redo'>R</MenuButton>
+            <MenuButton action={(chain) => editor.isActive('textStyle', { color: '#958DF1' }) ? chain.unsetColor() : chain.setColor('#958DF1')}>P</MenuButton>
+        </div>
+    )
+}
+
+const extensions = [
+    Color.configure({ types: [TextStyle.name, ListItem.name] }),
+    // @ts-ignore
+    TextStyle.configure({ types: [ListItem.name] }),
+    StarterKit.configure({
+        bulletList: {
+            keepMarks: true,
+            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
+        orderedList: {
+            keepMarks: true,
+            keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+        },
+    }),
+    Placeholder.configure({
+        placeholder: 'Placeholder',
+    }),
+    Underline.configure(),
+    Superscript.configure(),
+    Subscript.configure(),
 ];
 
 interface Props {
@@ -39,60 +90,22 @@ interface Props {
     id: string;
 }
 
-export const EditorComponent: React.FC<Props> = ({ name, id }) => {
+export const Editor: React.FC<Props> = ({ name, id }) => {
 
-    const [value, setValue] = useState('');
-    const modules = useMemo(() => ({
-        toolbar: {
-            container: `#${id}-toolbar`,
-            handlers: {},
-        },
-    }), []);
+    const [value, setValue] = useState('<div>Hello world!</div>');
 
-    return <>
+    return <div className='break-words'>
         <input type='hidden' name={ name } id={ id } value={ value }></input>
-        <div className='bg-gray-50 border'>
-            <div id={`${id}-toolbar`}>
-                <span className='ql-formats'>
-                    <button className='ql-bold' />
-                    <button className='ql-italic' />
-                    <button className='ql-underline' />
-                    <button className='ql-strike' />
-                </span>
-
-                <span className='ql-formats'>
-                    <button className='ql-list' value='ordered' />
-                    <button className='ql-list' value='bullet' />
-                </span>
-
-                <span className='ql-formats'>
-                    <button className='ql-script' value='sub'></button>
-                    <button className='ql-script' value='super'></button>
-                </span>
-
-                <span className='ql-formats'>
-                    <select className='ql-color'>{ colors.map((value) => <option value={value}></option>) }</select>
-                    <select className='ql-background'>{ colors.map((value) => <option value={value}></option>) }</select>
-                </span>
-
-                <span className='ql-formats'>
-                    <select className='ql-align'>
-                        <option selected></option>
-                        <option value='center'></option>
-                        <option value='justify'></option>
-                        <option value='right'></option>
-                    </select>
-                </span>
-
-                <span className='ql-formats'>
-                    <button className='ql-clean'></button>
-                </span>
-
-                <span className='ql-formats'>
-                    <button className='ql-link'></button>
-                </span>
-            </div>
-            <ReactQuill modules={modules} theme='snow' value={value} onChange={setValue}></ReactQuill>
-        </div>
-    </>
+        <EditorProvider
+            editorProps={{
+                attributes: {
+                    class: 'bg-gray-50 border-2 p-1',
+                },
+            }}
+            onUpdate={({ editor }) => setValue(editor.getHTML())}
+            slotBefore={<MenuBar></MenuBar>}
+            extensions={extensions}
+            content={value}
+        > </EditorProvider>
+    </div>;
 }

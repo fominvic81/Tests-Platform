@@ -21,7 +21,7 @@ export const QuestionOneCorrect: React.FC<Props> = ({ data, onChange }) => {
     }
 
     return <div className='grid grid-cols-[auto_1fr_auto] gap-2'>
-        { data.options.map((value, index) => <>
+        { data.options.map((value, index) => <React.Fragment key={index}>
             <div className='group'>
                 <input
                     type='checkbox'
@@ -42,6 +42,6 @@ export const QuestionOneCorrect: React.FC<Props> = ({ data, onChange }) => {
                 className='bg-gray-50 border p-1'
             />
             <div className='w-40'></div>
-        </>)}
+        </React.Fragment>)}
     </div>
 }

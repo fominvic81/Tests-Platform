@@ -9,13 +9,17 @@
         </div>
         <div class="col-span-1">
             <h1 class="text-white text-lg font-bold">Аккаунт</h1>
-            <a class="block w-fit text-white hover:text-blue-200" href="{{ route('registration') }}">Реєстрація</a>
-            <a class="block w-fit text-white hover:text-blue-200" href="{{ route('login') }}">Вхід для вчителя</a>
-            <a class="block w-fit text-white hover:text-blue-200" href="">Вхід для учня</a>    
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="block w-fit text-white hover:text-blue-200">Вийти</button>
-            </form>
+            @guest
+                <a class="block w-fit text-white hover:text-blue-200" href="{{ route('registration') }}">Реєстрація</a>
+                <a class="block w-fit text-white hover:text-blue-200" href="">Реєстрація для учня</a>
+                <a class="block w-fit text-white hover:text-blue-200" href="{{ route('login') }}">Вхід</a>    
+            @endguest
+            @auth
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="block w-fit text-white hover:text-blue-200">Вийти</button>
+                </form>
+            @endauth
         </div>
         <div class="col-span-1">
             <h1 class="text-white text-lg font-bold">Про нас</h1>

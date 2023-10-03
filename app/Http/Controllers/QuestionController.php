@@ -35,23 +35,25 @@ class QuestionController extends Controller
         $data = $request->validate([
             'type' => ['required', new Enum(QuestionType::class)],
             'text' => ['required', 'string'],
-            'image' => ['image', 'nullable'],
+            'image' => ['image', 'nullable', 'max:2048'],
             'points' => ['required', 'numeric'],
             'explanation' => ['string', 'nullable'],
         ]);
-
         $data['text'] = clean($data['text']);
 
         $questionData = $request->validate([
             'data' => ['required', 'array', new Option(QuestionType::from($request->post('type')))],
         ])['data'];
 
+        $imagePath = isset($data['image']) ? $request->file('image')->store('public/images') : null;
+
         $question = new Question([
             'type' => $data['type'],
             'text' => $data['text'],
+            'image' => $imagePath,
             'data' => $questionData,
             'points' => $data['points'],
-            'explanation' => isset($data['explanation']) ? $data['explanation'] : null,
+            'explanation' => $data['explanation'] ?? null,
             'test_id' => $test->id,
         ]);
 
@@ -89,6 +91,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return redirect()->back();
     }
 }
