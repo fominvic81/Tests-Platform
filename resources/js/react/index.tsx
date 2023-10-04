@@ -1,7 +1,5 @@
-export const questionCreateComponentId = 'question-create';
-export const questionEditComponentId = 'question-edit';
 export const testExaminatorComponentId = 'test-examinator';
+export const testEditorId = 'test-editor';
 
-if (document.getElementById(questionCreateComponentId)) import('./pages/questionCreate');
-if (document.getElementById(questionEditComponentId)) import('./pages/questionEdit');
 if (document.getElementById(testExaminatorComponentId)) import('./pages/testExaminator');
+if (document.getElementById(testEditorId)) import('./pages/testEditor');

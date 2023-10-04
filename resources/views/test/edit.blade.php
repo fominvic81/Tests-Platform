@@ -1,6 +1,6 @@
 <x-layouts.feed>
-    {{-- <div id="test-editor"></div> --}}
-    <div class="p-5 bg-white shadow-md">
+    <div id="test-editor"></div>
+    {{-- <div class="p-5 bg-white shadow-md">
         <form action="{{ route('test.update', $test->id) }}" method="POST">
             @csrf
             @method("PUT")
@@ -33,30 +33,17 @@
                 </div>
             </div>
     
-            <x-form.submit>Зберегти</x-form.submit>
+            <x-form.submit1>Зберегти</x-form.submit1>
         </form>
     </div>
     
     <div>
-        {{-- {questions.map((question, index) =>
-            <QuestionComponent
-                key={question.id}
-                question={question}
-                index={index}
-                onDelete={async () => {
-                    if (await deleteQuestion(question.id)) {
-                        setQuestions([...questions.filter(({ id }) => id !== question.id)]);
-                    }
-                }}
-            ></QuestionComponent>
-        )} --}}
         @foreach ($test->questions as $question)
-            {{-- {{ $question->text }} --}}
             <x-question :question="$question" :index="$loop->index"></x-question>
         @endforeach
     </div>
 
     <a href="{{ route('test.question.create', $test->id) }}" class="flex justify-center items-center text-2xl p-5 mb-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200">
         Створити питання
-    </a>
+    </a> --}}
 </x-layouts.feed>

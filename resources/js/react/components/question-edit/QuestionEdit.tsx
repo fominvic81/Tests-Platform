@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import { Question, QuestionType, QuestionTypeInitialData, QuestionTypeName } from '../../../api';
+import { Question, QuestionType, QuestionTypeInitialData, QuestionTypeName, ValidationError } from '../../../api';
 import { QuestionOneCorrect } from './OneCorrect';
 import { CSRF, Method } from '../../utils';
-import { Editor } from '../Editor';
-import axios from 'axios';
+import { EditorComponent } from '../Editor';
+import { FormTextInput } from '../form/input';
+import { FormTextarea } from '../form/textarea';
+import { FormSubmit } from '../form/submit';
+import axios, { AxiosError } from 'axios';
+import { FormError } from '../form/error';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: QuestionOneCorrect,
@@ -23,12 +27,13 @@ interface Props {
 export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
 
     const create = !question;
-    const action = create ? `/test/${location.pathname.split('/')[2]}/question` : `/question/${question.id}`;
+    const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/question/${question.id}`;
     const method = create ? 'POST' : 'PUT';
 
 
     const [image, setImg] = useState(question?.image);
     const [type, setType] = useState(question?.type ?? QuestionType.OneCorrect);
+    const [error, setError] = useState<ValidationError>();
 
     const [data, setData] = useState(QuestionTypeInitialData[type]);
 
@@ -46,15 +51,22 @@ export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
         </div>
         <div>
             <div className='text-2xl indent-1'>{ create ? 'Створити' : 'Редагувати' } питання</div>
-            <form action={action} method='POST' encType='multipart/form-data'>
+            <form action={action} method='POST' encType='multipart/form-data' onSubmit={async (event) => {
+                event.preventDefault();
+                const response = await axios.postForm(action, event.target).catch((reason: AxiosError) => {
+                    if (reason.response && reason.response.status === 422) setError(reason.response.data as ValidationError);
+                });
+                if (!response) return;
+
+                console.log(response.data);
+            }}>
                 <CSRF></CSRF>
                 <Method method={method}></Method>
                 <input type='hidden' name='type' value={ type } />
                 <div className='grid grid-cols-[1fr_auto] mb-4'>
                     <div>
                         <label htmlFor='text'>Питання</label>
-                        {/* <input type='text' name='text' id='text' defaultValue={ question?.text } placeholder='Питання' className='block border bg-gray-50 indent-1 h-8 w-full' /> */}
-                        <Editor name='text' id='text'></Editor>
+                        <EditorComponent name='text' id='text' placeholder='Питання'></EditorComponent>
                     </div>
                     <div className='w-48 row-span-6'>
                         <div className={`aspect-square mx-3 mt-6 border-2 ${!image ? 'border-dashed' : ''}`}>
@@ -85,15 +97,16 @@ export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
                     </div>
                     <div>
                         <label htmlFor='text'>Опис</label>
-                        <textarea name='description' id='description' placeholder='Опис' className='block border bg-gray-50 indent-1 w-full' />
+                        <FormTextarea name='description' placeholder='Опис' />
                     </div>
                     <div>
                         <label htmlFor='points'>Бали</label>
-                        <input type='number' name='points' id='points' placeholder='Кількість балів' defaultValue={question?.points ?? 1} className='block border bg-gray-50 indent-1 h-8 w-full' />
+                        <FormTextInput type='number' name='points' value={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>
                     </div>
                 </div>
                 <Component key={ type } data={ data } onChange={ setData }></Component>
-                <button type='submit' className='w-full bg-sky-500 p-2 rounded mt-2'>{ create ? 'Створити' : 'Зберегти' }</button>
+                <FormSubmit>{ create ? 'Створити' : 'Зберегти' }</FormSubmit>
+                <FormError error={error}></FormError>
             </form>
         </div>
     </div>

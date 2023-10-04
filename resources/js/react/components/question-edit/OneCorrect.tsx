@@ -1,5 +1,6 @@
 import React from 'react';
 import { Question, QuestionDataByType, QuestionType } from '../../../api';
+import { FormTextInput } from '../form/input';
 
 
 interface Props {
@@ -20,7 +21,7 @@ export const QuestionOneCorrect: React.FC<Props> = ({ data, onChange }) => {
         onChange({ ...data })
     }
 
-    return <div className='grid grid-cols-[auto_1fr_auto] gap-2'>
+    return <div className='grid grid-cols-[auto_1fr_auto] gap-2 items-center'>
         { data.options.map((value, index) => <React.Fragment key={index}>
             <div className='group'>
                 <input
@@ -33,14 +34,13 @@ export const QuestionOneCorrect: React.FC<Props> = ({ data, onChange }) => {
                 <label htmlFor={`correct-${index}`} className='block w-10 h-10 bg-gray-300 peer-checked:bg-emerald-400 rounded-full'></label>
                 <input type='hidden' id={`correct-${index}`} name={`data[options][${index}][correct]`} value={ Number(value.correct) } />
             </div>
-            <input
+            <FormTextInput
                 type='text'
                 name={`data[options][${index}][text]`}
-                value={ value.text }
-                onChange={(event) => onChangeText(index, event.target.value)}
                 placeholder='Варіант'
-                className='bg-gray-50 border p-1'
-            />
+                value={ value.text }
+                onChange={(v) => onChangeText(index, v)}
+            ></FormTextInput>
             <div className='w-40'></div>
         </React.Fragment>)}
     </div>

@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\TestController;
 use App\Models\Grade;
@@ -28,9 +27,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user()->createToken('token')->plainTextToken;
     });
 
-    Route::apiResource('course', CourseController::class)->only(['index', 'show']);
     Route::apiResource('test', TestController::class)->only(['index', 'show', 'update']);
-    Route::apiResource('question', QuestionController::class)->except(['index']);
+    Route::apiResource('test.question', QuestionController::class)->shallow()->except(['index']);
 
     Route::get('/test-options', function (Request $request) {
         return response()->json([

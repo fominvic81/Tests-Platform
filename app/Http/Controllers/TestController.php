@@ -86,9 +86,9 @@ class TestController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
             'description' => ['string', 'nullable'],
-            'course' => ['integer'],
-            'subject' => ['integer'],
-            'grade' => ['integer'],
+            'course' => ['required', 'integer'],
+            'subject' => ['required', 'integer'],
+            'grade' => ['required', 'integer'],
         ]); 
 
         $test->name = $data['name'];

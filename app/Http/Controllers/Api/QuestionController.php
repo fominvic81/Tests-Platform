@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Enums\QuestionType;
 use App\Http\Controllers\Controller;
 use App\Models\Question;
+use App\Models\Test;
 use App\Rules\Option;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
@@ -14,14 +15,13 @@ class QuestionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Test $test)
     {
         $data = $request->validate([
             'type' => ['required', new Enum(QuestionType::class)],
             'text' => ['required', 'string'],
             'points' => ['required', 'numeric'],
             'explanation' => ['string', 'nullable'],
-            'test_id' => ['required', 'numeric', 'exists:tests,id'],
         ]);
 
         $questionData = $request->validate([
@@ -34,7 +34,7 @@ class QuestionController extends Controller
             'data' => $questionData,
             'points' => $data['points'],
             'explanation' => $data['explanation'] ?? null,
-            'test_id' => $data['test_id'],
+            'test_id' => $test->id,
         ]);
 
         $question->save();

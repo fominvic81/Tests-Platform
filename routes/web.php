@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('course', CourseController::class)->except(['index', 'show']);
     Route::resource('test', TestController::class)->except(['index', 'show']);
-    Route::resource('test.question', QuestionController::class)->shallow()->except('index', 'show');
+    Route::get('test/{test}/question/create', [TestController::class, 'edit']);
+    // Route::resource('test.question', QuestionController::class)->shallow()->except('index', 'show');
 });
 Route::resource('course', CourseController::class)->only(['index', 'show']);
 Route::resource('test', TestController::class)->only(['index', 'show']);
