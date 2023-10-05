@@ -8,6 +8,7 @@ import { FormTextarea } from '../form/textarea';
 import { FormSubmit } from '../form/submit';
 import axios, { AxiosError } from 'axios';
 import { FormError } from '../form/error';
+import { useUrlState } from '../../hooks/useUrlState';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: QuestionOneCorrect,
@@ -22,9 +23,10 @@ const questionComponentByType: Record<QuestionType, React.FC<any>> = {
 
 interface Props {
     question?: Question;
+    onSave: (question: Question) => any;
 }
 
-export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
+export const QuestionEditComponent: React.FC<Props> = ({ question, onSave }) => {
 
     const create = !question;
     const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/question/${question.id}`;
@@ -32,12 +34,23 @@ export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
 
 
     const [image, setImg] = useState(question?.image);
-    const [type, setType] = useState(question?.type ?? QuestionType.OneCorrect);
+    const [type, setType] = useUrlState('t', question?.type ?? QuestionType.OneCorrect);
     const [error, setError] = useState<ValidationError>();
 
     const [data, setData] = useState(QuestionTypeInitialData[type]);
 
     const Component = questionComponentByType[type];
+
+    const onSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+        const response = await axios.postForm(action, event.target).catch((reason: AxiosError) => {
+            if (reason.response && reason.response.status === 422) setError(reason.response.data as ValidationError);
+        });
+        if (!response) return;
+
+        setType();
+        onSave(response.data);
+    }
 
     return <div className='grid grid-cols-[auto_1fr] gap-4 bg-white border shadow-md p-4'>
         <div>
@@ -51,15 +64,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ question }) => {
         </div>
         <div>
             <div className='text-2xl indent-1'>{ create ? 'Створити' : 'Редагувати' } питання</div>
-            <form action={action} method='POST' encType='multipart/form-data' onSubmit={async (event) => {
-                event.preventDefault();
-                const response = await axios.postForm(action, event.target).catch((reason: AxiosError) => {
-                    if (reason.response && reason.response.status === 422) setError(reason.response.data as ValidationError);
-                });
-                if (!response) return;
-
-                console.log(response.data);
-            }}>
+            <form action={action} method='POST' encType='multipart/form-data' onSubmit={onSubmit}>
                 <CSRF></CSRF>
                 <Method method={method}></Method>
                 <input type='hidden' name='type' value={ type } />

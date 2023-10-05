@@ -32,7 +32,7 @@ export const QuestionOneCorrect: React.FC<Props> = ({ data, onChange }) => {
                     className='hidden peer'
                 />
                 <label htmlFor={`correct-${index}`} className='block w-10 h-10 bg-gray-300 peer-checked:bg-emerald-400 rounded-full'></label>
-                <input type='hidden' id={`correct-${index}`} name={`data[options][${index}][correct]`} value={ Number(value.correct) } />
+                <input type='hidden' id={`correct-${index}`} name={`data[options][${index}][correct]`} value={ value.correct ? 1 : 0 } />
             </div>
             <FormTextInput
                 type='text'

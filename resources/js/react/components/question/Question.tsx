@@ -1,21 +1,27 @@
 import React from 'react';
 import { Question } from '../../../api';
 import { storagePath } from '../../../api/storagePath';
+import { useUrlState } from '../../hooks/useUrlState';
 
 interface Props {
     question: Question;
     index: number;
-    onDelete: () => any;
+    onDelete?: () => any;
+    onEdit?:() => any;
 }
 
-export const QuestionComponent: React.FC<Props> = ({ question, index, onDelete }) => {
+export const QuestionComponent: React.FC<Props> = ({ question, index, onDelete, onEdit }) => {
     
     return <div className='bg-white p-3 my-4 shadow'>
         <div>
             <div className='flex justify-between items-center'>
                 <div className='bg-gray-200 border border-gray-300 px-2 rounded mr-2 font-mono'>Завдання №{ index + 1 }</div>
                 <div>
-                    <a href='' className='mx-2 p-1 bg-sky-500 hover:bg-sky-600 border border-gray-500 rounded'>Редагувати</a>
+                    <button
+                        type='button'
+                        className='inline mx-2 p-1 bg-sky-500 hover:bg-sky-600 border border-gray-500 rounded'
+                        onClick={onEdit}
+                    >Редагувати</button>    
                     <button
                         type='button'
                         className='inline mx-2 p-1 bg-sky-500 hover:bg-sky-600 border border-gray-500 rounded'
