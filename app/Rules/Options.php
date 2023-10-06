@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Validator;
 
-class Option implements ValidationRule
+class Options implements ValidationRule
 {
 
     public QuestionType $type;
@@ -24,18 +24,19 @@ class Option implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        $valueToValidate = ['options' => $value];
+
         $result = Validator::make([], []);
         $result = null;
 
         switch ($this->type) {
             case QuestionType::OneCorrect:
             case QuestionType::MultipleCorrect:
-                $result = Validator::make($value, [
-                    'showAmountOfCorrect' => $this->type === QuestionType::MultipleCorrect ? ['required', 'boolean'] : [],
+                $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
                     'options.*' => ['array:text,image,correct'],
                     'options.*.text' => ['required', 'string'],
-                    'options.*.image' => ['string'],
+                    'options.*.image' => ['image', 'nullable', 'max:2048'],
                     'options.*.correct' => ['required', 'boolean'],
                 ]);
                 if (!$result->passes()) break;
@@ -54,42 +55,33 @@ class Option implements ValidationRule
 
                 break;
             case QuestionType::Match:
-                $result = Validator::make($value, [
+                $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:text,image'],
+                    'options.*' => ['array:text,image,match_id'],
                     'options.*.text' => ['required', 'string'],
-                    'options.*.image' => ['string'],
-                    
-                    'variants' => ['required', 'array', 'between:2,20'],
-                    'variants.*' => ['array:text,image'],
-                    'variants.*.text' => ['required', 'string'],
-                    'variants.*.image' => ['string'],
-
-                    'matchTable' => ['required', 'array', 'between:2,20'],
-                    'matchTable.*' => ['integer'],
+                    'options.*.image' => ['image', 'nullable', 'max:2048'],
+                    'options.*.match_id' => ['number', 'nullable'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
 
                 break;
             case QuestionType::TextInput:
-                $result = Validator::make($value, [
-                    'registerMatters' => ['required', 'boolean'],
-                    'whitespaceMatters' => ['required', 'boolean'],
+                $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:1,20'],
-                    'options.*' => ['string'],
+                    'options.*' => ['array:text'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
 
                 break;
             case QuestionType::Sequense:
-                $result = Validator::make($value, [
+                $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
                     'options.*' => ['array:text,image,index'],
                     'options.*.text' => ['required', 'string'],
-                    'options.*.image' => ['string'],
-                    'options.*.index' => ['required', 'integer'],
+                    'options.*.image' => ['image', 'nullable', 'max:2048'],
+                    'options.*.seq_index' => ['required', 'integer'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();

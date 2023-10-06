@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Question, QuestionType, QuestionTypeInitialData, QuestionTypeName, ValidationError } from '../../../api';
+import { Question, QuestionType, OptionInitialData, QuestionTypeName, ValidationError } from '../../../api';
 import { QuestionOneCorrect } from './OneCorrect';
 import { CSRF, Method } from '../../utils';
 import { EditorComponent } from '../Editor';
@@ -21,23 +21,33 @@ const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.TextGapsVariantMultipleLists]: () => <></>,
 } as const;
 
+const defaultQuestion: Question = {
+    id: 0,
+    type: QuestionType.OneCorrect,
+    text: '',
+    options: OptionInitialData[QuestionType.OneCorrect],
+    points: 1,
+    topics: [],
+    register_matters: false,
+    whitespace_matters: false,
+    show_amount_of_correct: false,
+};
+
 interface Props {
-    question?: Question;
+    initialQuestion?: Question;
     onSave: (question: Question) => any;
 }
 
-export const QuestionEditComponent: React.FC<Props> = ({ question, onSave }) => {
+export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave }) => {
 
-    const create = !question;
-    const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/question/${question.id}`;
+    const create = !initialQuestion;
+    const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/question/${initialQuestion.id}`;
     const method = create ? 'POST' : 'PUT';
 
+    const [question, setQuestion] = useState(initialQuestion ?? defaultQuestion);
 
-    const [image, setImg] = useState(question?.image);
     const [type, setType] = useUrlState('t', question?.type ?? QuestionType.OneCorrect);
     const [error, setError] = useState<ValidationError>();
-
-    const [data, setData] = useState(QuestionTypeInitialData[type]);
 
     const Component = questionComponentByType[type];
 
@@ -74,10 +84,10 @@ export const QuestionEditComponent: React.FC<Props> = ({ question, onSave }) => 
                         <EditorComponent name='text' id='text' placeholder='Питання'></EditorComponent>
                     </div>
                     <div className='w-48 row-span-6'>
-                        <div className={`aspect-square mx-3 mt-6 border-2 ${!image ? 'border-dashed' : ''}`}>
+                        <div className={`aspect-square mx-3 mt-6 border-2 ${!question.image ? 'border-dashed' : ''}`}>
                             <label htmlFor='image-upload' className='w-full h-full relative flex items-center justify-center'>
-                                <img className='max-w-full max-h-full' src={ image ?? '/images/add-image.png' } alt='Зоображення' />
-                                <div className='absolute w-full py-2 text-center bottom-0 bg-gray-200 bg-opacity-40 border-t'>{image ? 'Видалити' : 'Додати зображення'}</div>
+                                <img className='max-w-full max-h-full' src={ question.image ?? '/images/add-image.png' } alt='Зоображення' />
+                                <div className='absolute w-full py-2 text-center bottom-0 bg-gray-200 bg-opacity-40 border-t'>{question.image ? 'Видалити' : 'Додати зображення'}</div>
                             </label>
                             <input
                                 type='file'
@@ -86,16 +96,18 @@ export const QuestionEditComponent: React.FC<Props> = ({ question, onSave }) => 
                                 accept='image/*'
                                 className='hidden'
                                 onClick={(event) => {
-                                    if (image) {
+                                    if (question.image) {
                                         event.preventDefault();
-                                        setImg(undefined);
+                                        // setImg(undefined);
+                                        setQuestion({ ...question, image: undefined });
+                                        
                                         event.currentTarget.value = "";
                                     }
                                 }}
                                 onChange={(event) => {
                                     const file = event.target.files?.item(0);
                                     
-                                    if (file) setImg(URL.createObjectURL(file));
+                                    if (file) setQuestion({ ...question, image: URL.createObjectURL(file) });
                                 }}
                             />
                         </div>
@@ -109,7 +121,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ question, onSave }) => 
                         <FormTextInput type='number' name='points' value={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>
                     </div>
                 </div>
-                <Component key={ type } data={ data } onChange={ setData }></Component>
+                <Component key={ type } initialOptions={ question.options }></Component>
                 <FormSubmit>{ create ? 'Створити' : 'Зберегти' }</FormSubmit>
                 <FormError error={error}></FormError>
             </form>

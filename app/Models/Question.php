@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Question extends Model
 {
@@ -16,10 +17,12 @@ class Question extends Model
         'type',
         'text',
         'image',
-        'data',
         'points',
         'explanation',
         'test_id',
+        'register_matters',
+        'whitespace_matters',
+        'show_amount_of_correct',
     ];
 
     protected $hidden = [
@@ -28,6 +31,7 @@ class Question extends Model
 
     protected $with = [
         'topics',
+        'options',
     ];
 
     public function test(): BelongsTo
@@ -38,6 +42,11 @@ class Question extends Model
     public function topics(): BelongsToMany
     {
         return $this->belongsToMany(Topic::class);
+    }
+
+    public function options(): HasMany
+    {
+        return $this->hasMany(Option::class);
     }
 
     public $casts = [

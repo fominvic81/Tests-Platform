@@ -24,7 +24,7 @@ class QuestionController extends Controller
      */
     public function create(Test $test)
     {
-        return view('question.create', ['test' => $test]);
+        //
     }
 
     /**
@@ -32,34 +32,7 @@ class QuestionController extends Controller
      */
     public function store(Request $request, Test $test)
     {
-        $data = $request->validate([
-            'type' => ['required', new Enum(QuestionType::class)],
-            'text' => ['required', 'string'],
-            'image' => ['image', 'nullable', 'max:2048'],
-            'points' => ['required', 'numeric'],
-            'explanation' => ['string', 'nullable'],
-        ]);
-        $data['text'] = clean($data['text']);
-
-        $questionData = $request->validate([
-            'data' => ['required', 'array', new Option(QuestionType::from($request->post('type')))],
-        ])['data'];
-
-        $imagePath = isset($data['image']) ? $request->file('image')->store('public/images') : null;
-
-        $question = new Question([
-            'type' => $data['type'],
-            'text' => $data['text'],
-            'image' => $imagePath,
-            'data' => $questionData,
-            'points' => $data['points'],
-            'explanation' => $data['explanation'] ?? null,
-            'test_id' => $test->id,
-        ]);
-
-        $question->save();
-
-        return redirect()->to(route('test.edit', $test->id));
+        //
     }
 
     /**
@@ -91,7 +64,6 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        $question->delete();
-        return redirect()->back();
+        //
     }
 }

@@ -6,10 +6,11 @@ interface Props {
     placeholder?: string;
     label?: string;
     value?: any;
+    defaultValue?: any;
     onChange?: (value: any) => any;
 }
 
-export const FormTextInput: React.FC<Props> = ({ type, name, placeholder, value, onChange, label }) => {
+export const FormTextInput: React.FC<Props> = ({ type, name, placeholder, value, defaultValue, onChange, label }) => {
     const id = `${name}-${useId()}`
 
     return <>
@@ -21,6 +22,7 @@ export const FormTextInput: React.FC<Props> = ({ type, name, placeholder, value,
             id={ id }
             placeholder={ placeholder }
             value={ value }
+            defaultValue={ defaultValue }
             onChange={(event) => onChange && onChange(event.target.value)}
         />
     </>

@@ -1,28 +1,21 @@
-import React from 'react';
-import { Question, QuestionDataByType, QuestionType } from '../../../api';
+import React, { useState } from 'react';
+import { OptionByType, Question, QuestionType } from '../../../api';
 import { FormTextInput } from '../form/input';
 
-
 interface Props {
-    data: QuestionDataByType<QuestionType.OneCorrect>;
-    onChange: (data: QuestionDataByType<QuestionType.OneCorrect>) => any;
+    initialOptions: OptionByType<QuestionType.OneCorrect>[];
 }
 
-export const QuestionOneCorrect: React.FC<Props> = ({ data, onChange }) => {
+export const QuestionOneCorrect: React.FC<Props> = ({ initialOptions }) => {
 
+    const [options, setOptions] = useState(initialOptions);
     const onChangeCorrect = (index: number, value: boolean) => {
-        const options = data.options;
-        options[index] = { ...options[index], correct: value };
-        onChange({ ...data })
-    }
-    const onChangeText = (index: number, value: string) => {
-        const options = data.options;
-        options[index] = { ...options[index], text: value };
-        onChange({ ...data })
+        const newOption = { ...options[index], correct: value};
+        setOptions(options.map((option, i) => i === index ? newOption : option));
     }
 
     return <div className='grid grid-cols-[auto_1fr_auto] gap-2 items-center'>
-        { data.options.map((value, index) => <React.Fragment key={index}>
+        { options.map((value, index) => <React.Fragment key={index}>
             <div className='group'>
                 <input
                     type='checkbox'
@@ -32,14 +25,13 @@ export const QuestionOneCorrect: React.FC<Props> = ({ data, onChange }) => {
                     className='hidden peer'
                 />
                 <label htmlFor={`correct-${index}`} className='block w-10 h-10 bg-gray-300 peer-checked:bg-emerald-400 rounded-full'></label>
-                <input type='hidden' id={`correct-${index}`} name={`data[options][${index}][correct]`} value={ value.correct ? 1 : 0 } />
+                <input type='hidden' id={`correct-${index}`} name={`options[${index}][correct]`} value={ value.correct ? 1 : 0 } />
             </div>
             <FormTextInput
                 type='text'
-                name={`data[options][${index}][text]`}
+                name={`options[${index}][text]`}
                 placeholder='Варіант'
-                value={ value.text }
-                onChange={(v) => onChangeText(index, v)}
+                defaultValue={ value.text }
             ></FormTextInput>
             <div className='w-40'></div>
         </React.Fragment>)}

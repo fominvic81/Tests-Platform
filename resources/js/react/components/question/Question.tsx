@@ -1,7 +1,18 @@
 import React from 'react';
-import { Question } from '../../../api';
+import { Question, QuestionType } from '../../../api';
 import { storagePath } from '../../../api/storagePath';
-import { useUrlState } from '../../hooks/useUrlState';
+import { OneCorrect } from './OneCorrect';
+
+const questionComponentByType: Record<QuestionType, React.FC<any>> = {
+    [QuestionType.OneCorrect]: OneCorrect,
+    [QuestionType.MultipleCorrect]: () => <></>,
+    [QuestionType.Match]: () => <></>,
+    [QuestionType.TextInput]: () => <></>,
+    [QuestionType.Sequense]: () => <></>,
+    [QuestionType.TextGapsTextInput]: () => <></>,
+    [QuestionType.TextGapsVariantSingleList]: () => <></>,
+    [QuestionType.TextGapsVariantMultipleLists]: () => <></>,
+} as const;
 
 interface Props {
     question: Question;
@@ -11,6 +22,8 @@ interface Props {
 }
 
 export const QuestionComponent: React.FC<Props> = ({ question, index, onDelete, onEdit }) => {
+
+    const Component = questionComponentByType[question.type];
     
     return <div className='bg-white p-3 my-4 shadow'>
         <div>
@@ -39,6 +52,7 @@ export const QuestionComponent: React.FC<Props> = ({ question, index, onDelete, 
                 ></div>
             </div>
             <hr className='my-3' />
+            <Component options={ question.options }></Component>
             {/* @if ($question->type === App\Enums\QuestionType::OneCorrect)<x-question.one-correct :question='$question'></x-question.one-correct>@endif */}
         </div>
     </div>

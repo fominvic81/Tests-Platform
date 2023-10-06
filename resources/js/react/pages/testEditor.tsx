@@ -9,6 +9,7 @@ import { FormTextInput } from '../components/form/input';
 import { FormSelect } from '../components/form/select';
 import { FormSubmit } from '../components/form/submit';
 import { useUrlState } from '../hooks/useUrlState';
+// import { QuestionCreateComponent } from '../components/question-edit/QuestionCreate';
 
 type AsyncData = [Test<'user'>, TestOptions];
 
@@ -85,17 +86,9 @@ const TestEditor: React.FC = () => {
 
             <button type='button' className='w-full text-2xl p-5 mb-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200' onClick={() => setPage('create')}>Створити питання</button>
         </>}
-        {page === 'create' || page === 'edit' && <QuestionEditComponent question={ questions.find((q) => q.id === editId) } onSave={(question) => {
-            const index = questions.findIndex((q) => q.id === question.id);
-
-            setPage();
-
-            if (index === -1) {
-                setQuestions([...questions, question]);
-            } else {
-                setQuestions(questions.map((q, i) => i === index ? question : q));
-            }
-
+        {page === 'create' && <QuestionEditComponent onSave={(q) => {
+            setQuestions([...questions, q]);
+            setPage('editor');
         }}></QuestionEditComponent>}
     </>;
 }

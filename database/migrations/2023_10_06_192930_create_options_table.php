@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('options', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('question_id');
             $table->text('text');
             $table->string('image')->nullable();
-            $table->integer('type');
-            $table->integer('points');
-            $table->text('explanation')->nullable();
-            $table->foreignId('test_id');
-            $table->boolean('register_matters')->default(false);
-            $table->boolean('whitespace_matters')->default(false);
-            $table->boolean('show_amount_of_correct')->default(false);
+            $table->boolean('correct')->nullable();
+            $table->integer('group')->nullable();
+            $table->bigInteger('match_id')->nullable();
+            $table->integer('sequence_index')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('question');
+        Schema::dropIfExists('options');
     }
 };

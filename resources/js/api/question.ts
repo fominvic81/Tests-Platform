@@ -1,4 +1,4 @@
-import { QuestionDataByType, QuestionType } from './types';
+import { OptionByType, QuestionType } from './types';
 
 
 export const QuestionTypeName: Record<QuestionType, string> = {
@@ -12,45 +12,31 @@ export const QuestionTypeName: Record<QuestionType, string> = {
     [QuestionType.TextGapsVariantMultipleLists]: '0',
 }
 
-export const QuestionTypeInitialData: {
-    [T in QuestionType]: QuestionDataByType<T>;
+export const OptionInitialData: {
+    [T in QuestionType]: OptionByType<T>[];
 } = {
-    [QuestionType.OneCorrect]: {
-        options: [
-            { text: '', correct: false },
-            { text: '', correct: false }
-        ],
-    },
-    [QuestionType.MultipleCorrect]: {
-        showAmountOfCorrect: false,
-        options: [
-            { text: '', correct: false },
-            { text: '', correct: false }
-        ],
-    },
-    [QuestionType.Match]: {
-        options: [
-            { text: '' },
-            { text: '' },
-        ],
-        variants: [
-            { text: '' },
-            { text: '' },
-        ],
-        matchTable: [],
-    },
-    [QuestionType.TextInput]: {
-        whitespaceMatters: false,
-        registerMatters: false,
-        options: [],
-    },
-    [QuestionType.Sequense]: {
-        options: [
-            { text: '', index: 0 },
-            { text: '', index: 0 },
-        ],
-    },
-    [QuestionType.TextGapsTextInput]: {},
-    [QuestionType.TextGapsVariantSingleList]: {},
-    [QuestionType.TextGapsVariantMultipleLists]: {},
+    [QuestionType.OneCorrect]: [
+        { text: '', correct: false },
+        { text: '', correct: false }
+    ],
+    [QuestionType.MultipleCorrect]: [
+        { text: '', correct: false },
+        { text: '', correct: false }
+    ],
+    [QuestionType.Match]: [
+        { text: '' },
+        { text: '' },
+        { text: '', match_id: 0 },
+        { text: '', match_id: 1 },
+    ],
+    [QuestionType.TextInput]: [
+        { text: '' },
+    ],
+    [QuestionType.Sequense]: [
+        { text: '', seq_index: 0 },
+        { text: '', seq_index: 0 },
+    ],
+    [QuestionType.TextGapsTextInput]: [],
+    [QuestionType.TextGapsVariantSingleList]: [],
+    [QuestionType.TextGapsVariantMultipleLists]: [],
 }
