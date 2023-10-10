@@ -12,7 +12,7 @@ export const QuestionTypeName: Record<QuestionType, string> = {
     [QuestionType.TextGapsVariantMultipleLists]: '0',
 }
 
-export const OptionInitialData: {
+export const OptionsInitialData: {
     [T in QuestionType]: OptionByType<T>[];
 } = {
     [QuestionType.OneCorrect]: [

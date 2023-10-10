@@ -9,9 +9,13 @@ import { FormTextInput } from '../components/form/input';
 import { FormSelect } from '../components/form/select';
 import { FormSubmit } from '../components/form/submit';
 import { useUrlState } from '../hooks/useUrlState';
-// import { QuestionCreateComponent } from '../components/question-edit/QuestionCreate';
 
 type AsyncData = [Test<'user'>, TestOptions];
+
+type UrlData = {
+    page: 'editor' | 'create' | 'edit';
+    editQuestionId: number;
+}
 
 const TestEditor: React.FC = () => {
 
@@ -24,8 +28,10 @@ const TestEditor: React.FC = () => {
     const [grade, setGrade] = useState(test.grade?.id ?? 0);
     const [questions, setQuestions] = useState(test.questions);
 
-    const [page, setPage] = useUrlState<'editor' | 'create' | 'edit'>('p', 'editor');
-    const [editId, setEditId] = useUrlState<number | undefined>('id', undefined);
+    const [{ page, editQuestionId }, setUrlState] = useUrlState<UrlData>({
+        page: 'editor',
+        editQuestionId: 0,
+    });
 
     return <>
         {page === 'editor' && <>
@@ -77,18 +83,22 @@ const TestEditor: React.FC = () => {
                             }
                         }}
                         onEdit={() => {
-                            setPage('edit');
-                            setEditId(question.id);
+                            // setPage('edit');
+                            // setEditId(question.id);
+                            setUrlState({
+                                page: 'edit',
+                                editQuestionId: question.id,
+                            })
                         }}
                     ></QuestionComponent>
                 )}
             </div>
 
-            <button type='button' className='w-full text-2xl p-5 mb-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200' onClick={() => setPage('create')}>Створити питання</button>
+            <button type='button' className='w-full text-2xl p-5 mb-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200' onClick={() => setUrlState({ page: 'create' })}>Створити питання</button>
         </>}
         {page === 'create' && <QuestionEditComponent onSave={(q) => {
             setQuestions([...questions, q]);
-            setPage('editor');
+            setUrlState({ page: 'editor' });
         }}></QuestionEditComponent>}
     </>;
 }

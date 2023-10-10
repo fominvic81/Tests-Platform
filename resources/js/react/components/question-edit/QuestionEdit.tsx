@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Question, QuestionType, OptionInitialData, QuestionTypeName, ValidationError } from '../../../api';
+import { Question, QuestionType, OptionsInitialData, QuestionTypeName, ValidationError } from '../../../api';
 import { QuestionOneCorrect } from './OneCorrect';
 import { CSRF, Method } from '../../utils';
 import { EditorComponent } from '../Editor';
@@ -25,13 +25,17 @@ const defaultQuestion: Question = {
     id: 0,
     type: QuestionType.OneCorrect,
     text: '',
-    options: OptionInitialData[QuestionType.OneCorrect],
+    options: OptionsInitialData[QuestionType.OneCorrect],
     points: 1,
     topics: [],
     register_matters: false,
     whitespace_matters: false,
     show_amount_of_correct: false,
 };
+
+type UrlData = {
+    type: QuestionType;
+}
 
 interface Props {
     initialQuestion?: Question;
@@ -46,7 +50,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
 
     const [question, setQuestion] = useState(initialQuestion ?? defaultQuestion);
 
-    const [type, setType] = useUrlState('t', question?.type ?? QuestionType.OneCorrect);
+    const [{ type }, setUrlData] = useUrlState<UrlData>({ type: question?.type ?? QuestionType.OneCorrect });
     const [error, setError] = useState<ValidationError>();
 
     const Component = questionComponentByType[type];
@@ -58,7 +62,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
         });
         if (!response) return;
 
-        setType();
+        setUrlData({ type: undefined }, true);
         onSave(response.data);
     }
 
@@ -68,7 +72,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                 <button
                     key={key}
                     className='block w-full p-1 my-2 bg-emerald-400 hover:bg-emerald-500 rounded'
-                    onClick={() => setType(QuestionType[key])}
+                    onClick={() => setUrlData({ type: QuestionType[key] }, true)}
                 > { QuestionTypeName[QuestionType[key]] } </button>
             )}
         </div>

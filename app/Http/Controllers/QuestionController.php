@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\QuestionType;
 use App\Models\Question;
 use App\Models\Test;
-use App\Rules\Option;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\Enum;
 
 class QuestionController extends Controller
 {

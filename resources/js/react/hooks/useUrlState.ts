@@ -1,38 +1,54 @@
 import { useEffect, useState } from 'react';
 
-export const useUrlState = <T = unknown>(name: string, defaultValue: T) => {
+export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defaultValue: T) => {
     const url = new URL(location.href);
-    const initialValue = url.searchParams.get(name);
-    const serialized = initialValue ? JSON.parse(initialValue) as T : undefined;
 
-    const [state, setState] = useState(serialized ?? defaultValue);
+    const initialValues = Object.fromEntries(Object.entries(defaultValue).map(([key, value]) => {
+        const current = url.searchParams.get(key);
+        if (current) return [key, JSON.parse(current)];
+        return [key, value];
+    })) as T;
+
+    const [state, setState] = useState(initialValues);
 
     useEffect(() => {
         const listener = (event: PopStateEvent) => {
             const params = new URLSearchParams(location.search);
-            const currentValue = params.get(name);
+            for (const key of Object.keys(initialValues)) {
+                const value = params.get(key);
+                const currentValue = value ? JSON.parse(value) : initialValues[key];
 
-            setState(currentValue ? JSON.parse(currentValue) as T : defaultValue);
+                setState((current) => ({ ...current, [key]: currentValue }));
+            }
         }
 
         window.addEventListener('popstate', listener);
         return () => window.removeEventListener('popstate', listener);
     }, []);
 
-    return [state, (value?: T) => {
-        if (value === state) return;
-        const params = new URLSearchParams(location.search);
-
-        if (!value || value === defaultValue) {
-            params.delete(name);
-        } else {
-            params.set(name, JSON.stringify(value));
-        }
-
+    return [state, (values: Partial<T>, replace: boolean = false) => {
         const newUrl = new URL(location.href);
-        newUrl.search = params.toString();
-        window.history.pushState({}, '', newUrl.href);
+        const params = newUrl.searchParams;
+        let changed = false;
 
-        setState(value ?? defaultValue);
+        for (const [key, value] of Object.entries(values)) {
+            const stringified = JSON.stringify(value);
+            if (stringified === JSON.stringify(state[key])) continue;
+            changed = true;
+    
+            if (!value || stringified === JSON.stringify(defaultValue[key])) {
+                params.delete(key);
+            } else {
+                params.set(key, JSON.stringify(value));
+            }
+            setState((current) => ({ ...current, [key]: value }));
+        }
+        if (changed) {
+            if (replace) {
+                window.history.replaceState({}, '', newUrl.href);
+            } else {
+                window.history.pushState({}, '', newUrl.href);
+            }
+        }
     }] as const;
 }
