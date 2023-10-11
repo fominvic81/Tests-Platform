@@ -56,7 +56,7 @@ class QuestionController extends Controller
                 'correct' => $optionData['correct'] ?? null,
                 'group' => $optionData['group'] ?? null,
                 'match_id' => $optionData['match_id'] ?? null,
-                'seq_index' => $optionData['seq_index'] ?? null,
+                'sequence_index' => $optionData['sequence_index'] ?? null,
             ]);
 
             $option->save();
@@ -79,7 +79,69 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $data = $request->validate([
+            'type' => ['required', new Enum(QuestionType::class)],
+            'text' => ['required', 'string'],
+            'image' => ['image', 'nullable', 'max:2048'],
+            'points' => ['required', 'numeric'],
+            'explanation' => ['string', 'nullable'],
+
+            'register_matters' => ['boolean', 'nullable'],
+            'whitespace_matters' => ['boolean', 'nullable'],
+            'show_amount_of_correct' => ['boolean', 'nullable'],
+        ]);
+        $data['text'] = clean($data['text']);
+
+        // TODO: Remove image if updated
+        $imagePath = isset($data['image']) ? $request->file('image')->store('public/images') : null;
+
+        $question['type'] = $data['type'];
+        $question['text'] = $data['text'];
+        $question['image'] = $imagePath;
+        $question['points'] = $data['points'];
+        $question['explanation'] = $data['explanation'] ?? null;
+
+        $question['register_matters'] = $data['register_matters'] ?? $question['register_matters'];
+        $question['whitespace_matters'] = $data['whitespace_matters'] ?? $question['whitespace_matters'];
+        $question['show_amount_of_correct'] = $data['show_amount_of_correct'] ?? $question['show_amount_of_correct'];
+
+        $optionsData = $request->validate([
+            'options' => ['required', new Options(QuestionType::from($data['type']))],
+        ])['options'];
+
+        $question->save();
+
+        foreach ($question->options as $option) {
+            $delete = true;
+            foreach ($optionsData as $optionData) {
+                if (isset($optionData['id']) && $option->id === intval($optionData['id'])) {
+                    $delete = false;
+                }
+            }
+            if ($delete) {
+                $option->delete();
+            }
+        }
+
+        foreach ($optionsData as $optionData) {
+            // TODO: Image uploading;
+
+            $option = isset($optionData['id']) ? $question->options->find($optionData['id']) : new Option([
+                'question_id' => $question->id,
+            ]);
+            if (!$option) continue;
+
+            $option['text'] = $optionData['text'];
+            $option['correct'] = $optionData['correct'] ?? null;
+            $option['group'] = $optionData['group'] ?? null;
+            $option['match_id'] = $optionData['match_id'] ?? null;
+            $option['sequence_index'] = $optionData['sequence_index'] ?? null;
+
+            $option->save();
+        }
+        $question->load('options');
+
+        return response()->json($question->toArray());
     }
 
     /**

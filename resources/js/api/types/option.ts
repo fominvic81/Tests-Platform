@@ -1,45 +1,43 @@
 import { QuestionType } from './question';
 
-
-
-export type OptionOneCorrect = {
+type Option = {
+    id?: number;
     text: string;
+}
+
+type OptionOneCorrect = {
     image?: string;
     correct: boolean;
 }
 
-export type OptionMultipleCorrect = {
-    text: string;
+type OptionMultipleCorrect = {
     image?: string;
     correct: boolean;
 }
 
-export type OptionMatch = {
-    text: string;
+type OptionMatch = {
     image?: string;
     match_id?: number;
 }
 
-export type OptionTextInput = {
-    text: string;
+type OptionTextInput = {
 }
 
-export type OptionSequense = {
-    text: string;
+type OptionSequense = {
     image?: string;
-    seq_index: number;
+    sequence_index: number;
 }
-export type OptionTextGapsTextInput = {
+type OptionTextGapsTextInput = {
 
 }
-export type OptionTextGapsVariantSingleList = {
+type OptionTextGapsVariantSingleList = {
 
 }
-export type OptionTextGapsVariantMultipleLists = {
+type OptionTextGapsVariantMultipleLists = {
 
 }
 
-export type OptionByType<T extends QuestionType> =
+export type OptionByType<T extends QuestionType> = Option & (
     T extends QuestionType.OneCorrect ? OptionOneCorrect :
     T extends QuestionType.MultipleCorrect ? OptionMultipleCorrect :
     T extends QuestionType.Match ? OptionMatch :
@@ -47,4 +45,4 @@ export type OptionByType<T extends QuestionType> =
     T extends QuestionType.Sequense ? OptionSequense :
     T extends QuestionType.TextGapsTextInput ? OptionTextGapsTextInput :
     T extends QuestionType.TextGapsVariantSingleList ? OptionTextGapsVariantSingleList :
-    T extends QuestionType.TextGapsVariantMultipleLists ? OptionTextGapsVariantMultipleLists : unknown;
+    T extends QuestionType.TextGapsVariantMultipleLists ? OptionTextGapsVariantMultipleLists : {});

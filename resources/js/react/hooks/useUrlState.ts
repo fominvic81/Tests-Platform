@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defaultValue: T) => {
+export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defaultValues: T) => {
     const url = new URL(location.href);
 
-    const initialValues = Object.fromEntries(Object.entries(defaultValue).map(([key, value]) => {
+    const initialValues = Object.fromEntries(Object.entries(defaultValues).map(([key, value]) => {
         const current = url.searchParams.get(key);
         if (current) return [key, JSON.parse(current)];
         return [key, value];
@@ -16,7 +16,7 @@ export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defa
             const params = new URLSearchParams(location.search);
             for (const key of Object.keys(initialValues)) {
                 const value = params.get(key);
-                const currentValue = value ? JSON.parse(value) : initialValues[key];
+                const currentValue = value ? JSON.parse(value) : defaultValues[key];
 
                 setState((current) => ({ ...current, [key]: currentValue }));
             }
@@ -36,12 +36,12 @@ export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defa
             if (stringified === JSON.stringify(state[key])) continue;
             changed = true;
     
-            if (!value || stringified === JSON.stringify(defaultValue[key])) {
+            if (!value || stringified === JSON.stringify(defaultValues[key])) {
                 params.delete(key);
             } else {
                 params.set(key, JSON.stringify(value));
             }
-            setState((current) => ({ ...current, [key]: value }));
+            setState((current) => ({ ...current, [key]: value ?? defaultValues[key] }));
         }
         if (changed) {
             if (replace) {

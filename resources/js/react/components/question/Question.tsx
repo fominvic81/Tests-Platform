@@ -2,10 +2,11 @@ import React from 'react';
 import { Question, QuestionType } from '../../../api';
 import { storagePath } from '../../../api/storagePath';
 import { OneCorrect } from './OneCorrect';
+import { MultipleCorrect } from './MultipleCorrect';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: OneCorrect,
-    [QuestionType.MultipleCorrect]: () => <></>,
+    [QuestionType.MultipleCorrect]: MultipleCorrect,
     [QuestionType.Match]: () => <></>,
     [QuestionType.TextInput]: () => <></>,
     [QuestionType.Sequense]: () => <></>,

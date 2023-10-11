@@ -32,6 +32,7 @@ const TestEditor: React.FC = () => {
         page: 'editor',
         editQuestionId: 0,
     });
+    const questionToEdit = questions.find((q) => q.id === editQuestionId);
 
     return <>
         {page === 'editor' && <>
@@ -83,8 +84,6 @@ const TestEditor: React.FC = () => {
                             }
                         }}
                         onEdit={() => {
-                            // setPage('edit');
-                            // setEditId(question.id);
                             setUrlState({
                                 page: 'edit',
                                 editQuestionId: question.id,
@@ -97,8 +96,12 @@ const TestEditor: React.FC = () => {
             <button type='button' className='w-full text-2xl p-5 mb-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200' onClick={() => setUrlState({ page: 'create' })}>Створити питання</button>
         </>}
         {page === 'create' && <QuestionEditComponent onSave={(q) => {
-            setQuestions([...questions, q]);
             setUrlState({ page: 'editor' });
+            setQuestions([...questions, q]);
+        }}></QuestionEditComponent>}
+        {page === 'edit' && <QuestionEditComponent initialQuestion={questionToEdit} onSave={(q) => {
+            setUrlState({ page: 'editor', editQuestionId: undefined });
+            setQuestions(questions.map((question) => question.id === editQuestionId ? q : question));
         }}></QuestionEditComponent>}
     </>;
 }

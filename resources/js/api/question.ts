@@ -33,8 +33,8 @@ export const OptionsInitialData: {
         { text: '' },
     ],
     [QuestionType.Sequense]: [
-        { text: '', seq_index: 0 },
-        { text: '', seq_index: 0 },
+        { text: '', sequence_index: 0 },
+        { text: '', sequence_index: 0 },
     ],
     [QuestionType.TextGapsTextInput]: [],
     [QuestionType.TextGapsVariantSingleList]: [],

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Question, QuestionType, OptionsInitialData, QuestionTypeName, ValidationError } from '../../../api';
-import { QuestionOneCorrect } from './OneCorrect';
+import { OneCorrect } from './OneCorrect';
 import { CSRF, Method } from '../../utils';
 import { EditorComponent } from '../Editor';
 import { FormTextInput } from '../form/input';
@@ -9,10 +9,12 @@ import { FormSubmit } from '../form/submit';
 import axios, { AxiosError } from 'axios';
 import { FormError } from '../form/error';
 import { useUrlState } from '../../hooks/useUrlState';
+import { MultipleCorrect } from './MultipleCorrect';
+import { FormToggle } from '../form/toggle';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
-    [QuestionType.OneCorrect]: QuestionOneCorrect,
-    [QuestionType.MultipleCorrect]: () => <></>,
+    [QuestionType.OneCorrect]: OneCorrect,
+    [QuestionType.MultipleCorrect]: MultipleCorrect,
     [QuestionType.Match]: () => <></>,
     [QuestionType.TextInput]: () => <></>,
     [QuestionType.Sequense]: () => <></>,
@@ -45,7 +47,7 @@ interface Props {
 export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave }) => {
 
     const create = !initialQuestion;
-    const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/question/${initialQuestion.id}`;
+    const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/api/question/${initialQuestion.id}`;
     const method = create ? 'POST' : 'PUT';
 
     const [question, setQuestion] = useState(initialQuestion ?? defaultQuestion);
@@ -63,6 +65,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
         if (!response) return;
 
         setUrlData({ type: undefined }, true);
+        console.log(response.data);
         onSave(response.data);
     }
 
@@ -85,7 +88,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                 <div className='grid grid-cols-[1fr_auto] mb-4'>
                     <div>
                         <label htmlFor='text'>Питання</label>
-                        <EditorComponent name='text' id='text' placeholder='Питання'></EditorComponent>
+                        <EditorComponent name='text' id='text' defaultValue={ question.text } placeholder='Питання'></EditorComponent>
                     </div>
                     <div className='w-48 row-span-6'>
                         <div className={`aspect-square mx-3 mt-6 border-2 ${!question.image ? 'border-dashed' : ''}`}>
@@ -102,10 +105,9 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                                 onClick={(event) => {
                                     if (question.image) {
                                         event.preventDefault();
-                                        // setImg(undefined);
                                         setQuestion({ ...question, image: undefined });
                                         
-                                        event.currentTarget.value = "";
+                                        event.currentTarget.value = '';
                                     }
                                 }}
                                 onChange={(event) => {
@@ -117,14 +119,15 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                         </div>
                     </div>
                     <div>
-                        <label htmlFor='text'>Опис</label>
-                        <FormTextarea name='description' placeholder='Опис' />
+                        <FormTextarea name='description' label='Опис' placeholder='Опис' />
                     </div>
                     <div>
-                        <label htmlFor='points'>Бали</label>
-                        <FormTextInput type='number' name='points' value={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>
+                        <FormTextInput type='number' name='points' label='Бали' defaultValue={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>
                     </div>
                 </div>
+                { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.register_matters ?? false } name='register_matters' label='Враховувати пробіл'></FormToggle> }
+                { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.whitespace_matters ?? false } name='whitespace_matters' label='Враховувати розмір букви'></FormToggle> }
+                { type === QuestionType.MultipleCorrect && <FormToggle defaultChecked={ question.show_amount_of_correct ?? false } name='show_amount_of_correct' label='Показувати кількість правильних варіантів'></FormToggle> }
                 <Component key={ type } initialOptions={ question.options }></Component>
                 <FormSubmit>{ create ? 'Створити' : 'Зберегти' }</FormSubmit>
                 <FormError error={error}></FormError>

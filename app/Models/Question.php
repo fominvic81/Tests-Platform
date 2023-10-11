@@ -51,6 +51,8 @@ class Question extends Model
 
     public $casts = [
         'type' => QuestionType::class,
-        'data' => 'json',
+        'register_matters' => 'boolean',
+        'whitespace_matters' => 'boolean',
+        'show_amount_of_correct' => 'boolean',
     ];
 }

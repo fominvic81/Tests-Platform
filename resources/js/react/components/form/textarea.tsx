@@ -5,10 +5,11 @@ interface Props {
     placeholder?: string;
     label?: string;
     value?: any;
+    defaultValue?: any;
     onChange?: (value: any) => any;
 }
 
-export const FormTextarea: React.FC<Props> = ({ name, placeholder, value, onChange, label }) => {
+export const FormTextarea: React.FC<Props> = ({ name, placeholder, value, defaultValue, onChange, label }) => {
     const id = `${name}-${useId()}`
 
     return <>
@@ -19,6 +20,7 @@ export const FormTextarea: React.FC<Props> = ({ name, placeholder, value, onChan
             id={ id }
             placeholder={ placeholder }
             value={ value }
+            defaultValue={ defaultValue }
             onChange={ (event) => onChange && onChange(event.target.value) }
         />
     </>

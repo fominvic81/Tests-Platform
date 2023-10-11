@@ -67,11 +67,12 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
 interface Props {
     name: string;
     id: string;
+    defaultValue?: string;
     placeholder?: string;
 }
 
-export const EditorComponent: React.FC<Props> = ({ name, id, placeholder }) => {
-    const [value, setValue] = useState('');
+export const EditorComponent: React.FC<Props> = ({ name, id, defaultValue, placeholder }) => {
+    const [value, setValue] = useState(defaultValue ?? '');
 
     const editor = useEditor({
         editorProps: {

@@ -34,7 +34,8 @@ class Options implements ValidationRule
             case QuestionType::MultipleCorrect:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:text,image,correct'],
+                    'options.*' => ['array:id,text,image,correct'],
+                    'options.*.id' => ['integer', 'nullable'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['image', 'nullable', 'max:2048'],
                     'options.*.correct' => ['required', 'boolean'],
@@ -57,7 +58,8 @@ class Options implements ValidationRule
             case QuestionType::Match:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:text,image,match_id'],
+                    'options.*' => ['array:id,text,image,match_id'],
+                    'options.*.id' => ['integer', 'nullable'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['image', 'nullable', 'max:2048'],
                     'options.*.match_id' => ['number', 'nullable'],
@@ -69,7 +71,9 @@ class Options implements ValidationRule
             case QuestionType::TextInput:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:1,20'],
-                    'options.*' => ['array:text'],
+                    'options.*' => ['array:id,text'],
+                    'options.*.id' => ['integer', 'nullable'],
+                    'options.*.text' => ['required', 'string'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
@@ -78,10 +82,11 @@ class Options implements ValidationRule
             case QuestionType::Sequense:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:text,image,index'],
+                    'options.*' => ['array:id,text,image,index'],
+                    'options.*.id' => ['integer', 'nullable'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['image', 'nullable', 'max:2048'],
-                    'options.*.seq_index' => ['required', 'integer'],
+                    'options.*.sequence_index' => ['required', 'integer'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
