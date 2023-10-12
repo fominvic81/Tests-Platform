@@ -69,7 +69,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
         onSave(response.data);
     }
 
-    return <div className='grid grid-cols-[auto_1fr] gap-4 bg-white border shadow-md p-4'>
+    return <div className='grid grid-cols-[auto_1fr] gap-4 bg-white border shadow-md p-4 mb-10'>
         <div>
             { Object.values(QuestionType).filter((v) => typeof v !== 'number').map((key) => 
                 <button
