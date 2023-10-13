@@ -24,6 +24,10 @@ class TestController extends Controller
 
         foreach ($data['questions'] as $question) {
             $question['text'] = clean($question['text']);
+
+            foreach ($question['options'] as $option) {
+                $option['text'] = clean($option['text']);
+            }
         }
 
         if (($test->course)) $data['course'] = [

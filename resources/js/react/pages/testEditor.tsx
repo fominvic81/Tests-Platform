@@ -95,14 +95,21 @@ const TestEditor: React.FC = () => {
 
             <button type='button' className='w-full text-2xl p-5 mb-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200' onClick={() => setUrlState({ page: 'create' })}>Створити питання</button>
         </>}
-        {page === 'create' && <QuestionEditComponent onSave={(q) => {
-            setUrlState({ page: 'editor' });
-            setQuestions([...questions, q]);
-        }}></QuestionEditComponent>}
-        {page === 'edit' && <QuestionEditComponent initialQuestion={questionToEdit} onSave={(q) => {
-            setUrlState({ page: 'editor', editQuestionId: undefined });
-            setQuestions(questions.map((question) => question.id === editQuestionId ? q : question));
-        }}></QuestionEditComponent>}
+        {page === 'create' && <QuestionEditComponent
+            onSave={(q) => {
+                setUrlState({ page: 'editor' });
+                setQuestions([...questions, q]);
+            }}
+            onCancel={() => setUrlState({ page: 'editor' })}
+        ></QuestionEditComponent>}
+        {page === 'edit' && <QuestionEditComponent
+            initialQuestion={ questionToEdit }
+            onSave={(q) => {
+                setUrlState({ page: 'editor', editQuestionId: undefined });
+                setQuestions(questions.map((question) => question.id === editQuestionId ? q : question));
+            }}
+            onCancel={() => setUrlState({ page: 'editor', editQuestionId: undefined })}
+        ></QuestionEditComponent>}
     </>;
 }
 

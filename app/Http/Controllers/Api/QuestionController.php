@@ -49,6 +49,7 @@ class QuestionController extends Controller
         $question->save();
 
         foreach ($optionsData as $optionData) {
+            $optionData['text'] = clean($optionData['text']);
             // TODO: Image uploading;
             $option = new Option([
                 'question_id' => $question->id,
@@ -124,6 +125,8 @@ class QuestionController extends Controller
         }
 
         foreach ($optionsData as $optionData) {
+            $optionData['text'] = clean($optionData['text']);
+
             // TODO: Image uploading;
 
             $option = isset($optionData['id']) ? $question->options->find($optionData['id']) : new Option([

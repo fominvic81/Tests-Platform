@@ -17,9 +17,11 @@
             @endisset
             <div>{{ $test->description }}</div>
         </div>
-        @if (Auth::user()->id === $test->user_id)
-            <a class="p-2 rounded-md bg-gray-100 border border-gray-300" href="{{ route('test.edit', $test->id) }}">Редагувати</a>
-        @endif
+        @auth
+            @if (Auth::user()->id === $test->user_id)
+                <a class="p-2 rounded-md bg-gray-100 border border-gray-300" href="{{ route('test.edit', $test->id) }}">Редагувати</a>
+            @endif
+        @endauth
     </div>
     <div class="grid grid-cols-2 w-full max-w-5xl mt-3 mx-auto gap-4">
     </div>

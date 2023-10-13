@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { OptionByType, Question, QuestionType } from '../../../api';
 import { FormTextInput } from '../form/input';
+import { TextEditor } from '../TextEditor';
 
 interface Props {
     initialOptions: OptionByType<QuestionType.OneCorrect>[];
@@ -16,8 +17,7 @@ export const OneCorrect: React.FC<Props> = ({ initialOptions }) => {
     }
 
     return <div className='grid grid-cols-[auto_1fr_auto_auto] gap-2 items-center'>
-        { options.map((option, index) => <React.Fragment key={index}>
-            <input type='hidden' name={ `options[${index}][id]` } value={ option.id } />
+        { options.map((option, index) => <React.Fragment key={ index }>
             <div className='group'>
                 <input
                     type='checkbox'
@@ -31,22 +31,23 @@ export const OneCorrect: React.FC<Props> = ({ initialOptions }) => {
                 <label htmlFor={`correct-${index}`} className='block w-10 h-10 bg-gray-300 peer-checked:bg-emerald-400 rounded-full'></label>
                 <input type='hidden' id={`correct-${index}`} name={`options[${index}][correct]`} value={ option.correct ? 1 : 0 } />
             </div>
-            <FormTextInput
-                type='text'
+            <input type='hidden' name={ `options[${index}][id]` } value={ option.id } />
+            <TextEditor
                 name={`options[${index}][text]`}
                 placeholder='Варіант'
-                value={ option.text }
+                defaultValue={ option.text }
                 onChange={(value) => onChangeValue(index, 'text', value)}
-            ></FormTextInput>
+            ></TextEditor>
             <div className='w-40'></div>
-            {options.length > 2 ? <button
+            <button
                 type='button'
-                className='w-8 aspect-square bg-red-600 rounded'
+                className='w-8 aspect-square bg-red-600 rounded disabled:bg-gray-600'
+                disabled={ options.length <= 2 }
                 onClick={() => {
                     console.log(index);
                     setOptions(options.filter((v, idx) => index !== idx))
                 }}
-            >D</button> : <div></div>}
+            >D</button>
         </React.Fragment>)}
         <button
             type='button'

@@ -35,7 +35,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ editor, action, children, name 
     return <button type='button' 
         onClick={() => action(editor.chain().focus()).run()}
         disabled={!action(editor.can().chain().focus()).run()}
-        className={`mx-1 p-1 w-6 h-6 rounded ${name && editor.isActive(name) ? 'font-bold bg-gray-200' : 'bg-gray-50'}`}>{ children }</button>
+        className={`mx-1 p-1 w-full aspect-square rounded ${name && editor.isActive(name) ? 'font-bold bg-gray-200' : 'bg-gray-50'}`}>{ children }</button>
 }
 
 interface MenuBarProps {
@@ -45,7 +45,7 @@ interface MenuBarProps {
 const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
 
     return (
-        <div className='bg-gray-50 border-2 border-b-0 p-2 flex items-center'>
+        <div className='bg-gray-50 border-2 border-b-0 p-2 grid grid-cols-[repeat(auto-fill,24px)]'>
             <MenuButton editor={ editor } action={(chain) => chain.toggleBold()} name='bold'><BoldSVG className='w-full h-full'></BoldSVG></MenuButton>
             <MenuButton editor={ editor } action={(chain) => chain.toggleItalic()} name='italic'><ItalicSVG className='w-full h-full'></ItalicSVG></MenuButton>
             <MenuButton editor={ editor } action={(chain) => chain.toggleStrike()} name='strike'><StrikeSVG className='w-full h-full'></StrikeSVG></MenuButton>
@@ -81,12 +81,13 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
 
 interface Props {
     name: string;
-    id: string;
+    id?: string;
     defaultValue?: string;
     placeholder?: string;
+    onChange?: (value: string) => any;
 }
 
-export const EditorComponent: React.FC<Props> = ({ name, id, defaultValue, placeholder }) => {
+export const TextEditor: React.FC<Props> = ({ name, id, defaultValue, placeholder, onChange }) => {
     const [value, setValue] = useState(defaultValue ?? '');
 
     const editor = useEditor({
@@ -95,7 +96,11 @@ export const EditorComponent: React.FC<Props> = ({ name, id, defaultValue, place
                 class: 'bg-gray-50 border-2 p-1',
             },
         },
-        onUpdate: ({ editor }) => setValue(editor.getHTML()),
+        onUpdate: ({ editor }) => {
+            const html = editor.getHTML();
+            setValue(html);
+            if (onChange) onChange(html);
+        },
         extensions: [
             Color.configure({ types: [TextStyle.name, ListItem.name] }),
             // @ts-ignore
@@ -121,7 +126,7 @@ export const EditorComponent: React.FC<Props> = ({ name, id, defaultValue, place
     });
     if (!editor) return;
 
-    return <div className='break-words'>
+    return <div className='overflow-hidden break-words'>
         <input type='hidden' name={ name } id={ id } value={ value }></input>
         <MenuBar editor={editor}></MenuBar>
         <EditorContent editor={editor}></EditorContent>

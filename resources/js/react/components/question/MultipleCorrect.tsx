@@ -1,5 +1,6 @@
 import React from 'react';
 import { OptionByType, QuestionType } from '../../../api';
+import cn from 'classnames';
 
 interface Props {
     options: OptionByType<QuestionType.MultipleCorrect>[];
@@ -8,8 +9,9 @@ interface Props {
 export const MultipleCorrect: React.FC<Props> = ({ options }) => {
     return <div className='grid grid-cols-2'>
         {options.map((option, index) => 
-            <div key={ index } className={`flex items-center my-2 before:block before:w-5 before:h-5 before:rounded-md ${ option.correct ? 'before:bg-green-500' : 'before:bg-gray-300' } before:mr-1`}>
-                { option.text }
+            <div key={ index } className='flex items-center'>
+                <div className={cn('w-5 h-5 rounded-md mr-2', option.correct ? 'bg-green-500' : 'bg-gray-300')}></div>
+                <div key={ index } className='my-2' dangerouslySetInnerHTML={{ __html: option.text }}></div>
             </div>
         )}
     </div>

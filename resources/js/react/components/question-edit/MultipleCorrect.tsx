@@ -16,7 +16,7 @@ export const MultipleCorrect: React.FC<Props> = ({ initialOptions }) => {
     }
 
     return <div className='grid grid-cols-[auto_1fr_auto_auto] gap-2 items-center'>
-        { options.map((option, index) => <React.Fragment key={index}>
+        { options.map((option, index) => <React.Fragment key={ index }>
             <input type='hidden' name={`options[${index}][id]`} value={ option.id } />
             <div className='group'>
                 <input
@@ -37,14 +37,15 @@ export const MultipleCorrect: React.FC<Props> = ({ initialOptions }) => {
                 onChange={(value) => onChangeValue(index, 'text', value)}
             ></FormTextInput>
             <div className='w-40'></div>
-            {options.length > 2 ? <button
+            <button
                 type='button'
-                className='w-8 aspect-square bg-red-600 rounded'
+                className='w-8 aspect-square bg-red-600 rounded disabled:bg-gray-600'
+                disabled={ options.length <= 2 }
                 onClick={() => {
                     console.log(index);
                     setOptions(options.filter((v, idx) => index !== idx))
                 }}
-            >D</button> : <div></div>}
+            >D</button>
         </React.Fragment>)}
         <button
             type='button'

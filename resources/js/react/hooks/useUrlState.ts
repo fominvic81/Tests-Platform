@@ -26,7 +26,7 @@ export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defa
         return () => window.removeEventListener('popstate', listener);
     }, []);
 
-    return [state, (values: Partial<T>, replace: boolean = false) => {
+    const set = (values: Partial<T>, replace: boolean = false) => {
         const newUrl = new URL(location.href);
         const params = newUrl.searchParams;
         let changed = false;
@@ -50,5 +50,9 @@ export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defa
                 window.history.pushState({}, '', newUrl.href);
             }
         }
-    }] as const;
+    }
+
+    const reset = (replace: boolean = false) => set(defaultValues, replace);
+
+    return [state, set, reset] as const;
 }
