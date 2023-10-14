@@ -58,9 +58,10 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
     const [{ type }, setUrlData, resetUrlData] = useUrlState<UrlData>({ type: question.type });
     const [error, setError] = useState<ValidationError>();
 
-    useEffect(() => {
-        setQuestion({ ...question, options: OptionsInitialData[type]});
-    }, [type]);
+    const setType = (newType: QuestionType) => {
+        setQuestion({ ...question, options: OptionsInitialData[newType]});
+        setUrlData({ type: newType }, true);
+    }
 
     const Component = questionComponentByType[type];
 
@@ -72,7 +73,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
         if (!response) return;
 
         resetUrlData(true);
-        console.log(response.data);
+
         onSave(response.data);
     }
 
@@ -88,7 +89,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                             type='button'
                             key={key}
                             className={cn('block w-full p-1 my-2 hover:brightness-90 rounded', type === QuestionType[key] ? 'bg-sky-400' : 'bg-emerald-400 ')}
-                            onClick={() => setUrlData({ type: QuestionType[key] }, true)}
+                            onClick={() => setType(QuestionType[key])}
                         >{ QuestionTypeName[QuestionType[key]] }</button>
                     )}
                 </div>
@@ -142,7 +143,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                 </div>
             </div>
             <div className='mt-1 p-2 border-2'>
-                <Component key={ type } initialOptions={ question.options }></Component>
+                <Component initialOptions={ question.options }></Component>
             </div>
             <div className='grid grid-cols-2 items-baseline gap-2'>
                 <button
