@@ -12,29 +12,34 @@ export const QuestionTypeName: Record<QuestionType, string> = {
     [QuestionType.TextGapsVariantMultipleLists]: '0',
 }
 
+let lastId = -1;
+export const getOptionId = () => {
+    return lastId--;
+}
+
 export const OptionsInitialData: {
     [T in QuestionType]: OptionByType<T>[];
 } = {
     [QuestionType.OneCorrect]: [
-        { text: '', correct: false },
-        { text: '', correct: false }
+        { id: getOptionId(), text: '', correct: false },
+        { id: getOptionId(), text: '', correct: false },
     ],
     [QuestionType.MultipleCorrect]: [
-        { text: '', correct: false },
-        { text: '', correct: false }
+        { id: getOptionId(), text: '', correct: false },
+        { id: getOptionId(), text: '', correct: false },
     ],
     [QuestionType.Match]: [
-        { text: '' },
-        { text: '' },
-        { text: '', match_id: 0 },
-        { text: '', match_id: 1 },
+        { id: getOptionId(), text: '' },
+        { id: getOptionId(), text: '' },
+        { id: getOptionId(), text: '', match_id: 0 },
+        { id: getOptionId(), text: '', match_id: 0 },
     ],
     [QuestionType.TextInput]: [
-        { text: '' },
+        { id: getOptionId(), text: '' },
     ],
     [QuestionType.Sequense]: [
-        { text: '', sequence_index: 0 },
-        { text: '', sequence_index: 0 },
+        { id: getOptionId(), text: '', sequence_index: 0 },
+        { id: getOptionId(), text: '', sequence_index: 0 },
     ],
     [QuestionType.TextGapsTextInput]: [],
     [QuestionType.TextGapsVariantSingleList]: [],

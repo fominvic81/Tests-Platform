@@ -13,6 +13,8 @@ import { MultipleCorrect } from './MultipleCorrect';
 import { FormToggle } from '../form/toggle';
 import { Match } from './Match';
 import cn from 'classnames';
+import { FormImage } from '../form/image';
+import { storagePath } from '../../../api/storagePath';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: OneCorrect,
@@ -25,17 +27,19 @@ const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.TextGapsVariantMultipleLists]: () => <></>,
 } as const;
 
-const defaultQuestion: Question = {
-    id: 0,
-    type: QuestionType.OneCorrect,
-    text: '',
-    options: OptionsInitialData[QuestionType.OneCorrect],
-    points: 1,
-    topics: [],
-    register_matters: false,
-    whitespace_matters: false,
-    show_amount_of_correct: false,
-};
+const defaultQuestion = (type: QuestionType): Question => {
+    return {
+        id: 0,
+        type,
+        text: '',
+        options: OptionsInitialData[type],
+        points: 1,
+        topics: [],
+        register_matters: false,
+        whitespace_matters: false,
+        show_amount_of_correct: false,
+    }
+}
 
 type UrlData = {
     type: QuestionType;
@@ -44,18 +48,18 @@ type UrlData = {
 interface Props {
     initialQuestion?: Question;
     onSave: (question: Question) => any;
-    onCancel: () => any;
 }
 
-export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave, onCancel }) => {
+export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave }) => {
 
     const create = !initialQuestion;
     const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/api/question/${initialQuestion.id}`;
     const method = create ? 'POST' : 'PUT';
 
-    const [question, setQuestion] = useState(initialQuestion ?? defaultQuestion);
+    const [{ type }, setUrlData, resetUrlData] = useUrlState<UrlData>({ type: initialQuestion?.type ?? QuestionType.OneCorrect });
+    
+    const [question, setQuestion] = useState(initialQuestion ?? defaultQuestion(type));
 
-    const [{ type }, setUrlData, resetUrlData] = useUrlState<UrlData>({ type: question.type });
     const [error, setError] = useState<ValidationError>();
 
     const setType = (newType: QuestionType) => {
@@ -87,7 +91,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                     { Object.values(QuestionType).filter((v) => typeof v !== 'number').map((key) => 
                         <button
                             type='button'
-                            key={key}
+                            key={ key }
                             className={cn('block w-full p-1 my-2 hover:brightness-90 rounded', type === QuestionType[key] ? 'bg-sky-400' : 'bg-emerald-400 ')}
                             onClick={() => setType(QuestionType[key])}
                         >{ QuestionTypeName[QuestionType[key]] }</button>
@@ -102,30 +106,11 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                         </div>
                         <div className='w-48 row-span-6'>
                             <div className={`aspect-square mx-3 mt-6 border-2 ${!question.image ? 'border-dashed' : ''}`}>
-                                <label htmlFor='image-upload' className='w-full h-full relative flex items-center justify-center'>
-                                    <img className='max-w-full max-h-full' src={ question.image ?? '/images/add-image.png' } alt='Зоображення' />
-                                    <div className='absolute w-full py-2 text-center bottom-0 bg-gray-200 bg-opacity-40 border-t'>{question.image ? 'Видалити' : 'Додати зображення'}</div>
-                                </label>
-                                <input
-                                    type='file'
+                                <FormImage
                                     name='image'
-                                    id='image-upload'
-                                    accept='image/*'
-                                    className='hidden'
-                                    onClick={(event) => {
-                                        if (question.image) {
-                                            event.preventDefault();
-                                            setQuestion({ ...question, image: undefined });
-                                            
-                                            event.currentTarget.value = '';
-                                        }
-                                    }}
-                                    onChange={(event) => {
-                                        const file = event.target.files?.item(0);
-                                        
-                                        if (file) setQuestion({ ...question, image: URL.createObjectURL(file) });
-                                    }}
-                                />
+                                    nameDel='delete_image'
+                                    defaultSrc={ question.image && storagePath(question.image) }
+                                ></FormImage>
                             </div>
                         </div>
                         <div>
@@ -150,8 +135,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                     type='button'
                     className='h-10 bg-gray-50 border rounded'
                     onClick={() => {
-                        resetUrlData();
-                        onCancel();
+                        history.back();
                     }}
                 >Назад</button>
                 <FormSubmit>{ create ? 'Створити' : 'Зберегти' }</FormSubmit>

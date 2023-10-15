@@ -48,20 +48,36 @@ class QuestionController extends Controller
 
         $question->save();
 
+        $options = [];
         foreach ($optionsData as $optionData) {
             $optionData['text'] = clean($optionData['text']);
-            // TODO: Image uploading;
+            // TODO: Image uploading
             $option = new Option([
                 'question_id' => $question->id,
                 'text' => $optionData['text'],
                 'correct' => $optionData['correct'] ?? null,
                 'group' => $optionData['group'] ?? null,
-                'match_id' => $optionData['match_id'] ?? null,
+                'match_id' => null,
                 'sequence_index' => $optionData['sequence_index'] ?? null,
             ]);
 
             $option->save();
+
+            array_push($options, $option);
         }
+
+        foreach ($optionsData as $i => $optionDataA) {
+            if (!isset($optionDataA['match_id'])) continue;
+
+            foreach ($optionsData as $j => $optionDataB) {
+                if ($optionDataA['match_id'] === $optionDataB['id']) {
+                    $options[$i]['match_id'] = $options[$j]['id'];
+                    $options[$i]->save();
+                    break;
+                }
+            }
+        }
+
         $question->load('options');
 
         return response()->json($question->toArray());
@@ -84,6 +100,7 @@ class QuestionController extends Controller
             'type' => ['required', new Enum(QuestionType::class)],
             'text' => ['required', 'string'],
             'image' => ['image', 'nullable', 'max:2048'],
+            'delete_image' => ['required', 'boolean'],
             'points' => ['required', 'numeric'],
             'explanation' => ['string', 'nullable'],
 
@@ -94,7 +111,10 @@ class QuestionController extends Controller
         $data['text'] = clean($data['text']);
 
         // TODO: Remove image if updated
-        $imagePath = isset($data['image']) ? $request->file('image')->store('public/images') : null;
+        $imagePath =
+            (boolval($data['delete_image'] ?? null)) ? null :
+            (isset($data['image']) ? $request->file('image')->store('public/images') :
+            $question['image']);
 
         $question['type'] = $data['type'];
         $question['text'] = $data['text'];
@@ -124,24 +144,36 @@ class QuestionController extends Controller
             }
         }
 
+        $options = [];
         foreach ($optionsData as $optionData) {
             $optionData['text'] = clean($optionData['text']);
 
             // TODO: Image uploading;
 
-            $option = isset($optionData['id']) ? $question->options->find($optionData['id']) : new Option([
-                'question_id' => $question->id,
-            ]);
-            if (!$option) continue;
+            $option = $question->options->find($optionData['id']) ?? new Option(['question_id' => $question->id]);
+            array_push($options, $option);
 
             $option['text'] = $optionData['text'];
             $option['correct'] = $optionData['correct'] ?? null;
             $option['group'] = $optionData['group'] ?? null;
-            $option['match_id'] = $optionData['match_id'] ?? null;
+            $option['match_id'] = null;
             $option['sequence_index'] = $optionData['sequence_index'] ?? null;
 
             $option->save();
         }
+
+        foreach ($optionsData as $i => $optionDataA) {
+            if (!isset($optionDataA['match_id'])) continue;
+
+            foreach ($optionsData as $j => $optionDataB) {
+                if ($optionDataA['match_id'] === $optionDataB['id']) {
+                    $options[$i]['match_id'] = $options[$j]['id'];
+                    $options[$i]->save();
+                    break;
+                }
+            }
+        }
+
         $question->load('options');
 
         return response()->json($question->toArray());

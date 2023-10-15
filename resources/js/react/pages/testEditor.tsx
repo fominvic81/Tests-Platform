@@ -100,7 +100,6 @@ const TestEditor: React.FC = () => {
                 setUrlState({ page: 'editor' });
                 setQuestions([...questions, q]);
             }}
-            onCancel={() => setUrlState({ page: 'editor' })}
         ></QuestionEditComponent>}
         {page === 'edit' && <QuestionEditComponent
             initialQuestion={ questionToEdit }
@@ -108,7 +107,6 @@ const TestEditor: React.FC = () => {
                 setUrlState({ page: 'editor', editQuestionId: undefined });
                 setQuestions(questions.map((question) => question.id === editQuestionId ? q : question));
             }}
-            onCancel={() => setUrlState({ page: 'editor', editQuestionId: undefined })}
         ></QuestionEditComponent>}
     </>;
 }

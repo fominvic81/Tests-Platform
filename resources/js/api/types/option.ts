@@ -1,7 +1,7 @@
 import { QuestionType } from './question';
 
 type Option = {
-    id?: number;
+    id: number;
     text: string;
 }
 

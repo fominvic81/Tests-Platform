@@ -34,10 +34,11 @@ class Options implements ValidationRule
             case QuestionType::MultipleCorrect:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:id,text,image,correct'],
+                    'options.*' => ['array:id,text,image,delete_image,correct'],
                     'options.*.id' => ['integer', 'nullable'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['image', 'nullable', 'max:2048'],
+                    'options.*.delete_image' => ['required', 'boolean'],
                     'options.*.correct' => ['required', 'boolean'],
                 ]);
                 if (!$result->passes()) break;
@@ -58,11 +59,12 @@ class Options implements ValidationRule
             case QuestionType::Match:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:id,text,image,match_id'],
+                    'options.*' => ['array:id,text,image,delete_image,match_id'],
                     'options.*.id' => ['integer', 'nullable'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['image', 'nullable', 'max:2048'],
-                    'options.*.match_id' => ['number', 'nullable'],
+                    'options.*.delete_image' => ['required', 'boolean'],
+                    'options.*.match_id' => ['integer', 'nullable'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
@@ -82,10 +84,11 @@ class Options implements ValidationRule
             case QuestionType::Sequense:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:id,text,image,index'],
+                    'options.*' => ['array:id,text,image,delete_image,index'],
                     'options.*.id' => ['integer', 'nullable'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['image', 'nullable', 'max:2048'],
+                    'options.*.delete_image' => ['required', 'boolean'],
                     'options.*.sequence_index' => ['required', 'integer'],
                 ]);
                 if (!$result->passes()) break;

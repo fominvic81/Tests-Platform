@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OptionByType, Question, QuestionType } from '../../../api';
+import { OptionByType, Question, QuestionType, getOptionId } from '../../../api';
 import { FormTextInput } from '../form/input';
 import { Option } from './Option';
 
@@ -12,12 +12,12 @@ export const MultipleCorrect: React.FC<Props> = ({ initialOptions }) => {
     const [options, setOptions] = useState(initialOptions);
 
     const onChangeValue = <T extends keyof OptionByType<QuestionType.MultipleCorrect>>(index: number, key: T, value: OptionByType<QuestionType.MultipleCorrect>[T]) => {
-        const newOption = { ...options[index], [key]: value};
+        const newOption = { ...options[index], [key]: value };
         setOptions(options.map((option, i) => i === index ? newOption : option));
     }
 
     return <div className='grid grid-cols-[auto_1fr] gap-2 items-center'>
-        { options.map((option, index) => <React.Fragment key={ index }>
+        { options.map((option, index) => <React.Fragment key={ option.id }>
             <div className='group'>
                 <input
                     type='checkbox'
@@ -34,7 +34,7 @@ export const MultipleCorrect: React.FC<Props> = ({ initialOptions }) => {
                 option={ option }
                 deletable={ options.length > 2 }
                 onDelete={() => {
-                    setOptions([...options.filter((o, idx) => idx !== index)]);
+                    setOptions(options.filter((opt) => opt !== option));
                 }}
             ></Option>
         </React.Fragment>)}
@@ -42,7 +42,7 @@ export const MultipleCorrect: React.FC<Props> = ({ initialOptions }) => {
             type='button'
             className='col-span-2 bg-emerald-400 p-2 rounded'
             onClick={() => {
-                setOptions([...options, { text: '', correct: false }]);
+                setOptions([...options, { id: getOptionId(), text: '', correct: false }]);
             }}
         >Додати</button>
     </div>
