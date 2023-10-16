@@ -81,10 +81,10 @@ class Options implements ValidationRule
                 $data = $result->validated();
 
                 break;
-            case QuestionType::Sequense:
+            case QuestionType::Sequence:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:id,text,image,delete_image,index'],
+                    'options.*' => ['array:id,text,image,delete_image,sequence_index'],
                     'options.*.id' => ['integer', 'nullable'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['image', 'nullable', 'max:2048'],
@@ -98,7 +98,7 @@ class Options implements ValidationRule
                 $flags = array_fill(0, $optionsSize, false);
                 $count = 0;
                 foreach ($data['options'] as $option) {
-                    $index = $option['index'];
+                    $index = intval($option['sequence_index']);
                     if ($index < 0 || $index >= $optionsSize) {
                         $fail('Не коректна послідовність елементів');
                         break 2;

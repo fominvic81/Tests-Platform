@@ -10,6 +10,7 @@ use App\Models\Option;
 use App\Rules\Options;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
+use Mews\Purifier\Facades\Purifier;
 
 class QuestionController extends Controller
 {
@@ -29,9 +30,14 @@ class QuestionController extends Controller
             'whitespace_matters' => ['boolean', 'nullable'],
             'show_amount_of_correct' => ['boolean', 'nullable'],
         ]);
+
+        $optionsData = $request->validate([
+            'options' => ['required', new Options(QuestionType::from($data['type']))],
+        ])['options'];
+
         $data['text'] = clean($data['text']);
 
-        $imagePath = isset($data['image']) ? $request->file('image')->store('public/images') : null;
+        $imagePath = isset($data['image']) ? $data['image']->store('public/images') : null;
 
         $question = new Question([
             'type' => $data['type'],
@@ -42,19 +48,18 @@ class QuestionController extends Controller
             'test_id' => $test->id,
         ]);
 
-        $optionsData = $request->validate([
-            'options' => ['required', new Options(QuestionType::from($data['type']))],
-        ])['options'];
-
         $question->save();
 
         $options = [];
         foreach ($optionsData as $optionData) {
             $optionData['text'] = clean($optionData['text']);
-            // TODO: Image uploading
+
+            $optionImagePath = isset($optionData['image']) ? $optionData['image']->store('public/images') : null;
+
             $option = new Option([
                 'question_id' => $question->id,
                 'text' => $optionData['text'],
+                'image' => $optionImagePath,
                 'correct' => $optionData['correct'] ?? null,
                 'group' => $optionData['group'] ?? null,
                 'match_id' => null,
@@ -108,12 +113,17 @@ class QuestionController extends Controller
             'whitespace_matters' => ['boolean', 'nullable'],
             'show_amount_of_correct' => ['boolean', 'nullable'],
         ]);
+
+        $optionsData = $request->validate([
+            'options' => ['required', new Options(QuestionType::from($data['type']))],
+        ])['options'];
+
         $data['text'] = clean($data['text']);
 
         // TODO: Remove image if updated
         $imagePath =
             (boolval($data['delete_image'] ?? null)) ? null :
-            (isset($data['image']) ? $request->file('image')->store('public/images') :
+            (isset($data['image']) ? $data['image']->store('public/images') :
             $question['image']);
 
         $question['type'] = $data['type'];
@@ -125,10 +135,6 @@ class QuestionController extends Controller
         $question['register_matters'] = $data['register_matters'] ?? $question['register_matters'];
         $question['whitespace_matters'] = $data['whitespace_matters'] ?? $question['whitespace_matters'];
         $question['show_amount_of_correct'] = $data['show_amount_of_correct'] ?? $question['show_amount_of_correct'];
-
-        $optionsData = $request->validate([
-            'options' => ['required', new Options(QuestionType::from($data['type']))],
-        ])['options'];
 
         $question->save();
 
@@ -148,12 +154,16 @@ class QuestionController extends Controller
         foreach ($optionsData as $optionData) {
             $optionData['text'] = clean($optionData['text']);
 
-            // TODO: Image uploading;
-
             $option = $question->options->find($optionData['id']) ?? new Option(['question_id' => $question->id]);
             array_push($options, $option);
 
+            $optionImagePath =
+                (boolval($optionData['delete_image'] ?? null)) ? null :
+                (isset($optionData['image']) ? $optionData['image']->store('public/images') :
+                $option['image']);
+
             $option['text'] = $optionData['text'];
+            $option['image'] = $optionImagePath;
             $option['correct'] = $optionData['correct'] ?? null;
             $option['group'] = $optionData['group'] ?? null;
             $option['match_id'] = null;

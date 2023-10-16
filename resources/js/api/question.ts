@@ -6,7 +6,7 @@ export const QuestionTypeName: Record<QuestionType, string> = {
     [QuestionType.MultipleCorrect]: 'Кілька правильних відповідей',
     [QuestionType.Match]: 'Відповідність',
     [QuestionType.TextInput]: 'Введена відповідь',
-    [QuestionType.Sequense]: 'Послідовність',
+    [QuestionType.Sequence]: 'Послідовність',
     [QuestionType.TextGapsTextInput]: '0',
     [QuestionType.TextGapsVariantSingleList]: '0',
     [QuestionType.TextGapsVariantMultipleLists]: '0',
@@ -37,9 +37,9 @@ export const OptionsInitialData: {
     [QuestionType.TextInput]: [
         { id: getOptionId(), text: '' },
     ],
-    [QuestionType.Sequense]: [
+    [QuestionType.Sequence]: [
         { id: getOptionId(), text: '', sequence_index: 0 },
-        { id: getOptionId(), text: '', sequence_index: 0 },
+        { id: getOptionId(), text: '', sequence_index: 1 },
     ],
     [QuestionType.TextGapsTextInput]: [],
     [QuestionType.TextGapsVariantSingleList]: [],

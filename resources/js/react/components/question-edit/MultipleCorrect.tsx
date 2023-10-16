@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { OptionByType, Question, QuestionType, getOptionId } from '../../../api';
-import { FormTextInput } from '../form/input';
+import { OptionByType, QuestionType, getOptionId } from '../../../api';
 import { Option } from './Option';
 
 interface Props {
@@ -18,7 +17,7 @@ export const MultipleCorrect: React.FC<Props> = ({ initialOptions }) => {
 
     return <div className='grid grid-cols-[auto_1fr] gap-2 items-center'>
         { options.map((option, index) => <React.Fragment key={ option.id }>
-            <div className='group'>
+            <div>
                 <input
                     type='checkbox'
                     id={`correct-${index}`}

@@ -3,13 +3,17 @@ import { Question, QuestionType } from '../../../api';
 import { storagePath } from '../../../api/storagePath';
 import { OneCorrect } from './OneCorrect';
 import { MultipleCorrect } from './MultipleCorrect';
+import { TextInput } from './TextInput';
+import { Match } from './Match';
+import { ImageContain } from './ImageContain';
+import { Sequence } from './Sequence';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: OneCorrect,
     [QuestionType.MultipleCorrect]: MultipleCorrect,
-    [QuestionType.Match]: () => <></>,
-    [QuestionType.TextInput]: () => <></>,
-    [QuestionType.Sequense]: () => <></>,
+    [QuestionType.Match]: Match,
+    [QuestionType.TextInput]: TextInput,
+    [QuestionType.Sequence]: Sequence,
     [QuestionType.TextGapsTextInput]: () => <></>,
     [QuestionType.TextGapsVariantSingleList]: () => <></>,
     [QuestionType.TextGapsVariantMultipleLists]: () => <></>,
@@ -44,9 +48,7 @@ export const QuestionComponent: React.FC<Props> = ({ question, index, onDelete, 
                 </div>
             </div>
             <div className='grid grid-cols-[auto_1fr]'>
-                {question.image && <div className='w-40 h-full min-h-[160px] py-3'>
-                    <img className='w-full h-full object-contain' src={ storagePath(question.image) } alt='Зображення' />
-                </div>}
+                {question.image && <ImageContain src={ storagePath(question.image) }></ImageContain>}
                 <div
                     className='ml-3 mt-1'
                     dangerouslySetInnerHTML={{ __html: question.text }}

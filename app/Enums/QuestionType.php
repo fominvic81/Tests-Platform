@@ -8,7 +8,7 @@ enum QuestionType: int
     case MultipleCorrect = 1;
     case Match = 2;
     case TextInput = 3;
-    case Sequense = 4;
+    case Sequence = 4;
     case TextGapsTextInput = 5;
     case TextGapsVariantSingleList = 6;
     case TextGapsVariantMultipleLists = 7;

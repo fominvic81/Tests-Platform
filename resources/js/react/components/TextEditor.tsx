@@ -11,18 +11,18 @@ import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
 import Underline from '@tiptap/extension-underline';
 
-import BoldSVG from '../../../svg/editor/bold.svg?react';
-import ItalicSVG from '../../../svg/editor/italic.svg?react';
-import StrikeSVG from '../../../svg/editor/strike.svg?react';
-import UnderlineSVG from '../../../svg/editor/underline.svg?react';
-import OrderedListSVG from '../../../svg/editor/list-ordered.svg?react';
-import UnorderedListSVG from '../../../svg/editor/list-unordered.svg?react';
-import CodeSVG from '../../../svg/editor/code.svg?react';
-import QuoteSVG from '../../../svg/editor/quote.svg?react';
-import SuperScriptSVG from '../../../svg/editor/super-script.svg?react';
-import SubScriptSVG from '../../../svg/editor/sub-script.svg?react';
+import BoldSVG from '../../../svg/text-editor/bold.svg?react';
+import ItalicSVG from '../../../svg/text-editor/italic.svg?react';
+import StrikeSVG from '../../../svg/text-editor/strike.svg?react';
+import UnderlineSVG from '../../../svg/text-editor/underline.svg?react';
+import OrderedListSVG from '../../../svg/text-editor/list-ordered.svg?react';
+import UnorderedListSVG from '../../../svg/text-editor/list-unordered.svg?react';
+import CodeSVG from '../../../svg/text-editor/code.svg?react';
+import QuoteSVG from '../../../svg/text-editor/quote.svg?react';
+import SuperScriptSVG from '../../../svg/text-editor/super-script.svg?react';
+import SubScriptSVG from '../../../svg/text-editor/sub-script.svg?react';
 
-import Undo from '../../../svg/editor/undo.svg?react';
+import Undo from '../../../svg/text-editor/undo.svg?react';
 
 interface MenuButtonProps extends React.PropsWithChildren {
     editor: Editor;
@@ -46,14 +46,14 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
 
     return (
         <div className='bg-gray-50 border-2 border-b-0 p-2 grid grid-cols-[repeat(auto-fill,24px)]'>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleBold()} name='bold'><BoldSVG className='w-full h-full'></BoldSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleItalic()} name='italic'><ItalicSVG className='w-full h-full'></ItalicSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleStrike()} name='strike'><StrikeSVG className='w-full h-full'></StrikeSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleUnderline()} name='underline'><UnderlineSVG className='w-full h-full'></UnderlineSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleBulletList()} name='bulletList'><UnorderedListSVG className='w-full h-full'></UnorderedListSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleOrderedList()} name='orderedList'><OrderedListSVG className='w-full h-full'></OrderedListSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleCodeBlock()} name='codeBlock'><CodeSVG className='w-full h-full'></CodeSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleBlockquote()} name='blockquote'><QuoteSVG className='w-full h-full'></QuoteSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleBold()} name='bold'><BoldSVG></BoldSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleItalic()} name='italic'><ItalicSVG></ItalicSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleStrike()} name='strike'><StrikeSVG></StrikeSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleUnderline()} name='underline'><UnderlineSVG></UnderlineSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleBulletList()} name='bulletList'><UnorderedListSVG></UnorderedListSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleOrderedList()} name='orderedList'><OrderedListSVG></OrderedListSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleCodeBlock()} name='codeBlock'><CodeSVG></CodeSVG></MenuButton>
+            <MenuButton editor={ editor } action={(chain) => chain.toggleBlockquote()} name='blockquote'><QuoteSVG></QuoteSVG></MenuButton>
             <MenuButton
                 editor={ editor }
                 action={(chain) => {
@@ -61,7 +61,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
                     return chain.toggleSuperscript();
                 }}
                 name='superscript'
-            ><SuperScriptSVG className='w-full h-full'></SuperScriptSVG></MenuButton>
+            ><SuperScriptSVG></SuperScriptSVG></MenuButton>
             <MenuButton
                 editor={ editor }
                 action={(chain) => {
@@ -69,7 +69,7 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
                     return chain.toggleSubscript();
                 }}
                 name='subscript'
-            ><SubScriptSVG className='w-full h-full'></SubScriptSVG></MenuButton>
+            ><SubScriptSVG></SubScriptSVG></MenuButton>
             {/* <MenuButton editor={ editor } action={(chain) => chain.setHorizontalRule()}>H</MenuButton>
             <MenuButton editor={ editor } action={(chain) => chain.setHardBreak()}>N</MenuButton>
             <MenuButton editor={ editor } action={(chain) => chain.undo()} name='undo'><Undo className='w-full h-full'></Undo></MenuButton>

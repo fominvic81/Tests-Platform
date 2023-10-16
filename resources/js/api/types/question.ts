@@ -6,7 +6,7 @@ export enum QuestionType {
     MultipleCorrect = 1,
     Match = 2,
     TextInput = 3,
-    Sequense = 4,
+    Sequence = 4,
     TextGapsTextInput = 5,
     TextGapsVariantSingleList = 6,
     TextGapsVariantMultipleLists = 7,

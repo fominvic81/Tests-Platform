@@ -23,7 +23,7 @@ type OptionMatch = {
 type OptionTextInput = {
 }
 
-type OptionSequense = {
+type OptionSequence = {
     image?: string;
     sequence_index: number;
 }
@@ -42,7 +42,7 @@ export type OptionByType<T extends QuestionType> = Option & (
     T extends QuestionType.MultipleCorrect ? OptionMultipleCorrect :
     T extends QuestionType.Match ? OptionMatch :
     T extends QuestionType.TextInput ? OptionTextInput :
-    T extends QuestionType.Sequense ? OptionSequense :
+    T extends QuestionType.Sequence ? OptionSequence :
     T extends QuestionType.TextGapsTextInput ? OptionTextGapsTextInput :
     T extends QuestionType.TextGapsVariantSingleList ? OptionTextGapsVariantSingleList :
     T extends QuestionType.TextGapsVariantMultipleLists ? OptionTextGapsVariantMultipleLists : {});

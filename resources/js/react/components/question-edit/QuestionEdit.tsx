@@ -15,13 +15,15 @@ import { Match } from './Match';
 import cn from 'classnames';
 import { FormImage } from '../form/image';
 import { storagePath } from '../../../api/storagePath';
+import { TextInput } from './TextInput';
+import { Sequence } from './Sequence';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: OneCorrect,
     [QuestionType.MultipleCorrect]: MultipleCorrect,
     [QuestionType.Match]: Match,
-    [QuestionType.TextInput]: () => <></>,
-    [QuestionType.Sequense]: () => <></>,
+    [QuestionType.TextInput]: TextInput,
+    [QuestionType.Sequence]: Sequence,
     [QuestionType.TextGapsTextInput]: () => <></>,
     [QuestionType.TextGapsVariantSingleList]: () => <></>,
     [QuestionType.TextGapsVariantMultipleLists]: () => <></>,

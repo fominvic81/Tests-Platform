@@ -12,7 +12,7 @@ export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defa
     const [state, setState] = useState(initialValues);
 
     useEffect(() => {
-        const listener = (event: PopStateEvent) => {
+        const listener = () => {
             const params = new URLSearchParams(location.search);
             for (const key of Object.keys(initialValues)) {
                 const value = params.get(key);
@@ -35,8 +35,8 @@ export const useUrlState = <T extends Record<string, NonNullable<unknown>>>(defa
             const stringified = JSON.stringify(value);
             if (stringified === JSON.stringify(state[key])) continue;
             changed = true;
-    
-            if (!value || stringified === JSON.stringify(defaultValues[key])) {
+
+            if (value === undefined || stringified === JSON.stringify(defaultValues[key])) {
                 params.delete(key);
             } else {
                 params.set(key, JSON.stringify(value));

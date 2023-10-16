@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { OptionByType, QuestionType, getOptionId } from '../../../api';
-import { FormTextInput } from '../form/input';
 import { Option } from './Option';
 
 interface Props {
@@ -9,14 +8,13 @@ interface Props {
 
 export const Match: React.FC<Props> = ({ initialOptions }) => {
 
-    // const [options, setOptions] = useState(initialOptions);
-
-    const [options, setOptions] = useState(initialOptions.filter((option) => Number.isInteger(option.match_id)));
-    const [variants, setVariants] = useState(initialOptions.filter((option) => !Number.isInteger(option.match_id)));
+    const [options, setOptions] = useState(initialOptions.filter((option) => typeof option.match_id === 'number'));
+    const [variants, setVariants] = useState(initialOptions.filter((option) => typeof option.match_id !== 'number'));
 
     return <div className='grid grid-cols-2 gap-2 items-start'>
-        <div className='grid gap-2'>
+        <div className='grid grid-cols-[auto_1fr] gap-2 items-center'>
             { options.map((option, index) => <React.Fragment key={ option.id }>
+                <div className='text-xl font-bold'>{ index + 1 }</div>
                 <input type='hidden' name={`options[${index}][match_id]`} value={ option.match_id } />
                 <Option
                     index={ index }
@@ -29,14 +27,15 @@ export const Match: React.FC<Props> = ({ initialOptions }) => {
             </React.Fragment>)}
             <button
                 type='button'
-                className='bg-emerald-400 p-2 rounded'
+                className='bg-emerald-400 col-span-2 p-2 rounded'
                 onClick={() => {
                     setOptions([...options, { id: getOptionId(), text: '', match_id: 0 }]);
                 }}
             >Додати</button>
         </div>
-        <div className='grid gap-2'>
+        <div className='grid grid-cols-[auto_1fr] gap-2 items-center'>
             { variants.map((variant, index) => <React.Fragment key={ variant.id }>
+                <div className='text-xl font-bold'>{ String.fromCharCode(65 + index) }</div>
                 <Option
                     index={ options.length + index }
                     option={ variant }
@@ -48,7 +47,7 @@ export const Match: React.FC<Props> = ({ initialOptions }) => {
             </React.Fragment>)}
             <button
                 type='button'
-                className='bg-emerald-400 p-2 rounded'
+                className='bg-emerald-400 col-span-2 p-2 rounded'
                 onClick={() => {
                     setVariants([...variants, { id: getOptionId(), text: '' }]);
                 }}
@@ -58,18 +57,18 @@ export const Match: React.FC<Props> = ({ initialOptions }) => {
             <table>
                 <thead>
                     <tr>
-                        <td></td>
-                        {variants.map((variant, index) => <td key={ variant.id }><center className='font-bold'>{ String.fromCharCode(65 + index) }</center></td>)}
+                        <th></th>
+                        {variants.map((variant, index) => <th key={ variant.id }><center>{ String.fromCharCode(65 + index) }</center></th>)}
                     </tr>
                 </thead>
                 <tbody>
                     {options.map((option, indexY) => <tr key={ option.id }>
-                        <td className='font-bold px-1'>{ indexY + 1 }</td>
+                        <th className='px-1'>{ indexY + 1 }</th>
                         {variants.map((variant, indexX) => <td key={ variant.id }>
                             <input
                                 id={ `match-${indexX}-${indexY}` }
                                 type='checkbox'
-                                className='appearance-none block w-7 h-7 bg-gray-50 rounded border checked:bg-sky-300'
+                                className='appearance-none block w-7 h-7 bg-gray-50 rounded border checked:bg-sky-300 transition-colors'
                                 checked={ option.match_id === variant.id }
                                 onChange={() => {
                                     setOptions(options
