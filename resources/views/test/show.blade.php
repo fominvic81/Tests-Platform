@@ -23,6 +23,11 @@
             @endif
         @endauth
     </div>
-    <div class="grid grid-cols-2 w-full max-w-5xl mt-3 mx-auto gap-4">
+    <div>
+        @foreach ($test->questions as $question)
+            {{-- {!! $question->text !!} --}}
+            {{-- {{ $loop}} --}}
+            <x-question :index="$loop->index" :question="$question"></x-question>
+        @endforeach
     </div>
 </x-layouts.feed>

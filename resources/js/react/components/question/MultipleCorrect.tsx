@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const MultipleCorrect: React.FC<Props> = ({ options }) => {
-    return <div className='grid grid-cols-2'>
+    return <div>
         {options.map((option) => 
             <div key={ option.id } className='flex items-center'>
                 <div className={cn('w-5 h-5 rounded-md mr-1', option.correct ? 'bg-green-500' : 'bg-gray-300')}></div>

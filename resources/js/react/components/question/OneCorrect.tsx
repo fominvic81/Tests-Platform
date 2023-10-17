@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const OneCorrect: React.FC<Props> = ({ options }) => {
-    return <div className='grid grid-cols-2'>
+    return <div>
         {options.map((option) => 
             <div key={ option.id } className='flex items-center'>
                 <div className={cn('w-5 h-5 rounded-full mr-1', option.correct ? 'bg-green-500' : 'bg-gray-300')}></div>

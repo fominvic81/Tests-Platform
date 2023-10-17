@@ -1,5 +1,5 @@
 import React from 'react';
-import { Question, QuestionType } from '../../../api';
+import { Question, QuestionType, QuestionTypeName } from '../../../api';
 import { storagePath } from '../../../api/storagePath';
 import { OneCorrect } from './OneCorrect';
 import { MultipleCorrect } from './MultipleCorrect';
@@ -33,7 +33,10 @@ export const QuestionComponent: React.FC<Props> = ({ question, index, onDelete, 
     return <div className='bg-white p-3 my-4 shadow'>
         <div>
             <div className='flex justify-between items-center'>
-                <div className='bg-gray-200 border border-gray-300 px-2 rounded mr-2 font-mono'>Завдання №{ index + 1 }</div>
+                <div>
+                    <div className='inline-block bg-gray-200 border border-gray-300 px-2 rounded mr-2 font-mono'>Завдання №{ index + 1 }</div>
+                    <div className='inline-block bg-gray-200 border border-gray-300 px-2 rounded mr-2 font-mono'> { QuestionTypeName[question.type] } </div>
+                </div>
                 <div>
                     <button
                         type='button'
