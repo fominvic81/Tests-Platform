@@ -8,7 +8,7 @@
         </div>
         <div class="grid grid-cols-[auto_1fr]">
             @isset ($question->image)
-                <x-question.image :src="Storage::url($question->image)"></x-question.image>
+                <x-common.image :src="Storage::url($question->image)"></x-common.image>
             @endisset
             <div class="ml-3 mt-1">{!! clean($question->text) !!}</div>
         </div>

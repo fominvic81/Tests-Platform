@@ -20,22 +20,45 @@ class TestController extends Controller
     public function show(Test $test)
     {
         $data = $test->toArray();
-        $data['questions'] = $test->questions->toArray();
 
-        foreach ($data['questions'] as $question) {
-            $question['text'] = clean($question['text']);
-
-            foreach ($question['options'] as $option) {
-                $option['text'] = clean($option['text']);
-            }
-        }
-
-        if (($test->course)) $data['course'] = [
-            ...$test->course->toArray(),
-            'topics' => $test->course->topics->toArray(),
-        ];
+        $data['course'] = $test->course;
+        $data['questions'] = $test->questions;
 
         return response()->json($data);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:3'],
+            'image' => ['nullable', 'image', 'max:2048'],
+            'delete_image' => ['required', 'boolean'],
+            'description' => ['string', 'nullable'],
+            'course' => ['required', 'integer'],
+            'subject' => ['required', 'integer'],
+            'grade' => ['required', 'integer'],
+        ]);
+
+        $imagePath = isset($data['image']) ? $data['image']->store('public/images') : null;
+
+        $test = new Test([
+            'name' => $data['name'],
+            'image' => $imagePath,
+            'description' => $data['description'],
+            'user_id' => $request->user()->id,
+            'subject_id' => $data['subject'],
+            'grade_id' => $data['grade'],
+        ]);
+
+        if ($data['course'] > 0) $test['course_id'] = $data['course'];
+        $test->load(['subject', 'grade']);
+
+        $test->save();
+
+        return response()->json($test->toArray());
     }
 
     /**
@@ -45,13 +68,21 @@ class TestController extends Controller
     {
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
+            'image' => ['nullable', 'image', 'max:2048'],
+            'delete_image' => ['required', 'boolean'],
             'description' => ['string', 'nullable'],
             'course' => ['required', 'integer'],
             'subject' => ['required', 'integer'],
             'grade' => ['required', 'integer'],
-        ]); 
+        ]);
+
+        $imagePath =
+            (boolval($data['delete_image'] ?? null)) ? null :
+            (isset($data['image']) ? $data['image']->store('public/images') :
+            $test['image']);
 
         $test->name = $data['name'];
+        $test->image = $imagePath;
         $test->description = $data['description'];
         $test->subject_id = $data['subject'];
         $test->grade_id = $data['grade'];
@@ -60,6 +91,6 @@ class TestController extends Controller
 
         $test->save();
 
-        return response();
+        return response()->json($test->toArray());
     }
 }

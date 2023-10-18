@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Test extends Model
 {
@@ -17,9 +16,11 @@ class Test extends Model
         'name',
         'image',
         'description',
+        'published',
+        'accessibility',
+        'user_id',
         'subject_id',
         'grade_id',
-        'user_id',
         'course_id',
     ];
 
@@ -33,6 +34,11 @@ class Test extends Model
     protected $with = [
         'subject',
         'grade',
+        'questions',
+    ];
+
+    protected $casts = [
+        'acessibility' => Accessibility::class,
     ];
 
     public function questions(): HasMany

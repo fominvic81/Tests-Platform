@@ -24,7 +24,7 @@ export const Option: React.FC<Props> = ({ index, option, deletable, onDelete }) 
                 defaultValue={ option.text }
             ></TextEditor>
         </div>
-        <div className='w-32 h-full max-h-32 border-2 border-dashed'>
+        <div className='w-32 h-full max-h-32'>
             <FormImage
                 name={`options[${index}][image]`}
                 nameDel={`options[${index}][delete_image]`}

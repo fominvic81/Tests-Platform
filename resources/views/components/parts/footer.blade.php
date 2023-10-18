@@ -2,10 +2,9 @@
     <div class="w-full max-w-5xl h-full grid grid-cols-3 py-5">
         <div class="col-span-1">
             <h1 class="text-white text-lg font-bold">Розділи</h1>
-            <a class="block w-fit text-white hover:text-blue-200" href="">Тести</a>
-            <a class="block w-fit text-white hover:text-blue-200" href="">Курси</a>    
+            <a class="block w-fit text-white hover:text-blue-200" href="{{ route('test.index') }}">Тести</a>
+            <a class="block w-fit text-white hover:text-blue-200" href="{{ route('course.index') }}">Курси</a>    
             <a class="block w-fit text-white hover:text-blue-200" href="">ЗНО</a>
-            <a class="block w-fit text-white hover:text-blue-200" href="">Бібліотека</a>    
         </div>
         <div class="col-span-1">
             <h1 class="text-white text-lg font-bold">Аккаунт</h1>

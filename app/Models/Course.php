@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Accessibility;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,9 +18,18 @@ class Course extends Model
         'name',
         'image',
         'description',
+        'published',
+        'accessibility',
         'user_id',
     ];
 
+    protected $with = [
+        'topics',
+    ];
+
+    protected $casts = [
+        'acessibility' => Accessibility::class,
+    ];
 
     public function user(): BelongsTo
     {

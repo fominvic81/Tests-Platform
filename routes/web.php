@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'delete'])->name('logout');
     
     Route::resource('course', CourseController::class)->except(['index', 'show']);
-    Route::resource('test', TestController::class)->except(['index', 'show']);
+    Route::resource('test', TestController::class)->except(['index', 'show', 'store', 'update']);
 });
 Route::resource('course', CourseController::class)->only(['index', 'show']);
 Route::resource('test', TestController::class)->only(['index', 'show']);

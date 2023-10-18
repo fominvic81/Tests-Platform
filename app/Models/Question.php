@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Mews\Purifier\Casts\CleanHtml;
 
 class Question extends Model
 {
@@ -34,6 +35,14 @@ class Question extends Model
         'options',
     ];
 
+    protected $casts = [
+        'type' => QuestionType::class,
+        'text'=> CleanHtml::class,
+        'register_matters' => 'boolean',
+        'whitespace_matters' => 'boolean',
+        'show_amount_of_correct' => 'boolean',
+    ];
+
     public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class);
@@ -48,11 +57,4 @@ class Question extends Model
     {
         return $this->hasMany(Option::class);
     }
-
-    public $casts = [
-        'type' => QuestionType::class,
-        'register_matters' => 'boolean',
-        'whitespace_matters' => 'boolean',
-        'show_amount_of_correct' => 'boolean',
-    ];
 }

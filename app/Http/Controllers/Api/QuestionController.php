@@ -35,8 +35,6 @@ class QuestionController extends Controller
             'options' => ['required', new Options(QuestionType::from($data['type']))],
         ])['options'];
 
-        $data['text'] = clean($data['text']);
-
         $imagePath = isset($data['image']) ? $data['image']->store('public/images') : null;
 
         $question = new Question([
@@ -52,7 +50,6 @@ class QuestionController extends Controller
 
         $options = [];
         foreach ($optionsData as $optionData) {
-            $optionData['text'] = clean($optionData['text']);
 
             $optionImagePath = isset($optionData['image']) ? $optionData['image']->store('public/images') : null;
 
@@ -118,8 +115,6 @@ class QuestionController extends Controller
             'options' => ['required', new Options(QuestionType::from($data['type']))],
         ])['options'];
 
-        $data['text'] = clean($data['text']);
-
         // TODO: Remove image if updated
         $imagePath =
             (boolval($data['delete_image'] ?? null)) ? null :
@@ -152,7 +147,6 @@ class QuestionController extends Controller
 
         $options = [];
         foreach ($optionsData as $optionData) {
-            $optionData['text'] = clean($optionData['text']);
 
             $option = $question->options->find($optionData['id']) ?? new Option(['question_id' => $question->id]);
             array_push($options, $option);

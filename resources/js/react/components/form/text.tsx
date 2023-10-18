@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const FormTextInput: React.FC<Props> = ({ type, name, placeholder, value, defaultValue, onChange, label }) => {
-    const id = `${name}-${useId()}`
+    const id = `${name}-${useId()}`;
 
     return <>
         {label && <label htmlFor={ id }>{ label }</label>}

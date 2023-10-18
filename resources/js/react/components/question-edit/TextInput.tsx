@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { OptionByType, QuestionType, getOptionId } from '../../../api';
-import { FormTextInput } from '../form/input';
+import { FormTextInput } from '../form/text';
 
 interface Props {
     initialOptions: OptionByType<QuestionType.TextInput>[];

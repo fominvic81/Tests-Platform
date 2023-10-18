@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Mews\Purifier\Casts\CleanHtml;
 
 class Option extends Model
 {
@@ -18,6 +19,10 @@ class Option extends Model
         'group',
         'match_id',
         'sequence_index',
+    ];
+
+    protected $casts = [
+        'text'=> CleanHtml::class,
     ];
 
     public function question(): BelongsTo

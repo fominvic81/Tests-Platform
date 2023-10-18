@@ -3,7 +3,7 @@ import { Question, QuestionType, OptionsInitialData, QuestionTypeName, Validatio
 import { OneCorrect } from './OneCorrect';
 import { CSRF, Method } from '../../utils';
 import { TextEditor } from '../TextEditor';
-import { FormTextInput } from '../form/input';
+import { FormTextInput } from '../form/text';
 import { FormTextarea } from '../form/textarea';
 import { FormSubmit } from '../form/submit';
 import axios, { AxiosError } from 'axios';
@@ -60,12 +60,12 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
 
     const [{ type }, setUrlData, resetUrlData] = useUrlState<UrlData>({ type: initialQuestion?.type ?? QuestionType.OneCorrect });
     
-    const [question, setQuestion] = useState(initialQuestion ?? defaultQuestion(type));
+    const [question, setQuestion] = useState((!initialQuestion || type !== initialQuestion.type) ? defaultQuestion(type) : initialQuestion);
 
     const [error, setError] = useState<ValidationError>();
 
     const setType = (newType: QuestionType) => {
-        setQuestion({ ...question, options: OptionsInitialData[newType]});
+        setQuestion(newType === initialQuestion?.type ? { ...initialQuestion } : { ...question, options: OptionsInitialData[newType]});
         setUrlData({ type: newType }, true);
     }
 
@@ -107,16 +107,13 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                             <TextEditor name='text' id='text' defaultValue={ question.text } placeholder='Питання'></TextEditor>
                         </div>
                         <div className='w-48 row-span-6'>
-                            <div className={`aspect-square mx-3 mt-6 border-2 ${!question.image ? 'border-dashed' : ''}`}>
+                            <div className='aspect-square mx-3 mt-6'>
                                 <FormImage
                                     name='image'
                                     nameDel='delete_image'
                                     defaultSrc={ question.image && storagePath(question.image) }
                                 ></FormImage>
                             </div>
-                        </div>
-                        <div>
-                            <FormTextarea name='description' label='Опис' placeholder='Опис' />
                         </div>
                         <div>
                             <FormTextInput type='number' name='points' label='Бали' defaultValue={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>

@@ -31,34 +31,6 @@ class TestController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'min:3'],
-            'description' => ['string', 'nullable'],
-            'course' => ['integer'],
-            'subject' => ['integer'],
-            'grade' => ['integer'],
-        ]);
-
-        $test = new Test([
-            'name' => $data['name'],
-            'description' => $data['description'],
-            'user_id' => $request->user()->id,
-            'subject_id' => $data['subject'],
-            'grade_id' => $data['grade'],
-        ]);
-
-        if ($data['course'] > 0) $test['course_id'] = $data['course'];
-
-        $test->save();
-
-        return redirect()->route('test.edit', $test->id);
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Test $test)
@@ -76,31 +48,6 @@ class TestController extends Controller
             'subjects' => Subject::all(),
             'grades' => Grade::all(),
         ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Test $test)
-    {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'min:3'],
-            'description' => ['string', 'nullable'],
-            'course' => ['required', 'integer'],
-            'subject' => ['required', 'integer'],
-            'grade' => ['required', 'integer'],
-        ]); 
-
-        $test->name = $data['name'];
-        $test->description = $data['description'];
-        $test->subject_id = $data['subject'];
-        $test->grade_id = $data['grade'];
-
-        $test['course_id'] = $data['course'] > 0 ? $data['course'] : null;
-
-        $test->save();
-
-        return redirect()->refresh();
     }
 
     /**
