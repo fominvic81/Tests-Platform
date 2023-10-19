@@ -3,6 +3,6 @@ import { Test } from './types';
 
 
 export const getTest = async (id: string | number) => {
-    const test = (await axios(`/api/test/${id}`)).data as Test<'questions' & 'course'>;
+    const test = (await axios(`/api/test/${id}`)).data as Test<'questions' | 'course'>;
     return test;
 }

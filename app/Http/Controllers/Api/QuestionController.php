@@ -10,7 +10,6 @@ use App\Models\Option;
 use App\Rules\Options;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules\Enum;
-use Mews\Purifier\Facades\Purifier;
 
 class QuestionController extends Controller
 {

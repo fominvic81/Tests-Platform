@@ -1,13 +1,20 @@
+import { Accessibility } from './accessibility';
+import { PickCond } from './pick';
 import { Test } from './test';
 import { Topic } from './topic';
 import { User } from './user';
 
-export interface Course<T extends 'topics' | 'tests' | 'user' | '' = ''> {
+type Fields = {
+    user: User;
+    tests: Test[];
+}
+
+export type Course<T extends keyof Fields | '' = ''> = {
     id: number;
     name: string;
     image?: string;
+    published: boolean;
+    accessibility: Accessibility;
     description?: string;
-    user: [T] extends ['user'] ? User : undefined;
-    topics: [T] extends ['topics'] ? Topic[] : undefined;
-    tests: [T] extends ['tests'] ? Test[] : undefined;
-}
+    topics: Topic[];
+} & PickCond<Fields, T>;

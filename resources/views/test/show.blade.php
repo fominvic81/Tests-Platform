@@ -1,7 +1,7 @@
 <x-layouts.feed>
     <div class="flex justify-between items-start p-5 bg-white shadow-md">
         <div class="grid grid-cols-[min-content_1fr]">
-            <div>
+            <div class="mr-1">
                 @isset($test->image)
                     <x-common.image :src="Storage::url($test->image)"></x-common.image>
                 @endisset
@@ -22,7 +22,7 @@
                     <span>Курс: </span><a href="{{ route('course.show', $test->course->id) }}" class="text-blue-600 hover:underline hover:text-blue-400">{{ $test->course->name }}</a>
                 @endisset
             </div>
-            <div class="col-span-2">{{ $test->description }}</div>
+            <div class="col-span-2">{!! $test->description !!}</div>
         </div>
         @auth
             @if (Auth::user()->id === $test->user_id)

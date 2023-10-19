@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('image')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('published')->index();
+            $table->boolean('published')->default(false)->index();
             $table->integer('accessibility')->index();
             $table->foreignId('user_id');
             $table->timestamps();

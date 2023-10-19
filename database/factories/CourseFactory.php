@@ -19,6 +19,8 @@ class CourseFactory extends Factory
         return [
             'name' => fake()->company(),
             'description' => fake()->text(),
+            'published' => fake()->boolean(70),
+            'accessibility' => fake()->numberBetween(0, 2),
         ];
     }
 }

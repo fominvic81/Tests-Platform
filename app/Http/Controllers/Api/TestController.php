@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Accessibility;
 use App\Http\Controllers\Controller;
 use App\Models\Test;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class TestController extends Controller
 {
@@ -19,12 +21,11 @@ class TestController extends Controller
      */
     public function show(Test $test)
     {
-        $data = $test->toArray();
-
-        $data['course'] = $test->course;
-        $data['questions'] = $test->questions;
-
-        return response()->json($data);
+        return response()->json([
+            ...$test->toArray(),
+            'course' => $test->course,
+            'questions' => $test->questions,
+        ]);
     }
 
     /**
@@ -36,6 +37,7 @@ class TestController extends Controller
             'name' => ['required', 'string', 'min:3'],
             'image' => ['nullable', 'image', 'max:2048'],
             'delete_image' => ['required', 'boolean'],
+            'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['string', 'nullable'],
             'course' => ['required', 'integer'],
             'subject' => ['required', 'integer'],
@@ -47,6 +49,7 @@ class TestController extends Controller
         $test = new Test([
             'name' => $data['name'],
             'image' => $imagePath,
+            'accessibility' => $data['accessibility'],
             'description' => $data['description'],
             'user_id' => $request->user()->id,
             'subject_id' => $data['subject'],
@@ -54,11 +57,18 @@ class TestController extends Controller
         ]);
 
         if ($data['course'] > 0) $test['course_id'] = $data['course'];
+
         $test->load(['subject', 'grade']);
+        $data['course'] = $test->course;
+        $data['questions'] = $test->questions;
 
         $test->save();
 
-        return response()->json($test->toArray());
+        return response()->json([
+            ...$test->toArray(),
+            'course' => $test->course,
+            'questions' => $test->questions,
+        ]);
     }
 
     /**
@@ -70,6 +80,7 @@ class TestController extends Controller
             'name' => ['required', 'string', 'min:3'],
             'image' => ['nullable', 'image', 'max:2048'],
             'delete_image' => ['required', 'boolean'],
+            'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['string', 'nullable'],
             'course' => ['required', 'integer'],
             'subject' => ['required', 'integer'],
@@ -83,6 +94,7 @@ class TestController extends Controller
 
         $test->name = $data['name'];
         $test->image = $imagePath;
+        $test->accessibility = $data['accessibility'];
         $test->description = $data['description'];
         $test->subject_id = $data['subject'];
         $test->grade_id = $data['grade'];
@@ -91,6 +103,10 @@ class TestController extends Controller
 
         $test->save();
 
-        return response()->json($test->toArray());
+        return response()->json([
+            ...$test->toArray(),
+            'course' => $test->course,
+            'questions' => $test->questions,
+        ]);
     }
 }

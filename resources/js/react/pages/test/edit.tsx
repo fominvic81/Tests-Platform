@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { testEditId } from '../..';
-import { Test, TestOptions, deleteQuestion, getTest, getTestOptions } from '../../../api'; 
+import { Accessibility, AccessibilityName, Test, TestOptions, ValidationError, deleteQuestion, getTest, getTestOptions } from '../../../api'; 
 import { QuestionEditComponent } from '../../components/question-edit/QuestionEdit';
 import { QuestionComponent } from '../../components/question-show/Question';
 import { Async, CSRF, Method, useAsync } from '../../utils';
@@ -9,8 +9,13 @@ import { FormTextInput } from '../../components/form/text';
 import { FormSelect } from '../../components/form/select';
 import { FormSubmit } from '../../components/form/submit';
 import { useUrlState } from '../../hooks/useUrlState';
+import { FormImage } from '../../components/form/image';
+import { storagePath } from '../../../api/storagePath';
+import axios, { AxiosError } from 'axios';
+import { FormError } from '../../components/form/error';
+import { TextEditor } from '../../components/TextEditor';
 
-type AsyncData = [Test<'user'>, TestOptions];
+type AsyncData = [Test<'course' | 'questions'>, TestOptions];
 
 type UrlData = {
     page: 'test' | 'quest-create' | 'quest-edit';
@@ -20,6 +25,8 @@ type UrlData = {
 const Component: React.FC = () => {
 
     const [test, options] = useAsync<AsyncData>();
+    const [error, setError] = useState<ValidationError>();
+    const [saved, setSaved] = useState(true);
 
     const [questions, setQuestions] = useState(test.questions);
 
@@ -29,24 +36,53 @@ const Component: React.FC = () => {
     });
     const questionToEdit = questions.find((q) => q.id === editQuestionId);
 
+    const onSubmit = async (event: React.FormEvent) => {
+        event.preventDefault();
+        setSaved(true);
+        const response = await axios.postForm(`/api/test/${test.id}`, event.target).catch((reason: AxiosError) => {
+            if (reason.response && reason.response.status === 422) setError(reason.response.data as ValidationError);
+            setSaved(false);
+        });
+        if (!response) return;
+
+        setError(undefined);
+    }
+
     return <>
         {page === 'test' && <>
             <div className='p-5 bg-white shadow-md'>
-                <form action={ `/test/${test.id}` } method='POST'>
+                <form method='POST' onSubmit={ onSubmit } onChange={() => setSaved(false)}>
                     <CSRF></CSRF>
                     <Method method='PUT'></Method>
             
-                    <FormTextInput type='text' name='name' label='Назва' placeholder='Назва' defaultValue={ test.name }></FormTextInput>
-                    <FormTextInput type='text' name='description' label='Опис' placeholder='Опис' defaultValue={ test.description }></FormTextInput>
+                    <div className='grid grid-cols-[1fr_min-content]'>
+                        <div>
+                            <FormTextInput type='text' name='name' label='Назва' placeholder='Назва' defaultValue={ test.name }></FormTextInput>
 
-                    <FormSelect name='course' label='Курс' defaultValue={ test.course }>
-                        <option className='font-bold' value='0'>Без курсу</option>
-                        {options.courses.map((course) => 
-                            <option key={ course.id } value={ course.id }>{ course.name }</option>                    
-                        )}
-                    </FormSelect>
+                            <label htmlFor='description'>Опис</label>
+                            <TextEditor id='description' name='description' placeholder='Опис' defaultValue={ test.description } onChange={() => setSaved(false)}></TextEditor>
+                        </div>
+                        <div className='w-40 h-40 m-3'>
+                            <FormImage name='image' nameDel='delete_image' defaultSrc={ test.image && storagePath(test.image) } onChange={() => setSaved(false)}></FormImage>
+                        </div>
+                    </div>
             
-                    <div className='grid grid-cols-2 gap-2'>
+                    <div className='grid grid-cols-2 gap-3'>
+                        <div>
+                            <FormSelect name='course' label='Курс' defaultValue={ test.course }>
+                                <option className='font-bold' value='0'>Без курсу</option>
+                                {options.courses.map((course) => 
+                                    <option key={ course.id } value={ course.id }>{ course.name }</option>                    
+                                )}
+                            </FormSelect>
+                        </div>
+                        <div>
+                            <FormSelect name='accessibility' defaultValue={ test.accessibility } label='Доступність'>
+                                {Object.values(Accessibility).filter((v) => typeof v !== 'number').map((key) =>
+                                    <option key={ key } value={ Accessibility[key] }>{ AccessibilityName[Accessibility[key]] }</option>
+                                )}
+                            </FormSelect>
+                        </div>
                         <div>
                             <FormSelect name='subject' label='Предмет' defaultValue={ test.subject }>
                                 {options.subjects.map((subject) => 
@@ -62,8 +98,8 @@ const Component: React.FC = () => {
                             </FormSelect>
                         </div>
                     </div>
-
-                    <FormSubmit>Зберегти</FormSubmit>
+                    <FormSubmit disabled={ saved }>Зберегти</FormSubmit>
+                    <FormError error={ error }></FormError>
                 </form>
             </div>
 

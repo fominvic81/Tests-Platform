@@ -10,3 +10,4 @@ export * from './paginated';
 export * from './testOptions';
 export * from './validation';
 export * from './option';
+export * from './accessibility';

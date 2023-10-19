@@ -5,9 +5,10 @@ interface Props {
     name: string;
     nameDel: string;
     defaultSrc?: string;
+    onChange?: () => any;
 }
 
-export const FormImage: React.FC<Props> = ({ name, nameDel, defaultSrc }) => {
+export const FormImage: React.FC<Props> = ({ name, nameDel, defaultSrc, onChange }) => {
     
     const [image, setImage] = useState(defaultSrc);
 
@@ -23,6 +24,7 @@ export const FormImage: React.FC<Props> = ({ name, nameDel, defaultSrc }) => {
                 if (image) {
                     event.preventDefault();
                     setImage(undefined);
+                    if (onChange) onChange();
 
                     event.currentTarget.value = '';
                 }
@@ -31,6 +33,7 @@ export const FormImage: React.FC<Props> = ({ name, nameDel, defaultSrc }) => {
                 const file = event.target.files?.item(0);
 
                 if (file) setImage(URL.createObjectURL(file));
+                if (onChange) onChange();
             }}
         />
         <input type='hidden' name={ nameDel } value={ !image ? 1 : 0 } />

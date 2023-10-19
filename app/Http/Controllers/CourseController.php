@@ -26,26 +26,6 @@ class CourseController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $data = $request->validate([
-            'name' => ['required', 'min:3'],
-            'description' => [],
-        ]);
-
-        $course = new Course([
-            ...$data,
-            'user_id' => $request->user()->id,
-        ]);
-
-        $course->save();
-
-        return redirect()->route('course.show', $course->id);
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(Course $course)
@@ -58,22 +38,6 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Course $course)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Course $course)
-    {
-        //
+        return view('course.edit', [ 'course' => $course ]);
     }
 }

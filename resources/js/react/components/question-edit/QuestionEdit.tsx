@@ -90,7 +90,7 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
             <input type='hidden' name='type' value={ type } />
             <div className='grid grid-cols-[auto_1fr] gap-4'>
                 <div>
-                    { Object.values(QuestionType).filter((v) => typeof v !== 'number').map((key) => 
+                    {Object.values(QuestionType).filter((v) => typeof v !== 'number').map((key) => 
                         <button
                             type='button'
                             key={ key }
@@ -119,9 +119,9 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                             <FormTextInput type='number' name='points' label='Бали' defaultValue={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>
                         </div>
 
-                        { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.register_matters ?? false } name='register_matters' label='Враховувати пробіл'></FormToggle> }
-                        { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.whitespace_matters ?? false } name='whitespace_matters' label='Враховувати розмір букви'></FormToggle> }
-                        { type === QuestionType.MultipleCorrect && <FormToggle defaultChecked={ question.show_amount_of_correct ?? false } name='show_amount_of_correct' label='Показувати кількість правильних варіантів'></FormToggle> }
+                        { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.register_matters ?? false } name='register_matters' label='Враховувати пробіл?'></FormToggle> }
+                        { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.whitespace_matters ?? false } name='whitespace_matters' label='Враховувати розмір букви?'></FormToggle> }
+                        { type === QuestionType.MultipleCorrect && <FormToggle defaultChecked={ question.show_amount_of_correct ?? false } name='show_amount_of_correct' label='Показувати кількість правильних варіантів?'></FormToggle> }
                     </div>
                     
                 </div>

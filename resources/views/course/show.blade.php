@@ -2,7 +2,7 @@
     <div class="p-5 bg-white shadow-md">
         <h1 class="text-2xl">{{ $course->name }}</h1>
         <span>Автор: </span><a href="" class="text-blue-600 hover:underline hover:text-blue-400">{{ $course->user->fullname }}</a>
-        <div>{{ $course->description }}</div>
+        <div>{!! $course->description !!}</div>
     </div>
     <div class="grid grid-cols-2 w-full max-w-5xl mt-3 pb-10 mx-auto gap-4">
 
