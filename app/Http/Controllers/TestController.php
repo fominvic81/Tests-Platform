@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Accessibility;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\Test;
-use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
@@ -15,7 +15,11 @@ class TestController extends Controller
     public function index()
     {
         return view('test.index', [
-            'tests' => Test::query()->latest('id')->paginate(15),
+            'tests' => Test::query()
+                ->where('published', '=', true)
+                ->where('accessibility', '=', Accessibility::Public)
+                ->latest('id')
+                ->paginate(15),
         ]);
     }
 
