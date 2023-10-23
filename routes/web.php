@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\ExamController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -35,7 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'delete'])->name('logout');
     
     Route::resource('course', CourseController::class)->except(['index', 'show', 'store', 'update', 'destroy']);
+
     Route::resource('test', TestController::class)->except(['index', 'show', 'store', 'update']);
+
+    Route::resource('test.exam', ExamController::class)->shallow()->except(['index']);
+    Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');
 });
 Route::resource('course', CourseController::class)->only(['index', 'show']);
 Route::resource('test', TestController::class)->only(['index', 'show']);
