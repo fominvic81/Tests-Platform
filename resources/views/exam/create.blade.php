@@ -11,11 +11,11 @@
                     </label>
                     <label class="text-lg font-semibold">
                         Початок
-                        <input type="datetime-local" name="begin" value="{{ old('begin') }}" class="w-full bg-gray-50 border-2 rounded p-1">
+                        <input type="datetime-local" name="begin" value="{{ old('begin') ?? date('Y-m-d H:00') }}" class="w-full bg-gray-50 border-2 rounded p-1">
                     </label>
                     <label class="text-lg font-semibold">
                         Кінець
-                        <input type="datetime-local" name="end" value="{{ old('end') ?? date('Y-m-d 11:00') }}" class="w-full bg-gray-50 border-2 rounded p-1">
+                        <input type="datetime-local" name="end" value="{{ old('end') ?? date('Y-m-d H:00', strtotime("+1 day")) }}" class="w-full bg-gray-50 border-2 rounded p-1">
                     </label>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
