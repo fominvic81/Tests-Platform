@@ -1,4 +1,4 @@
-<x-modal title="Вхід">
+<x-layouts.modal title="Вхід">
     <form method="POST" action="{{ route('login') }}">
         @csrf
 
@@ -11,4 +11,4 @@
 
         <x-form.anchor href="{{ route('registration') }}">Зареєструватися</x-form.anchor>
     </form>
-</x-modal>
+</x-layouts.modal>

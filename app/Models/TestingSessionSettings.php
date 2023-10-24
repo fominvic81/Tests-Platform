@@ -9,7 +9,7 @@ class TestingSessionSettings extends Model
 {
     use HasFactory;
 
-    public $fillable = [
+    protected $fillable = [
         'time',
         'shuffle_questions',
         'shuffle_options',

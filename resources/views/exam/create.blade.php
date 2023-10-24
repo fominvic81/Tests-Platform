@@ -1,6 +1,7 @@
 <x-layouts.feed>
     <div class="w-full p-4 bg-white shadow rounded-md">
         <h1 class="text-3xl text-center font-bold">Задати домашнє</h1>
+        <h1 class="text-xl text-center font-bold">{{ $test->name }}</h1>
         <form action="{{ route('test.exam.store', $test->id) }}" method="POST">
             @csrf
             <div class="grid grid-cols-2 gap-3">

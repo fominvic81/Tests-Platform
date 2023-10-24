@@ -20,6 +20,11 @@ class Exam extends Model
         'testing_session_settings_id',
         'user_id',
     ];
+
+    protected $casts = [
+        'begin_at' => 'datetime',
+        'end_at' => 'datetime',
+    ];
     
     public function user(): BelongsTo
     {
@@ -38,6 +43,6 @@ class Exam extends Model
 
     public function sessions(): HasMany
     {
-        return $this->hasMany(TestingSession::class, 'testing_session_id');
+        return $this->hasMany(TestingSession::class);
     }
 }

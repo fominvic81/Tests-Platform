@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\TestingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -39,8 +40,14 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('test', TestController::class)->except(['index', 'show', 'store', 'update']);
 
-    Route::resource('test.exam', ExamController::class)->shallow()->except(['index']);
     Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');
+    Route::resource('test.exam', ExamController::class)->shallow()->except(['index']);
 });
+
 Route::resource('course', CourseController::class)->only(['index', 'show']);
 Route::resource('test', TestController::class)->only(['index', 'show']);
+
+Route::get('/join', [ExamController::class, 'join'])->name('exam.join');
+Route::post('/join', [ExamController::class, 'start'])->name('exam.start');
+
+Route::get('/testing/{session}', [TestingController::class, 'show'])->name('testing.show');

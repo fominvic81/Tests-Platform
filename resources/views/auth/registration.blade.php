@@ -1,4 +1,4 @@
-<x-modal title="Реєстрація">
+<x-layouts.modal title="Реєстрація">
     <form method="POST" action="{{ route('registration') }}">
         @csrf
         <x-form.input name="firstname" label="Ім'я" value="old()" placeholder="Ім'я"></x-form.input>
@@ -14,4 +14,4 @@
 
         <x-form.anchor href="{{ route('login') }}">Вже є акаунт?</x-form.anchor>
     </form>
-</x-modal>
+</x-layouts.modal>

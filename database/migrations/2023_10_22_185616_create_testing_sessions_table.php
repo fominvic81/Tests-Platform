@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('testing_sessions', function (Blueprint $table) {
             $table->id();
-            $table->boolean('has_ended');
+            $table->string('student_name');
             $table->foreignId('exam_id');
             $table->foreignId('test_id');
             $table->foreignId('testing_session_settings_id');
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
     }

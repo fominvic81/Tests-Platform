@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Exam;
 use App\Models\Test;
+use App\Models\TestingSession;
 use App\Models\TestingSessionSettings;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,7 @@ class ExamController extends Controller
         $code = 0;
         do {
             $code = mt_rand(1000000, 9999999);
-        } while (Exam::query()->where('code', '=', $code)->count() > 0);
+        } while (Exam::query()->where('code', '=', $code)->where('end_at', '>', now())->count() > 0);
 
         $exam = new Exam([
             'label' => $data['label'],
@@ -116,5 +117,38 @@ class ExamController extends Controller
     public function destroy(Exam $exam)
     {
         //
+    }
+
+    public function join(Request $request)
+    {
+        return view('exam.join', [
+            'code' => $request->query('code'),
+        ]);
+    }
+
+    public function start(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ['required', 'string', 'min:3', 'max:50'],
+            'code' => ['required', 'integer', 'digits:7'],
+        ]);
+
+        $exam = Exam::query()->where('code', '=', $data['code'])->where('end_at', '>', now())->first();
+
+        if (!$exam) {
+            return redirect()->back()->withInput()->withErrors('Тест таким кодом не знайдено');
+        }
+
+        $session = new TestingSession([
+            'student_name' => $data['name'],
+            'exam_id' => $exam->id,
+            'test_id' => $exam->test->id,
+            'testing_session_settings_id' => $exam->settings->id,
+            'user_id' => $request->user()?->id,
+        ]);
+
+        $session->save();
+
+        return redirect()->route('testing.show', $session->id);
     }
 }

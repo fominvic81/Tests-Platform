@@ -6,13 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class TestingSession extends Model
 {
     use HasFactory;
 
+    protected $hidden = [
+
+    ];
+
     protected $fillable = [
-        'has_ended',
+        'student_name',
         'exam_id',
         'test_id',
         'testing_session_settings_id',
