@@ -47,7 +47,6 @@ class QuestionController extends Controller
 
         $question->save();
 
-        $options = [];
         foreach ($optionsData as $optionData) {
 
             $optionImagePath = isset($optionData['image']) ? $optionData['image']->store('public/images') : null;
@@ -58,25 +57,12 @@ class QuestionController extends Controller
                 'image' => $optionImagePath,
                 'correct' => $optionData['correct'] ?? null,
                 'group' => $optionData['group'] ?? null,
-                'match_id' => null,
+                'option_id' => $optionData['option_id'] ?? null,
+                'match_id' => $optionData['match_id'] ?? null,
                 'sequence_index' => $optionData['sequence_index'] ?? null,
             ]);
 
             $option->save();
-
-            array_push($options, $option);
-        }
-
-        foreach ($optionsData as $i => $optionDataA) {
-            if (!isset($optionDataA['match_id'])) continue;
-
-            foreach ($optionsData as $j => $optionDataB) {
-                if ($optionDataA['match_id'] === $optionDataB['id']) {
-                    $options[$i]['match_id'] = $options[$j]['id'];
-                    $options[$i]->save();
-                    break;
-                }
-            }
         }
 
         $question->load('options');
@@ -144,11 +130,9 @@ class QuestionController extends Controller
             }
         }
 
-        $options = [];
         foreach ($optionsData as $optionData) {
 
             $option = $question->options->find($optionData['id']) ?? new Option(['question_id' => $question->id]);
-            array_push($options, $option);
 
             $optionImagePath =
                 (boolval($optionData['delete_image'] ?? null)) ? null :
@@ -159,22 +143,11 @@ class QuestionController extends Controller
             $option['image'] = $optionImagePath;
             $option['correct'] = $optionData['correct'] ?? null;
             $option['group'] = $optionData['group'] ?? null;
-            $option['match_id'] = null;
+            $option['match_id'] = $optionData['match_id'] ?? null;
+            $option['option_id'] = $optionData['option_id'] ?? null;
             $option['sequence_index'] = $optionData['sequence_index'] ?? null;
 
             $option->save();
-        }
-
-        foreach ($optionsData as $i => $optionDataA) {
-            if (!isset($optionDataA['match_id'])) continue;
-
-            foreach ($optionsData as $j => $optionDataB) {
-                if ($optionDataA['match_id'] === $optionDataB['id']) {
-                    $options[$i]['match_id'] = $options[$j]['id'];
-                    $options[$i]->save();
-                    break;
-                }
-            }
         }
 
         $question->load('options');

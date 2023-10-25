@@ -35,9 +35,9 @@ class Options implements ValidationRule
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
                     'options.*' => ['array:id,text,image,delete_image,correct'],
-                    'options.*.id' => ['integer', 'nullable'],
+                    'options.*.id' => ['nullable', 'integer'],
                     'options.*.text' => ['required', 'string'],
-                    'options.*.image' => ['image', 'nullable', 'max:2048'],
+                    'options.*.image' => ['nullable', 'image', 'max:2048'],
                     'options.*.delete_image' => ['required', 'boolean'],
                     'options.*.correct' => ['required', 'boolean'],
                 ]);
@@ -59,12 +59,13 @@ class Options implements ValidationRule
             case QuestionType::Match:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:id,text,image,delete_image,match_id'],
-                    'options.*.id' => ['integer', 'nullable'],
+                    'options.*' => ['array:id,text,image,delete_image,option_id,match_id'],
+                    'options.*.id' => ['nullable', 'integer'],
                     'options.*.text' => ['required', 'string'],
-                    'options.*.image' => ['image', 'nullable', 'max:2048'],
+                    'options.*.image' => ['nullable', 'image', 'max:2048'],
                     'options.*.delete_image' => ['required', 'boolean'],
-                    'options.*.match_id' => ['integer', 'nullable'],
+                    'options.*.option_id' => ['nullable', 'integer'],
+                    'options.*.match_id' => ['nullable', 'integer'],
                 ]);
                 if (!$result->passes()) break;
                 $data = $result->validated();
@@ -74,7 +75,7 @@ class Options implements ValidationRule
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:1,20'],
                     'options.*' => ['array:id,text'],
-                    'options.*.id' => ['integer', 'nullable'],
+                    'options.*.id' => ['nullable', 'integer'],
                     'options.*.text' => ['required', 'string'],
                 ]);
                 if (!$result->passes()) break;
@@ -85,9 +86,9 @@ class Options implements ValidationRule
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
                     'options.*' => ['array:id,text,image,delete_image,sequence_index'],
-                    'options.*.id' => ['integer', 'nullable'],
+                    'options.*.id' => ['nullable', 'integer'],
                     'options.*.text' => ['required', 'string'],
-                    'options.*.image' => ['image', 'nullable', 'max:2048'],
+                    'options.*.image' => ['nullable', 'image', 'max:2048'],
                     'options.*.delete_image' => ['required', 'boolean'],
                     'options.*.sequence_index' => ['required', 'integer'],
                 ]);

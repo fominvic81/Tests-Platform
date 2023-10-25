@@ -1,9 +1,9 @@
 import { OptionByType, QuestionType } from './types';
 
 let lastId = -1;
-export const getOptionId = () => {
-    return lastId--;
-}
+let lastMatchId = 1;
+export const getOptionId = () => lastId--;
+export const getVariantId = () => lastMatchId++;
 
 export const OptionsInitialData: {
     [T in QuestionType]: OptionByType<T>[];
@@ -17,8 +17,8 @@ export const OptionsInitialData: {
         { id: getOptionId(), text: '', correct: false },
     ],
     [QuestionType.Match]: [
-        { id: getOptionId(), text: '' },
-        { id: getOptionId(), text: '' },
+        { id: getOptionId(), text: '', option_id: getVariantId() },
+        { id: getOptionId(), text: '', option_id: getVariantId() },
         { id: getOptionId(), text: '', match_id: 0 },
         { id: getOptionId(), text: '', match_id: 0 },
     ],

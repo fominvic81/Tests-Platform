@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { OptionByType, QuestionType, getOptionId } from '../../../api';
+import { OptionByType, QuestionType, getOptionId, getVariantId } from '../../../api';
 import { Option } from './Option';
 
 interface Props {
@@ -14,8 +14,8 @@ export const Match: React.FC<Props> = ({ initialOptions }) => {
     return <div className='grid grid-cols-2 gap-2 items-start'>
         <div className='grid grid-cols-[auto_1fr] gap-2 items-center'>
             { options.map((option, index) => <React.Fragment key={ option.id }>
-                <div className='text-xl font-bold'>{ index + 1 }</div>
                 <input type='hidden' name={`options[${index}][match_id]`} value={ option.match_id } />
+                <div className='text-xl font-bold'>{ index + 1 }</div>
                 <Option
                     index={ index }
                     option={ option }
@@ -35,6 +35,7 @@ export const Match: React.FC<Props> = ({ initialOptions }) => {
         </div>
         <div className='grid grid-cols-[auto_1fr] gap-2 items-center'>
             { variants.map((variant, index) => <React.Fragment key={ variant.id }>
+                <input type='hidden' name={`options[${options.length + index}][option_id]`} value={ variant.option_id } />
                 <div className='text-xl font-bold'>{ String.fromCharCode(65 + index) }</div>
                 <Option
                     index={ options.length + index }
@@ -49,7 +50,7 @@ export const Match: React.FC<Props> = ({ initialOptions }) => {
                 type='button'
                 className='bg-emerald-400 col-span-2 p-2 rounded'
                 onClick={() => {
-                    setVariants([...variants, { id: getOptionId(), text: '' }]);
+                    setVariants([...variants, { id: getOptionId(), text: '', option_id: getVariantId() }]);
                 }}
             >Додати</button>
         </div>
@@ -69,11 +70,11 @@ export const Match: React.FC<Props> = ({ initialOptions }) => {
                                 id={ `match-${indexX}-${indexY}` }
                                 type='checkbox'
                                 className='appearance-none block w-7 h-7 bg-gray-50 rounded border checked:bg-sky-300 transition-colors'
-                                checked={ option.match_id === variant.id }
+                                checked={ option.match_id === variant.option_id }
                                 onChange={() => {
                                     setOptions(options
-                                        .map((value) => value === option ? { ...option, match_id: value.match_id === variant.id ? 0 : variant.id } : value)
-                                        .map((value) => value.id === option.id ? value : (value.match_id === variant.id ? { ...value, match_id: 0 } : value)));
+                                        .map((value) => value === option ? { ...option, match_id: value.match_id === variant.option_id ? 0 : variant.option_id } : value)
+                                        .map((value) => value.id === option.id ? value : (value.match_id === variant.option_id ? { ...value, match_id: 0 } : value)));
                                 }}
                             />
                         </td>)}

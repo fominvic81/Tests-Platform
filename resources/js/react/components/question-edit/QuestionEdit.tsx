@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Question, QuestionType, OptionsInitialData, QuestionTypeName, ValidationError } from '../../../api';
 import { OneCorrect } from './OneCorrect';
 import { CSRF, Method } from '../../utils';
 import { TextEditor } from '../TextEditor';
 import { FormTextInput } from '../form/text';
-import { FormTextarea } from '../form/textarea';
 import { FormSubmit } from '../form/submit';
 import axios, { AxiosError } from 'axios';
 import { FormError } from '../form/error';

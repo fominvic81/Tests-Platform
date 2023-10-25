@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->boolean('correct')->nullable();
             $table->integer('group')->nullable();
+            $table->integer('option_id')->nullable();
             $table->bigInteger('match_id')->nullable();
             $table->integer('sequence_index')->nullable();
             $table->timestamps();

@@ -8,7 +8,7 @@
             </label>
             <label>
                 Прізвище, Ім'я
-                <input type="text" name="name" value="{{ old('name') }}" placeholder="Прізвище, Ім'я" class="w-full bg-gray-50 border-2 rounded p-1">
+                <input type="text" name="name" value="{{ Auth::user()?->fullname ?? old('name') }}" placeholder="Прізвище, Ім'я" class="w-full bg-gray-50 border-2 rounded p-1">
             </label>
 
             <x-form.errors></x-form.errors>

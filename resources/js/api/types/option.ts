@@ -18,6 +18,7 @@ type OptionMultipleCorrect = {
 type OptionMatch = {
     image?: string;
     match_id?: number;
+    option_id?: number;
 }
 
 type OptionTextInput = {

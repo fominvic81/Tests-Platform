@@ -33,7 +33,7 @@ export const Match: React.FC<Props> = ({ options: allOptions }) => {
         </div>
         <div className='col-span-2 flex'>
             {options.map((option, index) => {
-                const match = variants.findIndex((variant) => option.match_id === variant.id);
+                const match = variants.findIndex((variant) => option.match_id === variant.option_id);
                 if (match === -1) return;
                 return <div key={ option.id } className='bg-emerald-400 border border-gray-500 px-2 mx-1 rounded'>{ index + 1 } - { String.fromCharCode(65 + match) }</div>
             })}
