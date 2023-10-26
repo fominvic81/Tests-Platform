@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Accessibility;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +20,22 @@ class CourseFactory extends Factory
         return [
             'name' => fake()->company(),
             'description' => fake()->text(),
-            'published' => fake()->boolean(70),
-            'accessibility' => fake()->numberBetween(0, 2),
+            'published' => fake()->boolean(90),
+            'accessibility' => fake()->randomElement(Accessibility::cases()),
         ];
+    }
+
+    public function published(bool $value = true): Factory
+    {
+        return $this->state(function (array $attributes) use ($value) {
+            return ['published'=> $value];
+        });
+    }
+
+    public function accessibility(Accessibility $value = Accessibility::Public): Factory
+    {
+        return $this->state(function (array $attributes) use ($value) {
+            return ['accessibility'=> $value];
+        });
     }
 }
