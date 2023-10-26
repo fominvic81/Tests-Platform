@@ -57,7 +57,7 @@ class QuestionController extends Controller
                 'image' => $optionImagePath,
                 'correct' => $optionData['correct'] ?? null,
                 'group' => $optionData['group'] ?? null,
-                'option_id' => $optionData['option_id'] ?? null,
+                'variant_id' => $optionData['variant_id'] ?? null,
                 'match_id' => $optionData['match_id'] ?? null,
                 'sequence_index' => $optionData['sequence_index'] ?? null,
             ]);
@@ -144,7 +144,7 @@ class QuestionController extends Controller
             $option['correct'] = $optionData['correct'] ?? null;
             $option['group'] = $optionData['group'] ?? null;
             $option['match_id'] = $optionData['match_id'] ?? null;
-            $option['option_id'] = $optionData['option_id'] ?? null;
+            $option['variant_id'] = $optionData['variant_id'] ?? null;
             $option['sequence_index'] = $optionData['sequence_index'] ?? null;
 
             $option->save();

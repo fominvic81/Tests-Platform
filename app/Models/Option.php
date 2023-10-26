@@ -17,7 +17,7 @@ class Option extends Model
         'image',
         'correct',
         'group',
-        'option_id',
+        'variant_id',
         'match_id',
         'sequence_index',
     ];

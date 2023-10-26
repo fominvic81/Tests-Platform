@@ -45,7 +45,7 @@ class OptionFactory extends Factory
     {
         return $this->state(function () use ($isVariant, $id) {
             return $isVariant ? [
-                'option_id' => $id,
+                'variant_id' => $id,
             ] : [
                 'match_id' => $id,
             ];

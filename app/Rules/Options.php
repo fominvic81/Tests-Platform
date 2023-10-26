@@ -59,12 +59,12 @@ class Options implements ValidationRule
             case QuestionType::Match:
                 $result = Validator::make($valueToValidate, [
                     'options' => ['required', 'array', 'between:2,20'],
-                    'options.*' => ['array:id,text,image,delete_image,option_id,match_id'],
+                    'options.*' => ['array:id,text,image,delete_image,variant_id,match_id'],
                     'options.*.id' => ['nullable', 'integer'],
                     'options.*.text' => ['required', 'string'],
                     'options.*.image' => ['nullable', 'image', 'max:2048'],
                     'options.*.delete_image' => ['required', 'boolean'],
-                    'options.*.option_id' => ['nullable', 'integer'],
+                    'options.*.variant_id' => ['nullable', 'integer'],
                     'options.*.match_id' => ['nullable', 'integer'],
                 ]);
                 if (!$result->passes()) break;

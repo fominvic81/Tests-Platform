@@ -17,8 +17,8 @@ export const OptionsInitialData: {
         { id: getOptionId(), text: '', correct: false },
     ],
     [QuestionType.Match]: [
-        { id: getOptionId(), text: '', option_id: getVariantId() },
-        { id: getOptionId(), text: '', option_id: getVariantId() },
+        { id: getOptionId(), text: '', variant_id: getVariantId() },
+        { id: getOptionId(), text: '', variant_id: getVariantId() },
         { id: getOptionId(), text: '', match_id: 0 },
         { id: getOptionId(), text: '', match_id: 0 },
     ],
