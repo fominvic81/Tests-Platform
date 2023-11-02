@@ -3,49 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Answer;
 use App\Models\TestingSession;
 use Illuminate\Http\Request;
 
 class TestingSessionController extends Controller
 {
-    public function index()
-    {
-        //
-    }
 
     public function show(TestingSession $session)
     {
-        // $questions = [];
+        $questions = [];
 
-        // foreach ($session->test->questions as $question) {
-            
-        //     $options = $question->options;
+        foreach ($session->test->questions as $question) {
 
-        //     if ($session->settings->shuffle_options) $options->shuffle();
+            $answer = Answer::query()->whereBelongsTo($session, 'session')->whereBelongsTo($question)->first();
 
-        //     array_push($questions, [
-        //         'type'
-        //         'text'
-        //         'image'
-        //         'points'
-        //         'explanation'
-        //         'test_id'
-        //         'register_matters'
-        //         'whitespace_matters'
-        //         'show_amount_of_correct'
-        //     ]);
+            $q = $question->toArray();
+            $q['data']['answer'] = $answer ? $answer->data : null;
 
-        // }
-
-        $questions = $session->test->questions;
+            array_push($questions, $q);
+        }
         $data = [
+            'id' => $session->id,
             'questions' => $questions,
         ];
 
         return response()->json($data);
     }
-
-    // public function
-
-    
 }

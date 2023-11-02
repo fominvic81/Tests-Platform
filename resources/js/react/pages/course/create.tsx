@@ -27,8 +27,8 @@ const Component: React.FC = () => {
     }
 
     return <>
-        <div className='w-full p-4 bg-white border shadow-md'>
-            <form className='w-full h-full' method='POST' onSubmit={ onSubmit }>
+        <div className='w-full p-4 bg-white border shadow-md font-semibold'>
+            <form className='w-full h-full' onSubmit={ onSubmit }>
                 <CSRF></CSRF>
                 <h1 className='m-auto text-2xl w-min whitespace-nowrap'>Створити курс</h1>
                 <div className='grid grid-cols-[1fr_auto] gap-3'>
@@ -38,7 +38,7 @@ const Component: React.FC = () => {
                         <TextEditor name='description' id="description" placeholder='Опис'></TextEditor>
                     </div>
                     <div className='w-40 h-40'>
-                        <FormImage name='image' nameDel='delete_image'></FormImage>
+                        <FormImage name='image' nameDel='del_image'></FormImage>
                     </div>
                 </div>
                 <FormSelect name='accessibility' defaultValue={ Accessibility.Public } label='Доступність'>

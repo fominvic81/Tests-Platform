@@ -14,7 +14,7 @@
     @vite('resources/js/app.tsx')
 
 </head>
-<body {{ $attributes->merge(['class' => 'w-screen h-screen']) }}>
+<body {{ $attributes->merge(['class' => 'w-screen h-screen text-md']) }}>
     {{ $slot }}
 </body>
 </html>

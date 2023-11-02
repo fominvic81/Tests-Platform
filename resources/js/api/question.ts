@@ -1,35 +1,82 @@
-import { OptionByType, QuestionType } from './types';
+import { QuestionData, QuestionType } from './types';
 
-let lastId = -1;
-let lastMatchId = 1;
-export const getOptionId = () => lastId--;
-export const getVariantId = () => lastMatchId++;
-
-export const OptionsInitialData: {
-    [T in QuestionType]: OptionByType<T>[];
+export const QuestionInitialData: {
+    [T in QuestionType]: QuestionData<T>;
 } = {
-    [QuestionType.OneCorrect]: [
-        { id: getOptionId(), text: '', correct: false },
-        { id: getOptionId(), text: '', correct: false },
-    ],
-    [QuestionType.MultipleCorrect]: [
-        { id: getOptionId(), text: '', correct: false },
-        { id: getOptionId(), text: '', correct: false },
-    ],
-    [QuestionType.Match]: [
-        { id: getOptionId(), text: '', variant_id: getVariantId() },
-        { id: getOptionId(), text: '', variant_id: getVariantId() },
-        { id: getOptionId(), text: '', match_id: 0 },
-        { id: getOptionId(), text: '', match_id: 0 },
-    ],
-    [QuestionType.TextInput]: [
-        { id: getOptionId(), text: '' },
-    ],
-    [QuestionType.Sequence]: [
-        { id: getOptionId(), text: '', sequence_index: 0 },
-        { id: getOptionId(), text: '', sequence_index: 1 },
-    ],
-    [QuestionType.TextGapsTextInput]: [],
-    [QuestionType.TextGapsVariantSingleList]: [],
-    [QuestionType.TextGapsVariantMultipleLists]: [],
+    [QuestionType.OneCorrect]: {
+        options: [
+            { text: '' },
+            { text: '' },
+        ],
+        answer: {
+            correct: [false, false],
+        },
+    },
+    [QuestionType.MultipleCorrect]: {
+        settings: {
+            showAmountOfCorrect: false,
+        },
+        options: [
+            { text: '' },
+            { text: '' },
+        ],
+        answer: {
+            correct: [false, false],
+        },
+    },
+    [QuestionType.Match]: {
+        options: [
+            { text: '' },
+            { text: '' },
+        ],
+        variants: [
+            { text: '' },
+            { text: '' },
+        ],
+        answer: {
+            match: [-1, -1],
+        },
+    },
+    [QuestionType.TextInput]: {
+        settings: {
+            registerMatters: false,
+            whitespaceMatters: false,
+        },
+        answer: {
+            texts: [''],
+        },
+    },
+    [QuestionType.Sequence]: {
+        options: [
+            { text: '' },
+            { text: '' },
+        ],
+        answer: {
+            sequence: [0, 1],
+        }
+    },
+    [QuestionType.TextGapsTextInput]: {
+        settings: {
+            registerMatters: false,
+            whitespaceMatters: false,
+        },
+        answer: {
+            groups: {},
+        },
+    },
+    [QuestionType.TextGapsVariantSingleList]: {
+        options: [
+            { text: '' },
+            { text: '' },
+        ],
+        answer: {
+            groups: {},
+        },
+    },
+    [QuestionType.TextGapsVariantMultipleLists]: {
+        groups: {},
+        answer: {
+            groups: {},
+        },
+    },
 }

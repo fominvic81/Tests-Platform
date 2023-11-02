@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->boolean('published')->default(false)->index();
-            $table->integer('accessibility')->index();
+            $table->integer('accessibility')->unsigned()->index();
             $table->foreignId('subject_id');
             $table->foreignId('grade_id');
             $table->foreignId('user_id');

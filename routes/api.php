@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\AnswerController;
 use App\Http\Controllers\Api\CourseController;
 use App\Http\Controllers\Api\QuestionController;
 use App\Http\Controllers\Api\TestController;
+use App\Http\Controllers\Api\TestingSessionController;
 use App\Models\Grade;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -32,7 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     Route::apiResource('test', TestController::class)->only(['index', 'show', 'store', 'update']);
     Route::apiResource('test.question', QuestionController::class)->shallow()->except(['index']);
-    
+
     Route::get('/test-options', function (Request $request) {
         return response()->json([
             'courses' => $request->user()->courses->toArray(),
@@ -42,3 +44,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
 });
+
+Route::post('/session/{session}/answer', [AnswerController::class, 'store'])->name('answer.store');
+Route::get('/session/{session}', [TestingSessionController::class, 'show'])->name('session.show');

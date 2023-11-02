@@ -1,3 +1,3 @@
 
 
-export const storagePath = (path: string) => `/storage/${path.replace('public/', '')}`;
+export const imagePath = (image: string) => `/storage/images/${image}`;

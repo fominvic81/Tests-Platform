@@ -1,3 +1,1 @@
 @props(['question'])
-
-<div></div>

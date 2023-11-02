@@ -15,13 +15,11 @@ return new class extends Migration
             $table->id();
             $table->text('text');
             $table->string('image')->nullable();
-            $table->integer('type');
-            $table->integer('points');
+            $table->integer('type')->unsigned();
+            $table->integer('points')->unsigned();
             $table->text('explanation')->nullable();
+            $table->json('data');
             $table->foreignId('test_id');
-            $table->boolean('register_matters')->default(false);
-            $table->boolean('whitespace_matters')->default(false);
-            $table->boolean('show_amount_of_correct')->default(false);
             $table->timestamps();
         });
     }

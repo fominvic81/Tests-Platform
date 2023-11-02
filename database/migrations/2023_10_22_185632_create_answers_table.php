@@ -14,11 +14,10 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
             $table->boolean('is_correct');
-            $table->integer('type');
-            $table->json('options');
-            $table->json('texts');
+            $table->json('data');
             $table->foreignId('question_id');
             $table->foreignId('testing_session_id');
+            $table->unique(['question_id', 'testing_session_id']);
             $table->timestamps();
         });
     }

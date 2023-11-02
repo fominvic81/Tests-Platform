@@ -36,7 +36,7 @@ class TestController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
             'image' => ['nullable', 'image', 'max:2048'],
-            'delete_image' => ['required', 'boolean'],
+            'del_image' => ['required', 'boolean'],
             'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['string', 'nullable'],
             'course' => ['required', 'integer'],
@@ -79,7 +79,7 @@ class TestController extends Controller
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3'],
             'image' => ['nullable', 'image', 'max:2048'],
-            'delete_image' => ['required', 'boolean'],
+            'del_image' => ['required', 'boolean'],
             'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['string', 'nullable'],
             'course' => ['required', 'integer'],
@@ -88,7 +88,7 @@ class TestController extends Controller
         ]);
 
         $imagePath =
-            (boolval($data['delete_image'] ?? null)) ? null :
+            (boolval($data['del_image'] ?? null)) ? null :
             (isset($data['image']) ? $data['image']->store('public/images') :
             $test['image']);
 

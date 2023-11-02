@@ -1,10 +1,10 @@
 @props(['index', 'question'])
 
-<div class="bg-white p-3 my-4 shadow">
+<div class="bg-white p-3 my-4 shadow rounded-lg">
     <div>
         <div>
-            <div class="inline-block bg-gray-200 border border-gray-300 px-2 rounded mr-2 font-mono w-fit">Завдання №{{ $index + 1 }}</div>
-            <div class="inline-block bg-gray-200 border border-gray-300 px-2 rounded mr-2 font-mono w-fit">@lang('question.type.'.$question->type->value)</div>
+            <div class="inline-block border-2 px-2 rounded mr-2 font-mono font-semibold">Завдання №{{ $index + 1 }}</div>
+            <div class="inline-block border-2 px-2 rounded mr-2 font-mono font-semibold">@lang('question.type.'.$question->type->value)</div>
         </div>
         <div class="grid grid-cols-[auto_1fr]">
             @isset ($question->image)

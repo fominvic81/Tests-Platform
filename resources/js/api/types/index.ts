@@ -9,5 +9,5 @@ export * from './user';
 export * from './paginated';
 export * from './testOptions';
 export * from './validation';
-export * from './option';
 export * from './accessibility';
+export * from './session';

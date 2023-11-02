@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { Question, QuestionType, OptionsInitialData, QuestionTypeName, ValidationError } from '../../../api';
+import { Question, QuestionType, QuestionTypeName, ValidationError, QuestionInitialData } from '../../../../api';
 import { OneCorrect } from './OneCorrect';
-import { CSRF, Method } from '../../utils';
-import { TextEditor } from '../TextEditor';
-import { FormTextInput } from '../form/text';
-import { FormSubmit } from '../form/submit';
+import { CSRF, Method } from '../../../utils';
+import { TextEditor } from '../../TextEditor';
+import { FormTextInput } from '../../form/text';
+import { FormSubmit } from '../../form/submit';
 import axios, { AxiosError } from 'axios';
-import { FormError } from '../form/error';
-import { useUrlState } from '../../hooks/useUrlState';
+import { FormError } from '../../form/error';
+import { useUrlState } from '../../../hooks/useUrlState';
 import { MultipleCorrect } from './MultipleCorrect';
-import { FormToggle } from '../form/toggle';
+import { FormToggle } from '../../form/toggle';
 import { Match } from './Match';
 import cn from 'classnames';
-import { FormImage } from '../form/image';
-import { storagePath } from '../../../api/storagePath';
+import { FormImage } from '../../form/image';
+import { imagePath } from '../../../../api/storagePath';
 import { TextInput } from './TextInput';
 import { Sequence } from './Sequence';
 
@@ -33,12 +33,9 @@ const defaultQuestion = (type: QuestionType): Question => {
         id: 0,
         type,
         text: '',
-        options: OptionsInitialData[type],
         points: 1,
         topics: [],
-        register_matters: false,
-        whitespace_matters: false,
-        show_amount_of_correct: false,
+        data: QuestionInitialData[type],
     }
 }
 
@@ -51,20 +48,19 @@ interface Props {
     onSave: (question: Question) => any;
 }
 
-export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave }) => {
+export const QuestionEdit: React.FC<Props> = ({ initialQuestion, onSave }) => {
 
     const create = !initialQuestion;
     const action = create ? `/api/test/${location.pathname.split('/')[2]}/question` : `/api/question/${initialQuestion.id}`;
     const method = create ? 'POST' : 'PUT';
 
     const [{ type }, setUrlData, resetUrlData] = useUrlState<UrlData>({ type: initialQuestion?.type ?? QuestionType.OneCorrect });
-    
-    const [question, setQuestion] = useState((!initialQuestion || type !== initialQuestion.type) ? defaultQuestion(type) : initialQuestion);
+    const [question, setQuestion] = useState<Question<QuestionType>>((!initialQuestion || type !== initialQuestion.type) ? defaultQuestion(type) : initialQuestion);
 
     const [error, setError] = useState<ValidationError>();
 
     const setType = (newType: QuestionType) => {
-        setQuestion(newType === initialQuestion?.type ? { ...initialQuestion } : { ...question, options: OptionsInitialData[newType]});
+        setQuestion(newType === initialQuestion?.type ? { ...initialQuestion } : { ...question, data: QuestionInitialData[newType]});
         setUrlData({ type: newType }, true);
     }
 
@@ -109,24 +105,20 @@ export const QuestionEditComponent: React.FC<Props> = ({ initialQuestion, onSave
                             <div className='aspect-square mx-3 mt-6'>
                                 <FormImage
                                     name='image'
-                                    nameDel='delete_image'
-                                    defaultSrc={ question.image && storagePath(question.image) }
+                                    nameDel='del_image'
+                                    defaultSrc={ question.image && imagePath(question.image) }
                                 ></FormImage>
                             </div>
                         </div>
                         <div>
                             <FormTextInput type='number' name='points' label='Бали' defaultValue={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>
                         </div>
-
-                        { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.register_matters ?? false } name='register_matters' label='Враховувати пробіл?'></FormToggle> }
-                        { type === QuestionType.TextInput && <FormToggle defaultChecked={ question.whitespace_matters ?? false } name='whitespace_matters' label='Враховувати розмір букви?'></FormToggle> }
-                        { type === QuestionType.MultipleCorrect && <FormToggle defaultChecked={ question.show_amount_of_correct ?? false } name='show_amount_of_correct' label='Показувати кількість правильних варіантів?'></FormToggle> }
                     </div>
                     
                 </div>
             </div>
             <div className='mt-1 p-2 border-2'>
-                <Component initialOptions={ question.options }></Component>
+                <Component question={ question }></Component>
             </div>
             <div className='grid grid-cols-2 items-baseline gap-2'>
                 <button

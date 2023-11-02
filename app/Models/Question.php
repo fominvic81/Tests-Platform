@@ -20,10 +20,7 @@ class Question extends Model
         'image',
         'points',
         'explanation',
-        'test_id',
-        'register_matters',
-        'whitespace_matters',
-        'show_amount_of_correct',
+        'data',
     ];
 
     protected $hidden = [
@@ -32,15 +29,12 @@ class Question extends Model
 
     protected $with = [
         'topics',
-        'options',
     ];
 
     protected $casts = [
         'type' => QuestionType::class,
         'text'=> CleanHtml::class,
-        'register_matters' => 'boolean',
-        'whitespace_matters' => 'boolean',
-        'show_amount_of_correct' => 'boolean',
+        'data' => 'json'
     ];
 
     public function test(): BelongsTo

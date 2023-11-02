@@ -1,6 +1,6 @@
 /// <reference types="vite-plugin-svgr/client" />
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { EditorContent, useEditor, Editor, ChainedCommands } from '@tiptap/react';
 import ListItem from '@tiptap/extension-list-item';
 import { Color } from '@tiptap/extension-color';
@@ -82,13 +82,19 @@ const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
 interface Props {
     name: string;
     id?: string;
+    value?: string;
     defaultValue?: string;
     placeholder?: string;
     onChange?: (value: string) => any;
 }
 
-export const TextEditor: React.FC<Props> = ({ name, id, defaultValue, placeholder, onChange }) => {
-    const [value, setValue] = useState(defaultValue ?? '');
+export const TextEditor: React.FC<Props> = ({ name, id, value, defaultValue, placeholder, onChange }) => {
+    const [currentValue, setCurrentValue] = useState(value ?? defaultValue ?? '');
+    const updateValue = (newValue: string) => {
+        setCurrentValue(newValue);
+        if (!editor) return;
+        editor.commands.setContent(newValue);
+    }
 
     const editor = useEditor({
         editorProps: {
@@ -98,7 +104,11 @@ export const TextEditor: React.FC<Props> = ({ name, id, defaultValue, placeholde
         },
         onUpdate: ({ editor }) => {
             const html = editor.getHTML();
-            setValue(html);
+            if (value) {
+                updateValue(value);
+            } else {
+                setCurrentValue(html);
+            }
             if (onChange) onChange(html);
         },
         extensions: [
@@ -122,13 +132,19 @@ export const TextEditor: React.FC<Props> = ({ name, id, defaultValue, placeholde
             Superscript.configure(),
             Subscript.configure(),
         ],
-        content: value,
+        content: currentValue,
     });
+
+    useEffect(() => {
+        if (!editor) return;
+        updateValue(value ?? '');
+    }, [value]);
+
     if (!editor) return;
 
     return <div className='overflow-hidden break-words'>
-        <input type='hidden' name={ name } id={ id } value={ value }></input>
-        <MenuBar editor={editor}></MenuBar>
-        <EditorContent editor={editor}></EditorContent>
+        <input type='hidden' name={ name } id={ id } value={ currentValue }></input>
+        <MenuBar editor={ editor }></MenuBar>
+        <EditorContent editor={ editor } ></EditorContent>
     </div>;
 }

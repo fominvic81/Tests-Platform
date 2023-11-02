@@ -23,9 +23,7 @@ class QuestionFactory extends Factory
             'image' => null,
             'points' => fake()->numberBetween(1, 5),
             'explanation' => null,
-            // 'register_matters',
-            // 'whitespace_matters',
-            // 'show_amount_of_correct',
+            'data' => null,
         ];
     }
 
@@ -43,6 +41,24 @@ class QuestionFactory extends Factory
         return $this->state(function () use ($text) {
             return [
                 'text' => $text,
+            ];
+        });
+    }
+
+    public function points(int $points): Factory
+    {
+        return $this->state(function () use ($points) {
+            return [
+                'points'=> $points,
+            ];
+        });
+    }
+
+    public function data(array $data): Factory
+    {
+        return $this->state(function () use ($data) {
+            return [
+                'data'=> $data,
             ];
         });
     }

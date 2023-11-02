@@ -61,13 +61,13 @@ class CourseController extends Controller
         $data = $request->validate([
             'name' => ['required', 'min:3'],
             'image' => ['image', 'nullable', 'max:2048'],
-            'delete_image' => ['required', 'boolean'],
+            'del_image' => ['required', 'boolean'],
             'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['nullable', 'string'],
         ]);
 
         $imagePath =
-            (boolval($data['delete_image'] ?? null)) ? null :
+            (boolval($data['del_image'] ?? null)) ? null :
             (isset($data['image']) ? $data['image']->store('public/images') :
             $course['image']);
 

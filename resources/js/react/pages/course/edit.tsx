@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { courseEditId } from '../..';
-import { Accessibility, AccessibilityName, Course, ValidationError } from '../../../api'; 
+import { Accessibility, AccessibilityName, Course, ValidationError, imagePath, getCourse } from '../../../api'; 
 import { Async, CSRF, Method, useAsync } from '../../utils';
 import { FormTextInput } from '../../components/form/text';
 import { FormError } from '../../components/form/error';
@@ -10,8 +10,6 @@ import axios, { AxiosError } from 'axios';
 import { FormImage } from '../../components/form/image';
 import { TextEditor } from '../../components/TextEditor';
 import { FormSelect } from '../../components/form/select';
-import { getCourse } from '../../../api/getCourse';
-import { storagePath } from '../../../api/storagePath';
 
 type AsyncData = [Course];
 
@@ -32,8 +30,8 @@ const Component: React.FC = () => {
     }
 
     return <>
-        <div className='w-full p-4 bg-white border shadow-md'>
-            <form className='w-full h-full' method='POST' onSubmit={ onSubmit }>
+        <div className='w-full p-4 bg-white border shadow-md font-semibold'>
+            <form className='w-full h-full' onSubmit={ onSubmit }>
                 <CSRF></CSRF>
                 <Method method='PUT'></Method>
 
@@ -45,7 +43,7 @@ const Component: React.FC = () => {
                         <TextEditor name='description' id="description" placeholder='Опис' defaultValue={ course.description }></TextEditor>
                     </div>
                     <div className='w-40 h-40'>
-                        <FormImage name='image' nameDel='delete_image' defaultSrc={ course.image && storagePath(course.image) }></FormImage>
+                        <FormImage name='image' nameDel='del_image' defaultSrc={ course.image && imagePath(course.image) }></FormImage>
                     </div>
                 </div>
                 <FormSelect name='accessibility' defaultValue={ course.accessibility } label='Доступність'>

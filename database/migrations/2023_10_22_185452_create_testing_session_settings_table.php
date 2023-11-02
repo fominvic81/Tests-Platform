@@ -17,8 +17,8 @@ return new class extends Migration
             $table->boolean('shuffle_questions');
             $table->boolean('shuffle_options');
             $table->boolean('show_result');
-            $table->integer('points_min');
-            $table->integer('points_max');
+            $table->integer('points_min')->unsigned();
+            $table->integer('points_max')->unsigned();
             $table->timestamps();
         });
     }

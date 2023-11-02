@@ -2,72 +2,32 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\QuestionType;
+use App\Helpers\ImageHelper;
+use App\Helpers\QuestionHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\Test;
-use App\Models\Option;
-use App\Rules\Options;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\Enum;
 
 class QuestionController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Test $test)
+    public function store(QuestionRequest $request, Test $test)
     {
-        $data = $request->validate([
-            'type' => ['required', new Enum(QuestionType::class)],
-            'text' => ['required', 'string'],
-            'image' => ['image', 'nullable', 'max:2048'],
-            'points' => ['required', 'numeric'],
-            'explanation' => ['string', 'nullable'],
+        $data = $request->validated();
+        $data['data'] = QuestionHelper::parse($data['data']);
 
-            'register_matters' => ['boolean', 'nullable'],
-            'whitespace_matters' => ['boolean', 'nullable'],
-            'show_amount_of_correct' => ['boolean', 'nullable'],
-        ]);
+        $data['image'] = isset($variant['image']) ? ImageHelper::uploadImage($data['image']) : null;
 
-        $optionsData = $request->validate([
-            'options' => ['required', new Options(QuestionType::from($data['type']))],
-        ])['options'];
-
-        $imagePath = isset($data['image']) ? $data['image']->store('public/images') : null;
-
-        $question = new Question([
-            'type' => $data['type'],
-            'text' => $data['text'],
-            'image' => $imagePath,
-            'points' => $data['points'],
-            'explanation' => $data['explanation'] ?? null,
-            'test_id' => $test->id,
-        ]);
-
+        $question = new Question($data);
+        $question->test()->associate($test);
         $question->save();
 
-        foreach ($optionsData as $optionData) {
-
-            $optionImagePath = isset($optionData['image']) ? $optionData['image']->store('public/images') : null;
-
-            $option = new Option([
-                'question_id' => $question->id,
-                'text' => $optionData['text'],
-                'image' => $optionImagePath,
-                'correct' => $optionData['correct'] ?? null,
-                'group' => $optionData['group'] ?? null,
-                'variant_id' => $optionData['variant_id'] ?? null,
-                'match_id' => $optionData['match_id'] ?? null,
-                'sequence_index' => $optionData['sequence_index'] ?? null,
-            ]);
-
-            $option->save();
-        }
-
-        $question->load('options');
-
-        return response()->json($question->toArray());
+        // TODO: it sends test???
+        return response()->json($question->makeHidden('test')->toArray());
     }
 
     /**
@@ -81,76 +41,17 @@ class QuestionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Question $question)
+    public function update(QuestionRequest $request, Question $question)
     {
-        $data = $request->validate([
-            'type' => ['required', new Enum(QuestionType::class)],
-            'text' => ['required', 'string'],
-            'image' => ['image', 'nullable', 'max:2048'],
-            'delete_image' => ['required', 'boolean'],
-            'points' => ['required', 'numeric'],
-            'explanation' => ['string', 'nullable'],
+        $data = $request->validated();
+        $data['data'] = QuestionHelper::parse($data['data']);
 
-            'register_matters' => ['boolean', 'nullable'],
-            'whitespace_matters' => ['boolean', 'nullable'],
-            'show_amount_of_correct' => ['boolean', 'nullable'],
-        ]);
+        $deleteImage = boolval($data['del_image'] ?? null);
+        $data['image'] = isset($variant['image']) ? ImageHelper::uploadImage($data['image']) :
+            ($deleteImage ? null : ($question['image'] ?? null));
 
-        $optionsData = $request->validate([
-            'options' => ['required', new Options(QuestionType::from($data['type']))],
-        ])['options'];
-
-        // TODO: Remove image if updated
-        $imagePath =
-            (boolval($data['delete_image'] ?? null)) ? null :
-            (isset($data['image']) ? $data['image']->store('public/images') :
-            $question['image']);
-
-        $question['type'] = $data['type'];
-        $question['text'] = $data['text'];
-        $question['image'] = $imagePath;
-        $question['points'] = $data['points'];
-        $question['explanation'] = $data['explanation'] ?? null;
-
-        $question['register_matters'] = $data['register_matters'] ?? $question['register_matters'];
-        $question['whitespace_matters'] = $data['whitespace_matters'] ?? $question['whitespace_matters'];
-        $question['show_amount_of_correct'] = $data['show_amount_of_correct'] ?? $question['show_amount_of_correct'];
-
+        $question->fill($data);
         $question->save();
-
-        foreach ($question->options as $option) {
-            $delete = true;
-            foreach ($optionsData as $optionData) {
-                if (isset($optionData['id']) && $option->id === intval($optionData['id'])) {
-                    $delete = false;
-                }
-            }
-            if ($delete) {
-                $option->delete();
-            }
-        }
-
-        foreach ($optionsData as $optionData) {
-
-            $option = $question->options->find($optionData['id']) ?? new Option(['question_id' => $question->id]);
-
-            $optionImagePath =
-                (boolval($optionData['delete_image'] ?? null)) ? null :
-                (isset($optionData['image']) ? $optionData['image']->store('public/images') :
-                $option['image']);
-
-            $option['text'] = $optionData['text'];
-            $option['image'] = $optionImagePath;
-            $option['correct'] = $optionData['correct'] ?? null;
-            $option['group'] = $optionData['group'] ?? null;
-            $option['match_id'] = $optionData['match_id'] ?? null;
-            $option['variant_id'] = $optionData['variant_id'] ?? null;
-            $option['sequence_index'] = $optionData['sequence_index'] ?? null;
-
-            $option->save();
-        }
-
-        $question->load('options');
 
         return response()->json($question->toArray());
     }

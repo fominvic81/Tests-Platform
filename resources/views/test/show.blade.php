@@ -1,5 +1,5 @@
 <x-layouts.feed>
-    <div class="flex justify-between items-start p-5 bg-white shadow-md">
+    <div class="flex justify-between items-start p-5 bg-white shadow-md rounded-lg">
         <div class="grid grid-cols-[min-content_1fr]">
             <div class="mr-1">
                 @isset($test->image)
@@ -27,7 +27,7 @@
         @auth
             @if (Auth::user()->id === $test->user_id)
                 <a class="p-2 rounded-md bg-gray-100 border border-gray-300" href="{{ route('test.edit', $test->id) }}">Редагувати</a>
-            @endif
+                @endif
         @endauth
     </div>
     <div>

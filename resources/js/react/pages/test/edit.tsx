@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { testEditId } from '../..';
-import { Accessibility, AccessibilityName, Test, TestOptions, ValidationError, deleteQuestion, getTest, getTestOptions } from '../../../api'; 
-import { QuestionEditComponent } from '../../components/question-edit/QuestionEdit';
-import { QuestionComponent } from '../../components/question-show/Question';
+import { Accessibility, AccessibilityName, Test, TestOptions, ValidationError, deleteQuestion, getTest, getTestOptions, imagePath } from '../../../api'; 
+import { QuestionEdit } from '../../components/question/edit';
+import { QuestionShow } from '../../components/question/show';
 import { Async, CSRF, Method, useAsync } from '../../utils';
 import { FormTextInput } from '../../components/form/text';
 import { FormSelect } from '../../components/form/select';
 import { FormSubmit } from '../../components/form/submit';
 import { useUrlState } from '../../hooks/useUrlState';
 import { FormImage } from '../../components/form/image';
-import { storagePath } from '../../../api/storagePath';
 import axios, { AxiosError } from 'axios';
 import { FormError } from '../../components/form/error';
 import { TextEditor } from '../../components/TextEditor';
@@ -50,8 +49,8 @@ const Component: React.FC = () => {
 
     return <>
         {page === 'test' && <>
-            <div className='p-5 bg-white shadow-md'>
-                <form method='POST' onSubmit={ onSubmit } onChange={() => setSaved(false)}>
+            <div className='p-5 bg-white shadow-md rounded-lg font-semibold'>
+                <form onSubmit={ onSubmit } onChange={() => setSaved(false)}>
                     <CSRF></CSRF>
                     <Method method='PUT'></Method>
             
@@ -63,7 +62,7 @@ const Component: React.FC = () => {
                             <TextEditor id='description' name='description' placeholder='Опис' defaultValue={ test.description } onChange={() => setSaved(false)}></TextEditor>
                         </div>
                         <div className='w-40 h-40 m-3'>
-                            <FormImage name='image' nameDel='delete_image' defaultSrc={ test.image && storagePath(test.image) } onChange={() => setSaved(false)}></FormImage>
+                            <FormImage name='image' nameDel='del_image' defaultSrc={ test.image && imagePath(test.image) } onChange={() => setSaved(false)}></FormImage>
                         </div>
                     </div>
             
@@ -105,7 +104,7 @@ const Component: React.FC = () => {
 
             <div>
                 {questions.map((question, index) =>
-                    <QuestionComponent
+                    <QuestionShow
                         key={question.id}
                         question={question}
                         index={index}
@@ -120,25 +119,24 @@ const Component: React.FC = () => {
                                 editQuestionId: question.id,
                             })
                         }}
-                    ></QuestionComponent>
+                    ></QuestionShow>
                 )}
             </div>
-
-            <button type='button' className='w-full text-2xl p-5 my-5 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200' onClick={() => setUrlState({ page: 'quest-create' })}>Створити питання</button>
+            <button type='button' className='w-full text-2xl p-5 mt-2 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-lg' onClick={() => setUrlState({ page: 'quest-create' })}>Створити питання</button>
         </>}
-        {page === 'quest-create' && <QuestionEditComponent
+        {page === 'quest-create' && <QuestionEdit
             onSave={(q) => {
                 setUrlState({ page: 'test' });
                 setQuestions([...questions, q]);
             }}
-        ></QuestionEditComponent>}
-        {page === 'quest-edit' && <QuestionEditComponent
+        ></QuestionEdit>}
+        {page === 'quest-edit' && <QuestionEdit
             initialQuestion={ questionToEdit }
             onSave={(q) => {
                 setUrlState({ page: 'test', editQuestionId: undefined });
                 setQuestions(questions.map((question) => question.id === editQuestionId ? q : question));
             }}
-        ></QuestionEditComponent>}
+        ></QuestionEdit>}
     </>;
 }
 
