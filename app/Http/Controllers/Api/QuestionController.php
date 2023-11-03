@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\QuestionRequest;
 use App\Models\Question;
 use App\Models\Test;
-use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
@@ -26,7 +25,6 @@ class QuestionController extends Controller
         $question->test()->associate($test);
         $question->save();
 
-        // TODO: it sends test???
         return response()->json($question->makeHidden('test')->toArray());
     }
 
@@ -44,7 +42,7 @@ class QuestionController extends Controller
     public function update(QuestionRequest $request, Question $question)
     {
         $data = $request->validated();
-        $data['data'] = QuestionHelper::parse($data['data']);
+        $data['data'] = QuestionHelper::parse($data['data'], $question->data);
 
         $deleteImage = boolval($data['del_image'] ?? null);
         $data['image'] = isset($variant['image']) ? ImageHelper::uploadImage($data['image']) :

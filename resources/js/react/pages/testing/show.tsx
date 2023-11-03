@@ -55,7 +55,7 @@ const Component: React.FC = () => {
                 <div className='my-8 row-start-1 col-start-2 p-3 mx-1 bg-white rounded-md shadow-md'>
                     <div className='indent-4 font-bold'>Завдання №{ questionIndex + 1 }</div>
                     <hr className='my-1'></hr>
-                    <QuestionAsk question={ question }></QuestionAsk>
+                    <QuestionAsk key={ question.id } question={ question }></QuestionAsk>
                     <FormError error={ error }></FormError>
                     <div className='grid grid-cols-2 mt-3 gap-3'>
                         <button className='col-span-2 p-1 border bg-gray-50 rounded hover:brightness-90'>Зберегти</button>
