@@ -10,10 +10,7 @@ class Answer extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'is_correct',
-        'data',
-    ];
+    protected $fillable = [];
 
     protected $casts = [
         'data' => 'json',

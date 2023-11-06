@@ -48,4 +48,37 @@ class TestingSession extends Model
     {
         return $this->hasMany(Answer::class);
     }
+
+    public function stats()
+    {
+        $questions = $this->test->questions;
+        $settings = $this->settings;
+
+        $max = 0;
+        $correct = 0;
+        $unanswered = 0;
+        foreach ($questions as $question) {
+            $answer = $this->answers()->whereBelongsTo($question)->first();
+
+            $max += $question->points;
+            if ($answer) {
+                $correct += $answer->points;
+            } else {
+                $unanswered += $question->points;
+            }
+        }
+        $wrong = $max - $correct - $unanswered;
+
+        $range = $settings->points_max - $settings->points_min;
+
+        $points = $correct * $range / $max + $settings->points_min;
+
+        return [
+            'max' => $max,
+            'correct' => $correct,
+            'wrong' => $wrong,
+            'unanswered' => $unanswered,
+            'points' => $points,
+        ];
+    }
 }

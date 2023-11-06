@@ -32,6 +32,7 @@
         @foreach ($exam->sessions as $session)
             <div class="bg-emerald-400 p-1 rounded">
                 {{ $session->student_name }}
+                {{ json_encode($session->stats()) }}
             </div>
         @endforeach
     </div>
