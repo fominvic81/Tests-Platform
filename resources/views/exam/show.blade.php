@@ -1,13 +1,18 @@
 <x-layouts.feed>
     <h1 class="text-3xl font-bold text-center">Домашнє завдання</h1>
     <div class="p-3 text-lg shadow rounded-md mt-5 bg-white">
-        <div>
-            <h1 class="text-2xl font-bold text-center">{{ $exam->label }}</h1>
-            <div>Початок: {{ $exam->begin_at->format('H:i m.d') }}</div><div>Кінець: {{ $exam->end_at->format('H:i m.d') }}</div>
-            <div>Час на виконання: {{ date('H:i', strtotime($exam->settings->time)) }}</div>
+        <h1 class="text-2xl font-bold text-center">{{ $exam->label }}</h1>
+        <div class="grid grid-cols-[1fr_auto]">
             <div>
-                Тест: <a href="{{ route('test.show', $exam->test->id) }}" class="text-blue-600 hover:text-blue-400">{{ $exam->test->name }}</a>
+                <div>Початок: {{ $exam->begin_at->format('H:i m.d') }}</div><div>Кінець: {{ $exam->end_at->format('H:i m.d') }}</div>
+                <div>Час на виконання: {{ date('H:i', strtotime($exam->settings->time)) }}</div>
+                <div>
+                    Тест: <a href="{{ route('test.show', $exam->test->id) }}" class="text-blue-600 hover:text-blue-400">{{ $exam->test->name }}</a>
+                </div>
             </div>
+            <a href="{{ route('exam.edit', $exam->id) }}" class="block w-10 h-10 rounded-md border-2 hover:bg-gray-200">
+                <x-svg path="common/edit.svg"></x-svg>
+            </a>
         </div>
     </div>
     <div class="p-3 text-lg shadow rounded-md mt-5 bg-emerald-200  grid grid-cols-[1fr_150px]">

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Accessibility;
+use App\Helpers\ImageHelper;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Enum;
 
 class CourseController extends Controller
 {
@@ -31,6 +33,24 @@ class CourseController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $data = $request->validated();
+
+        $data['image'] = isset($data['image']) ? ImageHelper::uploadImage($data['image']) : null;
+
+        $course = new Course($data);
+        $course->published = false;
+        $course->user()->associate($request->user());
+
+        $course->save();
+
+        return redirect()->route('course.show', $course->id);
+    }
+
+    /**
      * Display the specified resource.
      */
     public function show(Course $course)
@@ -44,5 +64,22 @@ class CourseController extends Controller
     public function edit(Course $course)
     {
         return view('course.edit', [ 'course' => $course ]);
+    }
+
+    public function update(Request $request, Course $course)
+    {
+        $data = $request->validated();
+
+        $data['image'] =
+            (boolval($data['del_image'] ?? null)) ? null :
+            (isset($data['image']) ? ImageHelper::uploadImage($data['image']) :
+            $course->image);
+
+        $course->fill($data);
+        $course->save();
+
+        $course->save();
+
+        return redirect()->route('course.show', $course->id);
     }
 }

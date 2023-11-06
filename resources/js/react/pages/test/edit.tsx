@@ -66,36 +66,28 @@ const Component: React.FC = () => {
                         </div>
                     </div>
             
-                    <div className='grid grid-cols-2 gap-3'>
-                        <div>
-                            <FormSelect name='course' label='Курс' defaultValue={ test.course }>
-                                <option className='font-bold' value='0'>Без курсу</option>
-                                {options.courses.map((course) => 
-                                    <option key={ course.id } value={ course.id }>{ course.name }</option>                    
-                                )}
-                            </FormSelect>
-                        </div>
-                        <div>
-                            <FormSelect name='accessibility' defaultValue={ test.accessibility } label='Доступність'>
-                                {Object.values(Accessibility).filter((v) => typeof v !== 'number').map((key) =>
-                                    <option key={ key } value={ Accessibility[key] }>{ AccessibilityName[Accessibility[key]] }</option>
-                                )}
-                            </FormSelect>
-                        </div>
-                        <div>
-                            <FormSelect name='subject' label='Предмет' defaultValue={ test.subject }>
-                                {options.subjects.map((subject) => 
-                                    <option key={ subject.id } value={ subject.id }>{ subject.name }</option>
-                                )}
-                            </FormSelect>
-                        </div>
-                        <div>
-                            <FormSelect name='grade' label='Клас' defaultValue={ test.grade }>
-                                {options.grades.map((grade) =>
-                                    <option key={ grade.id } value={ grade.id }>{ grade.name }</option>
-                                )}
-                            </FormSelect>
-                        </div>
+                    <div className='grid grid-cols-2 gap-x-3'>
+                        <FormSelect name='course' label='Курс' defaultValue={ test.course?.id }>
+                            <option className='font-bold' value=''>Без курсу</option>
+                            {options.courses.map((course) => 
+                                <option key={ course.id } value={ course.id }>{ course.name }</option>                    
+                            )}
+                        </FormSelect>
+                        <FormSelect name='accessibility' defaultValue={ test.accessibility } label='Доступність'>
+                            {Object.values(Accessibility).filter((v) => typeof v !== 'number').map((key) =>
+                                <option key={ key } value={ Accessibility[key] }>{ AccessibilityName[Accessibility[key]] }</option>
+                            )}
+                        </FormSelect>
+                        <FormSelect name='subject' label='Предмет' defaultValue={ test.subject.id }>
+                            {options.subjects.map((subject) => 
+                                <option key={ subject.id } value={ subject.id }>{ subject.name }</option>
+                            )}
+                        </FormSelect>
+                        <FormSelect name='grade' label='Клас' defaultValue={ test.grade.id }>
+                            {options.grades.map((grade) =>
+                                <option key={ grade.id } value={ grade.id }>{ grade.name }</option>
+                            )}
+                        </FormSelect>
                     </div>
                     <FormSubmit disabled={ saved }>Зберегти</FormSubmit>
                     <FormError error={ error }></FormError>
@@ -122,7 +114,11 @@ const Component: React.FC = () => {
                     ></QuestionShow>
                 )}
             </div>
-            <button type='button' className='w-full text-2xl p-5 mt-2 bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 rounded-lg' onClick={() => setUrlState({ page: 'quest-create' })}>Створити питання</button>
+            <button
+                type='button'
+                className='w-full text-2xl p-5 mt-2 bg-white hover:bg-gray-50 border-2 rounded-md shadow-md'
+                onClick={() => setUrlState({ page: 'quest-create' })}
+            >Створити питання</button>
         </>}
         {page === 'quest-create' && <QuestionEdit
             onSave={(q) => {

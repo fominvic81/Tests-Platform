@@ -13,10 +13,8 @@ export const TextInput: React.FC<Props> = ({ question }) => {
     const [keys, setKeys] = useState(answer.texts.map(() => getUniqueId()));
 
     return <>
-        <div>
-            <FormToggle name='data[settings][registerMatters]' label='Враховувати регістр букв?' defaultChecked={ question.data.settings.registerMatters }></FormToggle>
-            <FormToggle name='data[settings][whitespaceMatters]' label='Враховувати пробіл?' defaultChecked={ question.data.settings.whitespaceMatters }></FormToggle>
-        </div>
+        <FormToggle name='data[settings][registerMatters]' label='Враховувати регістр букв?' defaultChecked={ question.data.settings.registerMatters }></FormToggle>
+        <FormToggle name='data[settings][whitespaceMatters]' label='Враховувати пробіл?' defaultChecked={ question.data.settings.whitespaceMatters }></FormToggle>
         <div className='grid grid-cols-[1fr_auto] gap-2'>
             {answer.texts.map((text, index) => <React.Fragment key={ keys[index] }>
                 <div className='overflow-hidden'>

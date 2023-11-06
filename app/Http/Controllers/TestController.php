@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Accessibility;
+use App\Helpers\ImageHelper;
+use App\Http\Requests\TestRequest;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\Test;
+use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
@@ -26,12 +29,34 @@ class TestController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         return view('test.create', [
+            'courses' => $request->user()->courses,
             'subjects' => Subject::all(),
             'grades' => Grade::all(),
         ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(TestRequest $request)
+    {
+        $data = $request->validated();
+
+        $data['image'] = isset($data['image']) ? ImageHelper::uploadImage($data['image']) : null;
+
+        $test = new Test($data);
+
+        $test->user()->associate($request->user());
+        $test->course()->associate($data['course']);
+        $test->subject()->associate($data['subject']);
+        $test->grade()->associate($data['grade']);
+
+        $test->save();
+
+        return redirect()->route('test.edit', $test->id);
     }
 
     /**
@@ -47,11 +72,7 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
-        return view('test.edit', [
-            'test' => $test,
-            'subjects' => Subject::all(),
-            'grades' => Grade::all(),
-        ]);
+        return view('test.edit');
     }
 
     /**

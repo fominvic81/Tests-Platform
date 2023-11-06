@@ -30,9 +30,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         return $request->user()->createToken('token')->plainTextToken;
     });
 
-    Route::apiResource('course', CourseController::class);
+    // Route::apiResource('course', CourseController::class);
     
-    Route::apiResource('test', TestController::class)->only(['index', 'show', 'store', 'update']);
+    Route::apiResource('test', TestController::class)->only(['index', 'show', 'update']);
     Route::apiResource('test.question', QuestionController::class)->shallow()->except(['index']);
 
     Route::get('/test-options', function (Request $request) {

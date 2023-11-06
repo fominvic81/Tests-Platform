@@ -1,4 +1,4 @@
-@props(['label', 'name', 'id', 'type', 'value', 'placeholder', 'labelClass', 'wrapClass'])
+@props(['label', 'name', 'id', 'value', 'labelClass', 'wrapClass'])
 
 <div @isset($wrapClass)class="{{ $wrapClass }}"@endisset>
     @isset($label)
@@ -6,12 +6,9 @@
     @endisset
     <input
         {{ $attributes->merge(['class' => 'w-full py-1 border-2 rounded indent-1']) }}
-        type="{{ isset($type) ? $type : 'text' }}"
+        type="time"
         name="{{ $name }}"
         id="{{ $id ?? $name }}"
-        @isset($placeholder)
-            placeholder="{{ $placeholder }}"
-        @endisset
         @isset($value)
             value="{{ $value }}"
         @endisset

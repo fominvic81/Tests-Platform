@@ -1,1 +1,4 @@
-<button class="w-full h-10 mt-5 bg-sky-500 border border-blue-400 rounded" type="submit">{{ $slot }}</button>
+<button
+    type="submit"
+    {{ $attributes->merge(['class' => 'w-full py-1 bg-sky-500 border border-blue-400 rounded']) }}
+>{{ $slot }}</button>

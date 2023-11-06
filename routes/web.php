@@ -35,10 +35,10 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'delete'])->name('logout');
-    
-    Route::resource('course', CourseController::class)->except(['index', 'show', 'store', 'update', 'destroy']);
 
-    Route::resource('test', TestController::class)->except(['index', 'show', 'store', 'update']);
+    Route::resource('course', CourseController::class)->except(['index', 'show']);
+
+    Route::resource('test', TestController::class)->except(['index', 'show', 'update']);
 
     Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');
     Route::resource('test.exam', ExamController::class)->shallow()->except(['index']);

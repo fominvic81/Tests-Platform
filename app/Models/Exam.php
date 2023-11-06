@@ -13,12 +13,8 @@ class Exam extends Model
 
     protected $fillable = [
         'label',
-        'code',
         'begin_at',
         'end_at',
-        'test_id',
-        'testing_session_settings_id',
-        'user_id',
     ];
 
     protected $casts = [

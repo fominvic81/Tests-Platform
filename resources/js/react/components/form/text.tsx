@@ -11,19 +11,18 @@ interface Props {
 }
 
 export const FormTextInput: React.FC<Props> = ({ type, name, placeholder, value, defaultValue, onChange, label }) => {
-    const id = `${name}-${useId()}`;
 
-    return <>
-        {label && <label htmlFor={ id }>{ label }</label>}
+    return <div>
+        {label && <label htmlFor={ name }>{ label }</label>}
         <input
-            className='w-full h-8 bg-gray-50 border border-gray-300 indent-1'
+            className='w-full py-1 border-2 rounded indent-1'
             type={ type }
             name={ name }
-            id={ id }
+            id={ name }
             placeholder={ placeholder }
             value={ value }
             defaultValue={ defaultValue }
             onChange={(event) => onChange && onChange(event.target.value)}
         />
-    </>
+    </div>
 }

@@ -1,7 +1,7 @@
 <x-layouts.feed>
     @foreach ($tests as $test)
         <div class="bg-white p-3 my-4 shadow grid grid-cols-[auto_1fr] gap-3">
-            <x-common.image :src="isset($test->image) ? Storage::url($test->image) : URL::to('/images/img-placeholder.png')"></x-common.image>
+            <x-common.image :src="isset($test->image) ? App\Helpers\ImageHelper::url($test->image) : URL::to('/images/img-placeholder.png')"></x-common.image>
             <div>
                 <a class="text-lg" href="{{ route('test.show', $test->id) }}">{{ $test->name }}</a>
                 <div>

@@ -19,7 +19,7 @@ class QuestionController extends Controller
         $data = $request->validated();
         $data['data'] = QuestionHelper::parse($data['data']);
 
-        $data['image'] = isset($variant['image']) ? ImageHelper::uploadImage($data['image']) : null;
+        $data['image'] = isset($data['image']) ? ImageHelper::uploadImage($data['image']) : null;
 
         $question = new Question($data);
         $question->test()->associate($test);
@@ -45,7 +45,7 @@ class QuestionController extends Controller
         $data['data'] = QuestionHelper::parse($data['data'], $question->data);
 
         $deleteImage = boolval($data['del_image'] ?? null);
-        $data['image'] = isset($variant['image']) ? ImageHelper::uploadImage($data['image']) :
+        $data['image'] = isset($data['image']) ? ImageHelper::uploadImage($data['image']) :
             ($deleteImage ? null : ($question['image'] ?? null));
 
         $question->fill($data);

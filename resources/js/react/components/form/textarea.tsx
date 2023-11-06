@@ -10,18 +10,17 @@ interface Props {
 }
 
 export const FormTextarea: React.FC<Props> = ({ name, placeholder, value, defaultValue, onChange, label }) => {
-    const id = `${name}-${useId()}`
 
-    return <>
-        {label && <label htmlFor={ id }>{ label }</label>}
+    return <div>
+        {label && <label htmlFor={ name }>{ label }</label>}
         <textarea
-            className='w-full h-20 bg-gray-50 border border-gray-300 resize-y indent-1'
+            className='w-full h-15 border-2 rounded indent-1'
             name={ name }
-            id={ id }
+            id={ name }
             placeholder={ placeholder }
             value={ value }
             defaultValue={ defaultValue }
             onChange={ (event) => onChange && onChange(event.target.value) }
         />
-    </>
+    </div>
 }

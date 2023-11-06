@@ -18,16 +18,16 @@ export const FormToggle: React.FC<Props> = ({ name, checked, defaultChecked, onC
         if (onChangeEvent) onChangeEvent(newValue);
     }
 
-    return <>
+    return <div>
         <input type='hidden' name={ name } value={ value ? 1 : 0 } />
         <label className='flex items-center my-1'>
             <input className='w-0 h-0 m-0 p-0 peer' type='checkbox' checked={ value } onChange={onChange} />
-            <div className={cn('w-12 p-1 mr-1 border border-gray-400 rounded-full transition-colors peer-focus-visible:outline outline-2', value ? 'bg-yellow-300' : 'bg-gray-200')}>
+            <div className={cn('w-[52px] p-1 mr-1 rounded-full peer-focus-visible:outline border-2 transition-all', value ? 'border-yellow-400' : 'border-gray-500')}>
                 <div className={cn('flex justify-end h-5 transition-all', value ? 'w-full' : 'w-5')}>
-                    <div className={'h-full aspect-square rounded-full bg-gray-300 bg-opacity-250 border border-gray-500'}></div>
+                    <div className={cn('h-full aspect-square rounded-full transition-all', value ? 'bg-yellow-400' : 'bg-gray-500')}></div>
                 </div>
             </div>
             { label }
         </label>
-    </>
+    </div>
 }

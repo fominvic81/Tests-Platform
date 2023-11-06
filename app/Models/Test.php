@@ -19,10 +19,6 @@ class Test extends Model
         'description',
         'published',
         'accessibility',
-        'user_id',
-        'subject_id',
-        'grade_id',
-        'course_id',
     ];
 
     protected $hidden = [
@@ -35,7 +31,6 @@ class Test extends Model
     protected $with = [
         'subject',
         'grade',
-        'questions',
     ];
 
     protected $casts = [

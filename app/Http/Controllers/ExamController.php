@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ExamRequest;
 use App\Models\Exam;
 use App\Models\Test;
 use App\Models\TestingSession;
 use App\Models\TestingSessionSettings;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ExamController extends Controller
 {
@@ -34,33 +34,11 @@ class ExamController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Test $test, Request $request)
+    public function store(Test $test, ExamRequest $request)
     {
-        $data = $request->validate([
-            'label' => ['required', 'string', 'max:255'],
-            'begin' => ['required', 'date_format:Y-m-d\\TH:i'],
-            'end' => ['required', 'date_format:Y-m-d\\TH:i'],
+        $data = $request->validated();
 
-            'points_min' => ['required', 'integer'],
-            'points_max' => ['required', 'integer'],
-            'time' => ['required', 'date_format:H:i'],
-            'shuffle_questions' => ['nullable', 'boolean'],
-            'shuffle_options' => ['nullable', 'boolean'],
-            'show_result' => ['nullable', 'boolean'],
-        ]);
-        $data['shuffle_questions'] = boolval($data['shuffle_questions'] ?? null);
-        $data['shuffle_options'] = boolval($data['shuffle_options'] ?? null);
-        $data['show_result'] = boolval($data['show_result'] ?? null);
-
-        $settings = new TestingSessionSettings([
-            'points_min' => $data['points_min'],
-            'points_max' => $data['points_max'],
-            'time' => $data['time'],
-            'shuffle_questions' => $data['shuffle_questions'],
-            'shuffle_options' => $data['shuffle_options'],
-            'show_result' => $data['show_result'],
-        ]);
-
+        $settings = new TestingSessionSettings($data);
         $settings->save();
 
         $code = 0;
@@ -68,15 +46,11 @@ class ExamController extends Controller
             $code = mt_rand(1000000, 9999999);
         } while (Exam::query()->where('code', '=', $code)->where('end_at', '>', now())->count() > 0);
 
-        $exam = new Exam([
-            'label' => $data['label'],
-            'begin_at' => $data['begin'],
-            'end_at' => $data['end'],
-            'code' => $code,
-            'test_id' => $test->id,
-            'testing_session_settings_id' => $settings->id,
-            'user_id' => $request->user()->id,
-        ]);
+        $exam = new Exam($data);
+        $exam->code = $code;
+        $exam->test()->associate($test);
+        $exam->settings()->associate($settings);
+        $exam->user()->associate($request->user());
 
         $exam->save();
 
@@ -100,15 +74,26 @@ class ExamController extends Controller
     {
         return view('exam.edit', [
             'exam' => $exam,
+            'test' => $exam->test,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Exam $exam)
+    public function update(ExamRequest $request, Exam $exam)
     {
-        //
+        // TODO: check if exam has ended
+
+        $data = $request->validated();
+        
+        $exam->settings->fill($data);
+        $exam->settings->save();
+        
+        $exam = $exam->fill($data);
+        $exam->save();
+
+        return redirect()->route('exam.show', $exam->id);
     }
 
     /**

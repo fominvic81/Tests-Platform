@@ -35,7 +35,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({ editor, action, children, name 
     return <button type='button' 
         onClick={() => action(editor.chain().focus()).run()}
         disabled={!action(editor.can().chain().focus()).run()}
-        className={`mx-1 p-1 w-full aspect-square rounded ${name && editor.isActive(name) ? 'font-bold bg-gray-200' : 'bg-gray-50'}`}>{ children }</button>
+        className={`mx-1 p-1 w-full aspect-square rounded ${name && editor.isActive(name) ? 'bg-gray-200' : 'bg-white'}`}>{ children }</button>
 }
 
 interface MenuBarProps {
@@ -45,7 +45,7 @@ interface MenuBarProps {
 const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
 
     return (
-        <div className='bg-gray-50 border-2 border-b-0 p-2 grid grid-cols-[repeat(auto-fill,24px)]'>
+        <div className='border-2 border-b-0 p-2 grid grid-cols-[repeat(auto-fill,24px)]'>
             <MenuButton editor={ editor } action={(chain) => chain.toggleBold()} name='bold'><BoldSVG></BoldSVG></MenuButton>
             <MenuButton editor={ editor } action={(chain) => chain.toggleItalic()} name='italic'><ItalicSVG></ItalicSVG></MenuButton>
             <MenuButton editor={ editor } action={(chain) => chain.toggleStrike()} name='strike'><StrikeSVG></StrikeSVG></MenuButton>
@@ -99,7 +99,7 @@ export const TextEditor: React.FC<Props> = ({ name, id, value, defaultValue, pla
     const editor = useEditor({
         editorProps: {
             attributes: {
-                class: 'bg-gray-50 border-2 p-1',
+                class: 'bg-white border-2 p-1',
             },
         },
         onUpdate: ({ editor }) => {
@@ -142,9 +142,9 @@ export const TextEditor: React.FC<Props> = ({ name, id, value, defaultValue, pla
 
     if (!editor) return;
 
-    return <div className='overflow-hidden break-words'>
+    return <div className='overflow-hidden break-words rounded'>
         <input type='hidden' name={ name } id={ id } value={ currentValue }></input>
         <MenuBar editor={ editor }></MenuBar>
-        <EditorContent editor={ editor } ></EditorContent>
+        <EditorContent editor={ editor }></EditorContent>
     </div>;
 }

@@ -19,9 +19,7 @@ class Course extends Model
         'name',
         'image',
         'description',
-        'published',
         'accessibility',
-        'user_id',
     ];
 
     protected $with = [

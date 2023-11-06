@@ -14,9 +14,7 @@ export const MultipleCorrect: React.FC<Props> = ({ question }) => {
     const [optoinKeys, setOptionKeys] = useState(options.map(() => getUniqueId()));
 
     return <>
-            <div>
-                <FormToggle name='data[settings][showAmountOfCorrect]' label='Показуват кількість правильних відповідей?' defaultChecked={ question.data.settings.showAmountOfCorrect }></FormToggle>
-            </div>
+            <FormToggle name='data[settings][showAmountOfCorrect]' label='Показуват кількість правильних відповідей?' defaultChecked={ question.data.settings.showAmountOfCorrect }></FormToggle>
             <div className='grid grid-cols-[auto_1fr] gap-2 items-center'>
             {answer.correct.map((isCorrect, index) => <input key={ index } type='hidden' name={`data[answer][correct][${index}]`} value={ isCorrect ? 1 : 0 } />)}
             { options.map((option, index) => <React.Fragment key={ optoinKeys[index] }>

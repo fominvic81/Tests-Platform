@@ -1,9 +1,12 @@
-@props([ 'name', 'label' ])
+@props([ 'name', 'id', 'label', 'wrapClass', 'labelClass' ])
 
-@isset($label)<label for="{{ $name }}-select">{{ $label }}</label>@endisset
-<select
-    class="block bg-gray-50 w-full p-1 border border-gray-300"
-    name="{{ $name }}"
-    id="{{ $name }}-select">
-    {{ $slot }}
-</select>
+<div @isset($wrapClass)class="{{ $wrapClass }}"@endisset>
+    @isset($label)
+        <label for="{{ $id ?? $name }}" @isset($labelClass)class="{{ $labelClass }}"@endisset>{{ $label }}</label>
+    @endisset
+    <select
+        {{ $attributes->merge(['class' => 'w-full p-1 border-2 rounded']) }}
+        name="{{ $name }}"
+        id="{{ $id ?? $name }}"
+    >{{ $slot }}</select>
+</div>

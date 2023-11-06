@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
 use App\Models\TestingSession;
-use Illuminate\Http\Request;
 
 class TestingSessionController extends Controller
 {

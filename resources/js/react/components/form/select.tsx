@@ -9,17 +9,16 @@ interface Props extends PropsWithChildren {
 }
 
 export const FormSelect: React.FC<Props> = ({ name, defaultValue, value, onChange, label, children }) => {
-    const id = `${name}-${useId()}`;
 
-    return <>
-        {label && <label htmlFor={ id }>{ label }</label>}
+    return <div>
+        {label && <label htmlFor={ name }>{ label }</label>}
         <select
-            className='block bg-gray-50 w-full p-1 border border-gray-300'
+            className='w-full p-1 border-2 rounded'
             name={ name }
-            id={ id }
+            id={ name }
             defaultValue={ defaultValue }
             value={ value }
             onChange={(event) => onChange && onChange(event.target.value)}
         >{ children }</select>
-    </>
+    </div>
 }
