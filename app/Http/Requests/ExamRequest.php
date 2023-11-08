@@ -28,7 +28,7 @@ class ExamRequest extends FormRequest
 
             'points_min' => ['required', 'integer'],
             'points_max' => ['required', 'integer'],
-            'time' => ['required', 'date_format:H:i'],
+            'time' => ['nullable', 'date_format:H:i'],
             'shuffle_questions' => ['required', 'boolean'],
             'shuffle_options' => ['required', 'boolean'],
             'show_result' => ['required', 'boolean'],

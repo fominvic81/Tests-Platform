@@ -70,7 +70,7 @@ export const Match: React.FC<Props> = ({ question }) => {
                 <thead>
                     <tr>
                         <th></th>
-                        {variants.map((variant, index) => <th key={ index }><center>{ String.fromCharCode(65 + index) }</center></th>)}
+                        {variants.map((variant, index) => <th key={ index }>{ String.fromCharCode(65 + index) }</th>)}
                     </tr>
                 </thead>
                 <tbody>

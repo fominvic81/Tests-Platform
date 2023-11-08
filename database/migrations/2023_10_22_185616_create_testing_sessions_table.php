@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('test_id');
             $table->foreignId('testing_session_settings_id');
             $table->foreignId('user_id')->nullable();
-            $table->timestamp('ended_at')->nullable();
+            $table->timestamp('ends_at')->nullable();
             $table->timestamps();
         });
     }

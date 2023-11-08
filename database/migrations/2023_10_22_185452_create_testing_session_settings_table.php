@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('testing_session_settings', function (Blueprint $table) {
             $table->id();
-            $table->time('time');
+            $table->time('time')->nullable();
             $table->boolean('shuffle_questions');
             $table->boolean('shuffle_options');
             $table->boolean('show_result');

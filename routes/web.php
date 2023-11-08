@@ -51,3 +51,5 @@ Route::get('/join', [ExamController::class, 'join'])->name('exam.join');
 Route::post('/join', [ExamController::class, 'start'])->name('exam.start');
 
 Route::get('/testing/{session}', [TestingController::class, 'show'])->name('testing.show');
+Route::delete('/testing/{session}', [TestingController::class, 'complete'])->name('testing.complete');
+Route::get('/testing/{session}/result', [TestingController::class, 'result'])->name('testing.result');

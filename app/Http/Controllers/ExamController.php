@@ -8,6 +8,7 @@ use App\Models\Test;
 use App\Models\TestingSession;
 use App\Models\TestingSessionSettings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class ExamController extends Controller
 {
@@ -51,7 +52,7 @@ class ExamController extends Controller
         $exam->test()->associate($test);
         $exam->settings()->associate($settings);
         $exam->user()->associate($request->user());
-
+        
         $exam->save();
 
         return redirect()->route('exam.show', $exam->id);
@@ -86,7 +87,10 @@ class ExamController extends Controller
         // TODO: check if exam has ended
 
         $data = $request->validated();
-        
+        $data['begin_at'] = Carbon::parse($data['begin_at'], config('app.timezone_client'))->setTimezone(config('app.timezone'));
+        $data['end_at'] = Carbon::parse($data['end_at'], config('app.timezone_client'))->setTimezone(config('app.timezone'));
+        $data['time'] = $data['time'] ?? null;
+
         $exam->settings->fill($data);
         $exam->settings->save();
         
@@ -126,11 +130,14 @@ class ExamController extends Controller
 
         $session = new TestingSession([
             'student_name' => $data['name'],
-            'exam_id' => $exam->id,
-            'test_id' => $exam->test->id,
-            'testing_session_settings_id' => $exam->settings->id,
-            'user_id' => $request->user()?->id,
         ]);
+
+        $session->exam()->associate($exam);
+        $session->test()->associate($exam->test);
+        $session->settings()->associate($exam->settings);
+        $session->user()->associate($request->user());
+
+        $session->ends_at = $exam->settings->time ? now()->addSeconds(strtotime($exam->settings->time, 0)) : null;
 
         $session->save();
 

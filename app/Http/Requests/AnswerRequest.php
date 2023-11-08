@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\QuestionType;
 use App\Models\Question;
+use App\Models\TestingSession;
 use App\Rules\AnswerData;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -14,6 +15,9 @@ class AnswerRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        $session = $this->route('session');
+        if ($session->hasEnded()) return false;
+        if ($session->user && $session->user->id !== $this->user()->id) return false;
         return true;
     }
 

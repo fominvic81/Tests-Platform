@@ -6,22 +6,29 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Builder;
 
 class TestingSession extends Model
 {
     use HasFactory;
 
-    protected $hidden = [
 
-    ];
+    public function scopeEnded(Builder $query): void
+    {
+        $query->where('ends_at', '<', now());
+    }
+
+    public function scopeNotEnded(Builder $query): void
+    {
+        $query->where('ends_at', '>', now())->orWhereNull('ends_at');
+    }
 
     protected $fillable = [
         'student_name',
-        'exam_id',
-        'test_id',
-        'testing_session_settings_id',
-        'user_id',
+    ];
+
+    protected $casts = [
+        'ends_at'=> 'datetime',
     ];
 
     public function user(): BelongsTo
@@ -36,7 +43,7 @@ class TestingSession extends Model
 
     public function exam(): BelongsTo
     {
-        return $this->belongsTo(Test::class);
+        return $this->belongsTo(Exam::class);
     }
 
     public function settings(): BelongsTo
@@ -47,6 +54,11 @@ class TestingSession extends Model
     public function answers(): HasMany
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function hasEnded(): bool
+    {
+        return $this->ends_at && $this->ends_at < now();
     }
 
     public function stats()

@@ -20,7 +20,6 @@ class AnswerController extends Controller
         $question = $request->question;
 
         if (!$question) return response(null, 404);
-
         if (!$session->test->questions()->find($question->id)) return response(null, 403);
 
         $points = AnswerChecker::check($question->type, $data['answer'], $question->data) * $question->points;

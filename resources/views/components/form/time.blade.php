@@ -5,7 +5,7 @@
         <label for="{{ $id ?? $name }}" @isset($labelClass)class="{{ $labelClass }}"@endisset>{{ $label }}</label>
     @endisset
     <input
-        {{ $attributes->merge(['class' => 'w-full py-1 border-2 rounded indent-1']) }}
+        {{ $attributes->merge(['class' => 'py-1 border-2 rounded indent-1']) }}
         type="time"
         name="{{ $name }}"
         id="{{ $id ?? $name }}"

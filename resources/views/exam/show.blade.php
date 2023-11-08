@@ -4,7 +4,7 @@
         <h1 class="text-2xl font-bold text-center">{{ $exam->label }}</h1>
         <div class="grid grid-cols-[1fr_auto]">
             <div>
-                <div>Початок: {{ $exam->begin_at->format('H:i m.d') }}</div><div>Кінець: {{ $exam->end_at->format('H:i m.d') }}</div>
+                <div>Початок: {{ App\Helpers\Timezone::getDatetime($exam->begin_at, 'H:i m.d') }}</div><div>Кінець: {{ App\Helpers\Timezone::getDatetime($exam->end_at, 'H:i m.d') }}</div>
                 <div>Час на виконання: {{ date('H:i', strtotime($exam->settings->time)) }}</div>
                 <div>
                     Тест: <a href="{{ route('test.show', $exam->test->id) }}" class="text-blue-600 hover:text-blue-400">{{ $exam->test->name }}</a>

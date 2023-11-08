@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             
         $mathCourse = Course::factory()->for($user)->published()->accessibility()->createOne(['name' => 'ЗНО Математика']);
         $mathTest2023 = Test::factory()->for($mathCourse)->published()->accessibility()
-            ->has(Question::factory()->type(QuestionType::OneCorrect)->text('One Correct')->data([
+            ->has(Question::factory()->type(QuestionType::OneCorrect)->points(1)->text('One Correct')->data([
                 'options' => [
                     ['text' => 'Incorrect 1'],
                     ['text' => 'Correct'],
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
                     'correct' => [false, true, false, false],
                 ],
             ]))
-            ->has(Question::factory()->type(QuestionType::MultipleCorrect)->text('Multiple Correct')->data([
+            ->has(Question::factory()->type(QuestionType::MultipleCorrect)->points(1)->text('Multiple Correct')->data([
                 'settings' => [
                     'showAmountOfCorrect' => false,
                 ],
@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
                     'correct' => [false, true, false, true, false],
                 ],
             ]))
-            ->has(Question::factory()->type(QuestionType::Match)->text('Match')->data([
+            ->has(Question::factory()->type(QuestionType::Match)->text('Match')->points(4)->data([
                 'options' => [
                     ['text' => '40 + 40'],
                     ['text' => '50 - 10'],
@@ -85,7 +85,7 @@ class DatabaseSeeder extends Seeder
                     'match' => [4, 0, 1, 2],
                 ],
             ]))
-            ->has(Question::factory()->type(QuestionType::TextInput)->text('Text Input (Answer is abobus)')->data([
+            ->has(Question::factory()->type(QuestionType::TextInput)->points(2)->text('Text Input (Answer is abobus)')->data([
                 'settings' => [
                     'registerMatters' => false,
                     'whitespaceMatters' => false,
@@ -94,7 +94,7 @@ class DatabaseSeeder extends Seeder
                     'texts' => ['abobus'],
                 ],
             ]))
-            ->has(Question::factory()->type(QuestionType::Sequence)->text('Sequence')->data([
+            ->has(Question::factory()->type(QuestionType::Sequence)->points(2)->text('Sequence')->data([
                 'options' => [
                     ['text' => 'First'],
                     ['text' => 'Fourth'],

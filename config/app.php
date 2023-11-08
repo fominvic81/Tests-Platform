@@ -72,6 +72,8 @@ return [
 
     'timezone' => 'UTC',
 
+    'timezone_client' => env('APP_TIMEZONE_CLIENT', 'Europe/Kyiv'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration

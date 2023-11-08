@@ -16,7 +16,7 @@ export const OneCorrect: React.FC<Props> = ({ question }) => {
             <label key={ index } className='flex items-center'>
                 <input
                     type='checkbox'
-                    className='w-8 h-8 appearance-none bg-gray-100 checked:bg-emerald-400 rounded-full'
+                    className='w-8 h-8 appearance-none border-2 border-gray-400 checked:bg-emerald-400 rounded-full'
                     checked={ chosen[index] }
                     onChange={() => {
                         setChosen(chosen.map((value, i) => index === i))

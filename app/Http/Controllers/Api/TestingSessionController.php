@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\Timezone;
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
 use App\Models\TestingSession;
@@ -22,8 +23,10 @@ class TestingSessionController extends Controller
 
             array_push($questions, $q);
         }
+
         $data = [
             'id' => $session->id,
+            'ends_at' => $session->ends_at ? Timezone::getDatetime($session->ends_at)->timestamp : null,
             'questions' => $questions,
         ];
 

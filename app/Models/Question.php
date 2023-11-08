@@ -47,8 +47,4 @@ class Question extends Model
         return $this->belongsToMany(Topic::class);
     }
 
-    public function options(): HasMany
-    {
-        return $this->hasMany(Option::class);
-    }
 }

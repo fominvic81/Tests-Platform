@@ -9,7 +9,6 @@ export * from './getTest';
 export * from './getTestOptions';
 export * from './deleteQuestion';
 export * from './getSession';
-export * from './getCourse';
 
 export * from './storagePath';
 

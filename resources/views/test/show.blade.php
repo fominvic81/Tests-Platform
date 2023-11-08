@@ -1,8 +1,10 @@
 <x-layouts.feed>
     <div class="grid grid-cols-[auto_1fr_auto] p-5 bg-white shadow-md rounded-lg">
-        @isset($test->image)
-            <x-common.image :src="App\Helpers\ImageHelper::url($test->image)"></x-common.image>
-        @endisset
+        <div>
+            @isset($test->image)
+                <x-common.image :src="App\Helpers\ImageHelper::url($test->image)"></x-common.image>
+            @endisset
+        </div>
         <div>
             <h1 class="text-2xl">{{ $test->name }}</h1>
             <div>
