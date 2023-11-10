@@ -78,12 +78,14 @@ const Component: React.FC = () => {
                                 <option key={ key } value={ Accessibility[key] }>{ AccessibilityName[Accessibility[key]] }</option>
                             )}
                         </FormSelect>
-                        <FormSelect name='subject' label='Предмет' defaultValue={ test.subject.id }>
+                        <FormSelect name='subject' label='Предмет' defaultValue={ test.subject?.id }>
+                            <option value="">...</option>
                             {options.subjects.map((subject) => 
                                 <option key={ subject.id } value={ subject.id }>{ subject.name }</option>
                             )}
                         </FormSelect>
-                        <FormSelect name='grade' label='Клас' defaultValue={ test.grade.id }>
+                        <FormSelect name='grade' label='Клас' defaultValue={ test.grade?.id }>
+                            <option value="">...</option>
                             {options.grades.map((grade) =>
                                 <option key={ grade.id } value={ grade.id }>{ grade.name }</option>
                             )}

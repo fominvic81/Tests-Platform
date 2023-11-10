@@ -1,4 +1,4 @@
-<x-layouts.feed>
+<x-layouts.feed title="Створити курс">
     <div class="w-full p-4 bg-white border shadow-md font-semibold">
         <form class="w-full h-full" method="POST" action="{{ route('course.store') }}" enctype="multipart/form-data">
             @csrf

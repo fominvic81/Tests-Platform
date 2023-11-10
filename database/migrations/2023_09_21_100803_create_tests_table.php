@@ -18,10 +18,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->boolean('published')->default(false)->index();
             $table->integer('accessibility')->unsigned()->index();
-            $table->foreignId('subject_id');
-            $table->foreignId('grade_id');
             $table->foreignId('user_id');
             $table->foreignId('course_id')->nullable();
+            $table->foreignId('subject_id')->nullable();
+            $table->foreignId('grade_id')->nullable();
             $table->timestamps();
         });
     }

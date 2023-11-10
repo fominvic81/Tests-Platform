@@ -27,3 +27,5 @@
   pointer-events: none;
   height: 0;
 }
+
+[x-cloak] { display: none !important; }

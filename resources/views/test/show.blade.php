@@ -1,4 +1,4 @@
-<x-layouts.feed>
+<x-layouts.feed :title="$test->name">
     <div class="grid grid-cols-[auto_1fr_auto] p-5 bg-white shadow-md rounded-lg">
         <div>
             @isset($test->image)
@@ -8,12 +8,12 @@
         <div>
             <h1 class="text-2xl">{{ $test->name }}</h1>
             <div>
-                @if($test->subject_id > 1)
+                @isset($test->subject)
                     {{ $test->subject->name }}
-                @endif
-                @if($test->grade_id > 1)
+                @endisset
+                @isset($test->grade)
                     {{ $test->grade->name }}
-                @endif
+                @endisset
             </div>
             <span>Автор: </span><a href="" class="text-blue-600 hover:underline hover:text-blue-400">{{ $test->user->fullname }}</a>
             <br>
@@ -21,11 +21,18 @@
                 <span>Курс: </span><a href="{{ route('course.show', $test->course->id) }}" class="text-blue-600 hover:underline hover:text-blue-400">{{ $test->course->name }}</a>
             @endisset
         </div>
-        <div class="grid grid-flow-col">
+        <div class="grid grid-flow-col gap-1">
             @auth
                 @if (Auth::user()->id === $test->user_id)
-                    <a class="block w-10 h-10 rounded-md border-2 hover:bg-gray-200" href="{{ route('test.edit', $test->id) }}"><x-svg path="common/edit.svg"></x-svg></a>
-                    @endif
+                    <a
+                        href="{{ route('test.edit', $test->id) }}"
+                        class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"
+                    ><x-svg path="common/edit.svg"></x-svg></a>
+                @endif
+                <x-button.save
+                    :saved="Auth::user()->savedTests()->where('test_id', $test->id)->exists()"
+                    :url="route('test.save', $test->id)"
+                ></x-button.save>
             @endauth
         </div>
         <div class="col-span-3">{!! $test->description !!}</div>

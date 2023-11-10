@@ -2,28 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Accessibility;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\TestRequest;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\Test;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
+
+    private function indexQuery(Request $request, string $title, Builder $query)
+    {
+        $subject = $request->query('subject');
+        $grade = $request->query('grade');
+        if ($subject) $query->where('subject_id', $subject);
+        if ($grade) $query->where('grade_id', $grade);
+
+        return view('test.index', [
+            'title'=> $title,
+            'tests'=> $query->latest('tests.id')->paginate(15),
+            'subjects' => Subject::all(),
+            'grades' => Grade::all(),
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('test.index', [
-            'tests' => Test::query()
-                ->where('published', '=', true)
-                ->where('accessibility', '=', Accessibility::Public)
-                ->latest('id')
-                ->paginate(15),
-        ]);
+        return $this->indexQuery($request, 'Тести', Test::query());
+    }
+
+    public function my(Request $request)
+    {
+        return $this->indexQuery($request, 'Мої тести', Test::query()->whereBelongsTo($request->user()));
+    }
+
+    public function saved(Request $request)
+    {
+        return $this->indexQuery($request, 'Збережені тести', Test::query()->whereRelation('savedBy', 'user_id', $request->user()->id));
     }
 
     /**
@@ -72,7 +92,21 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
-        return view('test.edit');
+        return view('test.edit', [
+            'test' => $test,
+        ]);
+    }
+
+    public function save(Request $request, Test $test)
+    {
+        $data = $request->validate(['value' => ['required', 'boolean']]);
+
+        if ($data['value']) {
+            $request->user()->savedTests()->attach($test);
+        } else {
+            $request->user()->savedTests()->detach($test);
+        }
+        return response('');
     }
 
     /**

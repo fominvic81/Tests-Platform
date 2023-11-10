@@ -35,8 +35,8 @@ class TestRequest extends FormRequest
             'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['string', 'nullable'],
             'course' => ['nullable', 'integer', 'exists:courses,id'],
-            'subject' => ['required', 'integer', 'exists:subjects,id'],
-            'grade' => ['required', 'integer', 'exists:grades,id'],
+            'subject' => ['nullable', 'integer', 'exists:subjects,id'],
+            'grade' => ['nullable', 'integer', 'exists:grades,id'],
         ];
     }
 }

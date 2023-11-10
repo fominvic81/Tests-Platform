@@ -1,7 +1,7 @@
 @props(['image', 'name', 'delname'])
 
 <label x-data="{ image: {{ isset($image) ? '\'' . $image . '\'' : 'undefined' }} }" class="w-full h-full border-2 border-dashed relative flex items-center justify-center">
-    <img class="max-w-full max-h-full" x-bind:src="image ?? '/images/add-image.png'" alt="Зоображення" />
+    <img class="max-w-full max-h-full" x-bind:src="image ?? '/images/add-image.png'" src="/images/add-image.png" alt="Зоображення" />
     <div class="absolute w-full py-1 text-center bottom-0 bg-gray-200 bg-opacity-40 border-t" x-text="image ? 'Видалити' : 'Додати зображення'"></div>
     <input
         type="file"

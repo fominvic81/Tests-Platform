@@ -1,7 +1,5 @@
-<x-layouts.feed>
-    {{-- <div id="test-create"></div> --}}
-
-    <div class="w-full p-4 bg-white border shadow-md font-semibold">
+<x-layouts.feed title="Створити тест">
+    <div class="w-full p-4 bg-white border shadow-md font-semibold text-lg">
         <form action="{{ route('test.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <h1 class="m-auto text-2xl w-min whitespace-nowrap">Створити тест</h1>
@@ -11,7 +9,7 @@
 
                     <x-form.textarea name="description" label="Опис" placeholder="Опис" :value="old('description')"></x-form.textarea>
                 </div>
-                <div class="w-40 h-40">
+                <div class="w-40 h-40 text-base font-normal">
                     <x-form.image></x-form.image>
                 </div>
             </div>
@@ -33,6 +31,7 @@
                 </div>
                 <div>
                     <x-form.select name="subject" label="Предмет">
+                        <option value="">...</option>
                         @foreach ($subjects as $subject)
                             <option value="{{ $subject->id }}" @selected(strval($subject->id) === old('subject'))>{{ $subject->name }}</option>
                         @endforeach
@@ -40,6 +39,7 @@
                 </div>
                 <div>
                     <x-form.select name="grade" label="Клас">
+                        <option value="">...</option>
                         @foreach ($grades as $grade)
                             <option value="{{ $grade->id }}" @selected(strval($grade->id) === old('grade'))>{{ $grade->name }}</option>
                         @endforeach

@@ -1,4 +1,4 @@
-<x-layouts.feed>
+<x-layouts.feed :title="$course->name">
     <div class="grid grid-cols-[auto_1fr_auto] p-5 bg-white shadow-md rounded-lg">
         <div>
             @isset($course->image)
@@ -13,11 +13,18 @@
                 <span>Курс: </span><a href="{{ route('course.show', $course->course->id) }}" class="text-blue-600 hover:underline hover:text-blue-400">{{ $course->course->name }}</a>
             @endisset
         </div>
-        <div class="grid grid-flow-col">
+        <div class="grid grid-flow-col gap-1">
             @auth
                 @if (Auth::user()->id === $course->user_id)
-                    <a class="block w-10 h-10 rounded-md border-2 hover:bg-gray-200" href="{{ route('course.edit', $course->id) }}"><x-svg path="common/edit.svg"></x-svg></a>
-                    @endif
+                    <a
+                        class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"
+                        href="{{ route('course.edit', $course->id) }}"
+                    ><x-svg path="common/edit.svg"></x-svg></a>
+                @endif
+                <x-button.save
+                    :saved="Auth::user()->savedCourses()->where('course_id', $course->id)->exists()"
+                    :url="route('course.save', $course->id)"
+                ></x-button.save>
             @endauth
         </div>
         <div class="col-span-3">{!! $course->description !!}</div>

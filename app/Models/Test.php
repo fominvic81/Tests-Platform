@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Accessibility;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +15,15 @@ class Test extends Model
 {
     use HasFactory;
  
+    public static function booted(): void
+    {
+        static::addGlobalScope('allowed', function (Builder $builder) {
+            $builder->where('published', true)->where('accessibility', Accessibility::Public)->whereRelation('course', 'accessibility', Accessibility::Public);
+            $user = auth()->user();
+            if ($user) $builder->orWhereBelongsTo($user);
+        });
+    }
+
     protected $fillable = [
         'name',
         'image',
@@ -66,5 +77,10 @@ class Test extends Model
     public function topics(): BelongsToMany
     {
         return $this->belongsToMany(Topic::class);
+    }
+
+    public function savedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'saved_test_user');
     }
 }

@@ -16,7 +16,8 @@ class TestFactory extends Factory
     {
         return $this->afterMaking(function (Test $test) {
             if (!isset($test->user_id)) {
-                $test->user_id = $test->course->user_id;
+                $course = $test->course()->getQuery()->withoutGlobalScopes()->first();
+                $test->user_id = $course->user_id;
             }
         })->afterCreating(function (Test $test) {
             // ...
@@ -35,8 +36,8 @@ class TestFactory extends Factory
             'description' => fake()->text(),
             'published' => fake()->boolean(90),
             'accessibility' => fake()->randomElement(Accessibility::cases()),
-            'subject_id' => fake()->numberBetween(1, 4),
-            'grade_id' => fake()->numberBetween(1, 17),
+            'subject_id' => fake()->numberBetween(1, 3),
+            'grade_id' => fake()->numberBetween(1, 12),
         ];
     }
 

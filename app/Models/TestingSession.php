@@ -12,7 +12,6 @@ class TestingSession extends Model
 {
     use HasFactory;
 
-
     public function scopeEnded(Builder $query): void
     {
         $query->where('ends_at', '<', now());

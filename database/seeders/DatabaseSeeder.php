@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
             SubjectSeeder::class,
         ]);
 
-        User::factory(3)->
+        User::factory(10)->
             has(Test::factory(10))->
             has(Course::factory(2)->sequence(['published' => true], ['published' => false])->accessibility()->
                 has(Test::factory(5))

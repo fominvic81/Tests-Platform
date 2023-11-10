@@ -13,7 +13,6 @@ class SubjectSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('subjects')->insert(['name' => '...']);
         DB::table('subjects')->insert(['name' => 'Українська мова']);
         DB::table('subjects')->insert(['name' => 'Математика']);
         DB::table('subjects')->insert(['name' => 'Англійська']);

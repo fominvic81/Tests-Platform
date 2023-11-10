@@ -36,8 +36,14 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [LoginController::class, 'delete'])->name('logout');
 
+    Route::get('/course/my', [CourseController::class, 'my'])->name('course.my');
+    Route::get('/course/saved', [CourseController::class, 'saved'])->name('course.saved');
+    Route::post('/course/{course}/save', [CourseController::class, 'save'])->name('course.save');
     Route::resource('course', CourseController::class)->except(['index', 'show']);
 
+    Route::get('/test/my', [TestController::class, 'my'])->name('test.my');
+    Route::get('/test/saved', [TestController::class, 'saved'])->name('test.saved');
+    Route::post('/test/{test}/save', [TestController::class, 'save'])->name('test.save');
     Route::resource('test', TestController::class)->except(['index', 'show', 'update']);
 
     Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');

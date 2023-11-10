@@ -5,7 +5,7 @@
     $percentWrong = round($stats['wrong'] / $stats['max'] * 100);
 @endphp
 
-<x-layouts.base class="bg-gray-100">
+<x-layouts.base class="bg-gray-100" title="Результат тестування">
     <div class="w-full h-14 bg-emerald-400 shadow-md"></div>
 
     <div class="w-full max-w-3xl mx-auto ">

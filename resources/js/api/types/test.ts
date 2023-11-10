@@ -19,6 +19,6 @@ export type Test<T extends keyof Fields | '' = ''> = {
     published: boolean;
     accessibility: Accessibility;
     description?: string;
-    subject: Subject;
-    grade: Grade;
+    subject?: Subject;
+    grade?: Grade;
 } & PickCond<Fields, T>;

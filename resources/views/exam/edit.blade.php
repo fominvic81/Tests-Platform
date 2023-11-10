@@ -1,4 +1,4 @@
-<x-layouts.feed>
+<x-layouts.feed title="Редагувати домашнє завдання {{ $exam->label }}">
     <div class="w-full p-4 bg-white shadow rounded-md text-md font-semibold">
         <h1 class="text-3xl text-center font-bold">Редагувати домашнє завдання</h1>
         <h1 class="text-xl text-center font-bold">{{ $test->name }}</h1>

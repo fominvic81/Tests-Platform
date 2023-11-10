@@ -6,7 +6,7 @@
     <div class="w-40 h-40 text-base font-normal">
         <x-form.image :image="isset($course->image) ? App\Helpers\ImageHelper::url($course->image) : null"></x-form.image>
     </div>
-    <x-form.select name="accessibility" wrap-class="col-span-full">
+    <x-form.select name="accessibility" label="Доступність" wrap-class="col-span-full">
         @foreach (App\Enums\Accessibility::cases() as $accessibility)
             <option value="{{ $accessibility->value }}" @selected($accessibility->value == (old('accessibility') ?? $course->accessibility ?? App\Enums\Accessibility::Public->value))>
                 @lang('accessibility.'.$accessibility->value)

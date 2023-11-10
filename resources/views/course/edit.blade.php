@@ -1,8 +1,4 @@
-{{-- <x-layouts.feed>
-    <div id="course-edit"></div>
-</x-layouts.feed> --}}
-
-<x-layouts.feed>
+<x-layouts.feed title="Редагувати курс {{ $course->name }}">
     <div class="w-full p-4 bg-white border shadow-md font-semibold">
         <form class="w-full h-full" method="POST" action="{{ route('course.update', $course->id) }}" enctype="multipart/form-data">
             @csrf

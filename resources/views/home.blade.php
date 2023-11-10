@@ -1,4 +1,4 @@
-<x-layouts.app>
+<x-layouts.app title="Головна">
     {{-- <img src="{{ URL::to('/images/profile.png') }}" alt=""> --}}
     {{-- <div class=""></div> --}}
 
