@@ -61,7 +61,7 @@ const Component: React.FC = () => {
         <div className='w-full h-14 col-span-full flex items-start justify-between bg-emerald-400 shadow-md'>
             <div className='my-auto ml-4 font-bold font-mono'>{ questionIndex + 1 }/{ session.questions.length }</div>
             <div>
-                { session.ends_at && <Timer end={ session.ends_at * 1000 }></Timer> }
+                { session.ends_at && <Timer end={ session.ends_at * 1000 } onTimeover={() => location.reload()}></Timer> }
             </div>
             <form className='my-auto' method='POST'>
                 <CSRF></CSRF>

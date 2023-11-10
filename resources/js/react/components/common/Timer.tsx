@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 
 interface Props {
     end: number;
+    onTimeover?: () => any;
 }
 
-export const Timer: React.FC<Props> = ({ end }) => {
+export const Timer: React.FC<Props> = ({ end, onTimeover }) => {
     
     const getCurrentTime = () => (end - Date.now()) / 1000;
     
@@ -15,7 +16,13 @@ export const Timer: React.FC<Props> = ({ end }) => {
     const seconds = Math.floor(time % 60).toString().padStart(2, '0');
 
     useEffect(() => {
-        let interval = setInterval(() => setTime(getCurrentTime()), 1000);
+        let interval = setInterval(() => {
+            const currentTime = getCurrentTime();
+            if (currentTime < 0 && onTimeover) {
+                onTimeover();
+            }
+            setTime(Math.max(0, currentTime));
+        }, 1000);
         return () => clearInterval(interval);
     }, []);
 

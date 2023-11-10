@@ -60,8 +60,10 @@ class TestingSession extends Model
         return $this->ends_at && $this->ends_at < now();
     }
 
-    public function stats()
+    public array|null $statsCached = null;
+    public function stats(): array
     {
+        if ($this->statsCached) return $this->statsCached;
         $questions = $this->test->questions;
         $settings = $this->settings;
 
@@ -82,9 +84,9 @@ class TestingSession extends Model
 
         $range = $settings->points_max - $settings->points_min;
 
-        $points = $correct * $range / $max + $settings->points_min;
+        $points = ($max > 0 ? $correct * $range / $max : 0) + $settings->points_min;
 
-        return [
+        return $this->statsCached = [
             'max' => $max,
             'correct' => $correct,
             'wrong' => $wrong,

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,6 +11,16 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Exam extends Model
 {
     use HasFactory;
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('begin_at', '<', now())->where('end_at', '>', now());
+    }
+
+    public function scopeNotEnded(Builder $query): void
+    {
+        $query->where('end_at', '>', now());
+    }
 
     protected $fillable = [
         'label',
@@ -21,7 +32,22 @@ class Exam extends Model
         'begin_at' => 'datetime',
         'end_at' => 'datetime',
     ];
-    
+
+    public function hasBegun(): bool
+    {
+        return $this->begin_at < now();
+    }
+
+    public function hasEnded(): bool
+    {
+        return $this->end_at < now();
+    }
+
+    public function isActive(): bool
+    {
+        return $this->begin_at < now() && $this->end_at > now();
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

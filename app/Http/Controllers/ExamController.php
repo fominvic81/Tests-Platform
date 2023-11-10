@@ -18,7 +18,7 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         return view('exam.index', [
-            'exams' => $request->user()->exams()->paginate(10),
+            'exams' => $request->user()->exams()->latest('id')->paginate(20),
         ]);
     }
 
@@ -38,6 +38,9 @@ class ExamController extends Controller
     public function store(Test $test, ExamRequest $request)
     {
         $data = $request->validated();
+        $data['begin_at'] = Carbon::parse($data['begin_at'], config('app.timezone_client'))->setTimezone(config('app.timezone'));
+        $data['end_at'] = Carbon::parse($data['end_at'], config('app.timezone_client'))->setTimezone(config('app.timezone'));
+        $data['time'] = $data['time'] ?? null;
 
         $settings = new TestingSessionSettings($data);
         $settings->save();
@@ -45,7 +48,7 @@ class ExamController extends Controller
         $code = 0;
         do {
             $code = mt_rand(1000000, 9999999);
-        } while (Exam::query()->where('code', '=', $code)->where('end_at', '>', now())->count() > 0);
+        } while (Exam::query()->where('code', '=', $code)->notEnded()->count() > 0);
 
         $exam = new Exam($data);
         $exam->code = $code;
@@ -122,11 +125,10 @@ class ExamController extends Controller
             'code' => ['required', 'integer', 'digits:7'],
         ]);
 
-        $exam = Exam::query()->where('code', '=', $data['code'])->where('end_at', '>', now())->first();
+        $exam = Exam::query()->where('code', '=', $data['code'])->notEnded()->first();
 
-        if (!$exam) {
-            return redirect()->back()->withInput()->withErrors('Тест таким кодом не знайдено');
-        }
+        if (!$exam) return redirect()->back()->withInput()->withErrors('Тест таким кодом не знайдено');
+        if (!$exam->hasBegun()) return redirect()->back()->withInput()->withErrors('Тест ще не почався');
 
         $session = new TestingSession([
             'student_name' => $data['name'],

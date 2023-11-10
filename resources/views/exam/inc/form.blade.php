@@ -7,7 +7,7 @@
     <div class="grid grid-cols-2 gap-3 h-min">
         <x-form.input name="label" :value="old('label') ?? $exam->label ?? $test->name" label="Назва" placeholder="Назва" wrap-class="col-span-full"></x-form.input>
         <x-form.datetime name="begin_at" label="Початок" :value="old('begin') ?? App\Helpers\Timezone::getDatetime($exam->begin_at ?? null, 'Y-m-d H:00')"></x-form.datetime>
-        <x-form.datetime name="end_at" label="Кінець" :value="old('end') ?? App\Helpers\Timezone::getDatetime($exam->end_at ?? null, 'Y-m-d H:00')"></x-form.datetime>
+        <x-form.datetime name="end_at" label="Кінець" :value="old('end') ?? App\Helpers\Timezone::getDatetime($exam->end_at ?? now()->addDay(1), 'Y-m-d H:00')"></x-form.datetime>
     </div>
     <div class="grid grid-cols-2 gap-3">
         <x-form.input type="number" name="points_min" label="Мінімальні бали" :value="old('points_min') ?? $exam->settings->points_min ?? 2"></x-form.input>
