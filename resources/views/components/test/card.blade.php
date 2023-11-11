@@ -5,7 +5,7 @@
     <div>
         <a class="text-lg font-semibold" href="{{ route('test.show', $test->id) }}">{{ $test->name }}</a>
         <div>
-            <a href="" class="text-blue-600 hover:underline hover:text-blue-400 text-lg font-semibold">{{ $test->user->fullname }}</a>
+            <a href="{{ route('user.show', $test->user->id) }}" class="text-blue-600 hover:underline hover:text-blue-400 text-lg font-semibold">{{ $test->user->fullname }}</a>
         </div>
         <div>
             {{ $test->questions()->count() }} Завдань,

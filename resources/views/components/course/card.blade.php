@@ -5,7 +5,7 @@
     <div>
         <a class="text-lg font-semibold" href="{{ route('course.show', $course->id) }}">{{ $course->name }}</a>
         <div>
-            <a href="" class="text-blue-600 hover:underline hover:text-blue-400 text-lg font-semibold">{{ $course->user->fullname }}</a>
+            <a href="{{ route('user.show', $course->user->id) }}" class="text-blue-600 hover:underline hover:text-blue-400 text-lg font-semibold">{{ $course->user->fullname }}</a>
         </div>
         <div>{!! $course->description !!}</div>
     </div>

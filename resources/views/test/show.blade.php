@@ -15,7 +15,7 @@
                     {{ $test->grade->name }}
                 @endisset
             </div>
-            <span>Автор: </span><a href="" class="text-blue-600 hover:underline hover:text-blue-400">{{ $test->user->fullname }}</a>
+            <span>Автор: </span><a href="{{ route('user.show', $test->user->id) }}" class="text-blue-600 hover:underline hover:text-blue-400">{{ $test->user->fullname }}</a>
             <br>
             @isset($test->course)
                 <span>Курс: </span><a href="{{ route('course.show', $test->course->id) }}" class="text-blue-600 hover:underline hover:text-blue-400">{{ $test->course->name }}</a>

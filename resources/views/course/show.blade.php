@@ -7,7 +7,7 @@
         </div>
         <div>
             <h1 class="text-2xl">{{ $course->name }}</h1>
-            <span>Автор: </span><a href="" class="text-blue-600 hover:underline hover:text-blue-400">{{ $course->user->fullname }}</a>
+            <span>Автор: </span><a href="{{ route('user.show', $course->user->id) }}" class="text-blue-600 hover:underline hover:text-blue-400">{{ $course->user->fullname }}</a>
             <br>
             @isset($course->course)
                 <span>Курс: </span><a href="{{ route('course.show', $course->course->id) }}" class="text-blue-600 hover:underline hover:text-blue-400">{{ $course->course->name }}</a>
