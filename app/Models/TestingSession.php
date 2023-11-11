@@ -37,7 +37,7 @@ class TestingSession extends Model
 
     public function test(): BelongsTo
     {
-        return $this->belongsTo(Test::class);
+        return $this->belongsTo(Test::class)->withoutGlobalScope('allowed');
     }
 
     public function exam(): BelongsTo
