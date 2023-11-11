@@ -71,7 +71,13 @@ class TestingSession extends Model
         $correct = 0;
         $unanswered = 0;
         foreach ($questions as $question) {
-            $answer = $this->answers()->whereBelongsTo($question)->first();
+            $answer = null;
+            foreach ($this->answers as $ans) {
+                if ($ans->question_id === $question->id) {
+                    $answer = $ans;
+                    break;
+                }
+            }
 
             $max += $question->points;
             if ($answer) {
