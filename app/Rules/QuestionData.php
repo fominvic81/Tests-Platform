@@ -40,7 +40,7 @@ class QuestionData implements DataAwareRule, ValidationRule
         if (!$value) return;
         $type = QuestionType::from($this->data['type']);
 
-        $result = Validator::make($value, QuestionHelper::getRulesByType($type))->stopOnFirstFailure();
+        $result = Validator::make($value, QuestionHelper::getRulesByType($type, $value))->stopOnFirstFailure();
 
         if ($result->fails()) {
             foreach ($result->errors()->all() as $error) $fail($error);
