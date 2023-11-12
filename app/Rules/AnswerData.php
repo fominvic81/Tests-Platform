@@ -11,10 +11,12 @@ use Illuminate\Support\Facades\Validator;
 class AnswerData implements ValidationRule
 {
     private QuestionType $type;
+    private array $data;
 
-    public function __construct(QuestionType $type)
+    public function __construct(QuestionType $type, array $questionData)
     {
         $this->type = $type;
+        $this->data = $questionData;
     }
 
     /**
@@ -33,6 +35,63 @@ class AnswerData implements ValidationRule
             return;
         }
 
-        //
+        switch ($this->type) {
+            case QuestionType::OneCorrect:
+            case QuestionType::MultipleCorrect:
+                if (count($value['correct']) !== count($this->data['options'])) {
+                    $fail('Щось пішло не так');
+                    break;
+                }
+                $correct = 0;
+                foreach ($value['correct'] as $isCorrect) if ($isCorrect) ++$correct;
+                if ($correct === 0) $fail('Виберіть хоча б одну відповідь');
+                if ($this->type === QuestionType::OneCorrect && $correct > 1) $fail('Має бути лише один правильна відповідь');
+                break;
+            case QuestionType::Match:
+                $variantsCount = count($this->data['variants']);
+                $optionsCount = count($this->data['options']);
+                if (count($value['match']) !== $optionsCount) {
+                    $fail('Щось пішло не так');
+                    break;
+                }
+                $chosenCount = 0;
+                $chosen = [];
+                foreach ($value['match'] as $match) {
+                    if ($match < -1 || $match >= $variantsCount) {
+                        $fail('Щось пішло не так');
+                        break 2;
+                    }
+                    if ($match != -1) {
+                        ++$chosenCount;
+                        if (isset($chosen[$match])) {
+                            $fail('Відповіді не повинні перетинатися');
+                            break;
+                        }
+                        $chosen[$match] = true;
+                    }
+                }
+                if ($chosenCount != min($variantsCount, $optionsCount)) $fail('Поєднайте всі варіанти');
+
+                break;
+            case QuestionType::TextInput:
+                break;
+            case QuestionType::Sequence:
+                $optionsCount = count($this->data['options']);
+                if (count($value['sequence']) !== $optionsCount) {
+                    $fail('Щось піщло не так');
+                    break;
+                }
+                
+                $flags = [];
+                foreach($value['sequence'] as $index) {
+                    if ($index < 0 || $index >= $optionsCount || isset($flags[$index])) {
+                        $fail('Щось піщло не так');
+                        break 2;
+                    }
+                    $flags[$index] = true;
+                }
+
+                break;
+        }
     }
 }

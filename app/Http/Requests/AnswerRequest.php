@@ -38,7 +38,7 @@ class AnswerRequest extends FormRequest
 
         return [
             'question_id' => ['required', 'integer'],
-            'answer' => ['required_with:question_id', new AnswerData($type)],
+            'answer' => ['required_with:question_id', new AnswerData($type, $question->data)],
         ];
     }
 }

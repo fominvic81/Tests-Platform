@@ -11,6 +11,8 @@ use Illuminate\Validation\Rules\Enum;
 
 class QuestionRequest extends FormRequest
 {
+    protected $stopOnFirstFailure = true;
+
     /**
      * Determine if the user is authorized to make this request.
      */

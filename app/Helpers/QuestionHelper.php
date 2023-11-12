@@ -84,7 +84,7 @@ class QuestionHelper {
         ],
     ];
 
-    public static function getRulesByType(QuestionType $type)
+    public static function getRulesByType(QuestionType $type, array $data)
     {
         return [
             ...[
@@ -117,7 +117,7 @@ class QuestionHelper {
                     ...QuestionHelper::$rules['groups'],
                 ],
             ][$type->value],
-            'answer' => ['required', new AnswerData($type)],
+            'answer' => ['required', new AnswerData($type, $data)],
         ];
     }
 
