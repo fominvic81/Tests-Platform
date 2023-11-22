@@ -18,7 +18,13 @@ class Test extends Model
     public static function booted(): void
     {
         static::addGlobalScope('allowed', function (Builder $builder) {
-            $builder->where('published', true)->where('accessibility', Accessibility::Public)->whereRelation('course', 'accessibility', Accessibility::Public);
+            $builder
+                ->where('published', true)->where('accessibility', Accessibility::Public)
+                ->where(function ($query) {
+                    return $query
+                        ->where('course_id', null)
+                        ->orWhereRelation('course', 'accessibility', Accessibility::Public);
+                });
             $user = auth()->user();
             if ($user) $builder->orWhereBelongsTo($user);
         });
