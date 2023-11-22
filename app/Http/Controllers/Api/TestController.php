@@ -46,6 +46,7 @@ class TestController extends Controller
         $test->course()->associate($data['course']);
 
         $test->save();
+        $test->load(['grade', 'subject']);
 
         return response()->json([
             ...$test->toArray(),

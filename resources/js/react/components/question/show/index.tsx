@@ -36,7 +36,7 @@ export const QuestionShow: React.FC<Props> = ({ question, index, onDelete, onEdi
     const [confirmDelete, setConfirmDelete] = useState(false);
     const Component = questionComponentByType[question.type];
 
-    return <div className='bg-white p-3 my-4 shadow rounded-lg'>
+    return <div className='bg-white p-3 my-4 shadow-md rounded-lg'>
         <div>
             <div className='flex justify-between items-center'>
                 <div>

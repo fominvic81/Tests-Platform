@@ -18,10 +18,7 @@ class TestingController extends Controller
     }
 
     public function result(TestingSession $session) {
-
-        if (!$session->hasEnded()) {
-            return redirect()->route('testing.show', $session->id);
-        }
+        if (!$session->hasEnded()) return redirect()->route('testing.show', $session->id);
 
         return view('testing.result', [
             'session'=> $session,

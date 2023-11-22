@@ -97,6 +97,13 @@ class TestController extends Controller
         ]);
     }
 
+    public function publish(Test $test)
+    {
+        $test->published = true;
+        $test->save();
+        return redirect()->route('test.show', $test->id);
+    }
+
     public function save(Request $request, Test $test)
     {
         $data = $request->validate(['value' => ['required', 'boolean']]);

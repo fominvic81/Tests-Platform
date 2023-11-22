@@ -30,7 +30,7 @@ class TestRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3'],
-            'image' => ['nullable', 'image', 'max:2048'],
+            'image' => ['nullable', 'image', 'max:10240'],
             'del_image' => ['required', 'boolean'],
             'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['string', 'nullable'],

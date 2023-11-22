@@ -21,14 +21,14 @@ interface Props {
 export const Option: React.FC<Props> = ({ name: field, index, option, deletable, onDelete }) => {
 
     return <div className='grid grid-cols-[1fr_auto_auto] items-center gap-2'>
-        <div className='overflow-hidden'>
+        <div className='col-span-full md:col-span-1 overflow-hidden'>
             <TextEditor
                 name={`${field}[${index}][text]`}
                 placeholder='Варіант'
                 defaultValue={ option.text }
             ></TextEditor>
         </div>
-        <div className='w-32 h-full max-h-32'>
+        <div className='md:w-32 h-24 md:h-full md:max-h-32'>
             <FormImage
                 name={`${field}[${index}][image]`}
                 nameDel={`${field}[${index}][del_image]`}

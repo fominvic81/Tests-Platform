@@ -25,7 +25,7 @@ class CourseRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3'],
-            'image' => ['image', 'nullable', 'max:2048'],
+            'image' => ['image', 'nullable', 'max:10240'],
             'del_image' => ['nullable', 'boolean'],
             'accessibility' => ['required', new Enum(Accessibility::class)],
             'description' => ['nullable', 'string'],

@@ -13,6 +13,9 @@ import { FormImage } from '../../components/form/image';
 import axios, { AxiosError } from 'axios';
 import { FormError } from '../../components/form/error';
 import { TextEditor } from '../../components/TextEditor';
+import { ImageContain } from '../../components/common/ImageContain';
+
+import EditSVG from '../../../../svg/common/edit.svg?react';
 
 type AsyncData = [Test<'course' | 'questions'>, TestOptions];
 
@@ -23,9 +26,10 @@ type UrlData = {
 
 const Component: React.FC = () => {
 
-    const [test, options] = useAsync<AsyncData>();
+    const [initTest, options] = useAsync<AsyncData>();
+    const [test, setTest] = useState(initTest);
     const [error, setError] = useState<ValidationError>();
-    const [saved, setSaved] = useState(true);
+    const [showForm, setShowForm] = useState(false);
 
     const [questions, setQuestions] = useState(test.questions);
 
@@ -37,63 +41,98 @@ const Component: React.FC = () => {
 
     const onSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        setSaved(true);
         const response = await axios.postForm(`/api/test/${test.id}`, event.target).catch((reason: AxiosError) => {
             if (reason.response && reason.response.status === 422) setError(reason.response.data as ValidationError);
-            setSaved(false);
         });
         if (!response) return;
 
+        setTest(response.data);
+        setShowForm(false);
         setError(undefined);
     }
 
     return <>
         {page === 'test' && <>
-            <div className='p-5 bg-white shadow-md rounded-lg font-semibold'>
-                <form onSubmit={ onSubmit } onChange={() => setSaved(false)}>
-                    <CSRF></CSRF>
-                    <Method method='PUT'></Method>
-            
-                    <div className='grid grid-cols-[1fr_min-content]'>
-                        <div>
-                            <FormTextInput type='text' name='name' label='Назва' placeholder='Назва' defaultValue={ test.name }></FormTextInput>
+            {showForm && <div onMouseDown={() => setShowForm(false)} className='flex justify-center items-start fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-30'>
+                <div onMouseDown={(event) => event.stopPropagation()} className='p-5 mt-24 bg-white rounded-lg font-semibold'>
+                    <form onSubmit={ onSubmit }>
+                        <CSRF></CSRF>
+                        <Method method='PUT'></Method>
+                
+                        <div className='grid grid-cols-[1fr_min-content]'>
+                            <div>
+                                <FormTextInput type='text' name='name' label='Назва' placeholder='Назва' defaultValue={ test.name }></FormTextInput>
 
-                            <label htmlFor='description'>Опис</label>
-                            <TextEditor id='description' name='description' placeholder='Опис' defaultValue={ test.description } onChange={() => setSaved(false)}></TextEditor>
+                                <label htmlFor='description'>Опис</label>
+                                <TextEditor id='description' name='description' placeholder='Опис' defaultValue={ test.description }></TextEditor>
+                            </div>
+                            <div className='w-40 h-40 m-3'>
+                                <FormImage name='image' nameDel='del_image' defaultSrc={ test.image && imagePath(test.image) }></FormImage>
+                            </div>
                         </div>
-                        <div className='w-40 h-40 m-3'>
-                            <FormImage name='image' nameDel='del_image' defaultSrc={ test.image && imagePath(test.image) } onChange={() => setSaved(false)}></FormImage>
+                
+                        <div className='grid grid-cols-2 gap-x-3'>
+                            <FormSelect name='course' label='Курс' defaultValue={ test.course?.id }>
+                                <option className='font-bold' value=''>Без курсу</option>
+                                {options.courses.map((course) => 
+                                    <option key={ course.id } value={ course.id }>{ course.name }</option>                    
+                                )}
+                            </FormSelect>
+                            <FormSelect name='accessibility' defaultValue={ test.accessibility } label='Доступність'>
+                                {Object.values(Accessibility).filter((v) => typeof v !== 'number').map((key) =>
+                                    <option key={ key } value={ Accessibility[key] }>{ AccessibilityName[Accessibility[key]] }</option>
+                                )}
+                            </FormSelect>
+                            <FormSelect name='subject' label='Предмет' defaultValue={ test.subject?.id }>
+                                <option value="">...</option>
+                                {options.subjects.map((subject) => 
+                                    <option key={ subject.id } value={ subject.id }>{ subject.name }</option>
+                                )}
+                            </FormSelect>
+                            <FormSelect name='grade' label='Клас' defaultValue={ test.grade?.id }>
+                                <option value="">...</option>
+                                {options.grades.map((grade) =>
+                                    <option key={ grade.id } value={ grade.id }>{ grade.name }</option>
+                                )}
+                            </FormSelect>
                         </div>
+                        <div className='mt-2'>
+                            <FormSubmit>Зберегти</FormSubmit>
+                            <FormError error={ error }></FormError>
+                        </div>
+                    </form>
+                </div> 
+            </div>}
+            <div className='p-5 my-2 bg-white shadow-md rounded-md'>
+                <div className='grid grid-cols-[min-content_1fr_auto]'>
+                    <div>
+                        {test.image && <ImageContain src={ imagePath(test.image) }></ImageContain>}
                     </div>
-            
-                    <div className='grid grid-cols-2 gap-x-3'>
-                        <FormSelect name='course' label='Курс' defaultValue={ test.course?.id }>
-                            <option className='font-bold' value=''>Без курсу</option>
-                            {options.courses.map((course) => 
-                                <option key={ course.id } value={ course.id }>{ course.name }</option>                    
-                            )}
-                        </FormSelect>
-                        <FormSelect name='accessibility' defaultValue={ test.accessibility } label='Доступність'>
-                            {Object.values(Accessibility).filter((v) => typeof v !== 'number').map((key) =>
-                                <option key={ key } value={ Accessibility[key] }>{ AccessibilityName[Accessibility[key]] }</option>
-                            )}
-                        </FormSelect>
-                        <FormSelect name='subject' label='Предмет' defaultValue={ test.subject?.id }>
-                            <option value="">...</option>
-                            {options.subjects.map((subject) => 
-                                <option key={ subject.id } value={ subject.id }>{ subject.name }</option>
-                            )}
-                        </FormSelect>
-                        <FormSelect name='grade' label='Клас' defaultValue={ test.grade?.id }>
-                            <option value="">...</option>
-                            {options.grades.map((grade) =>
-                                <option key={ grade.id } value={ grade.id }>{ grade.name }</option>
-                            )}
-                        </FormSelect>
+                    <div>
+                        <div className='text-2xl'>{ test.name }</div>
+                        <div>
+                            { test.subject?.name } { test.grade?.name }
+                        </div>
+                        <div>{AccessibilityName[test.accessibility]}</div>
+                        {test.course && <div>Курс:
+                            <a
+                                href={`/course/${test.course.id}`}
+                                className='text-blue-600 hover:text-blue-300 hover:underline'
+                            >{ test.course?.name }</a>
+                        </div>}
                     </div>
-                    <FormSubmit disabled={ saved }>Зберегти</FormSubmit>
-                    <FormError error={ error }></FormError>
-                </form>
+                    <div className='flex gap-2'>
+                        <button
+                            className='w-9 h-9 border-2 rounded-md'
+                            onClick={ () => setShowForm(true) }
+                        ><EditSVG></EditSVG></button>
+                        {!test.published && <form action={`/test/${test.id}/publish`} method='POST'>
+                            <CSRF></CSRF>
+                            <button className='flex items-center h-9 bg-yellow-300 p-2 rounded border-2'>Опублікувати</button>
+                        </form>}
+                    </div>
+                    <div className='col-span-full' dangerouslySetInnerHTML={{ __html: test.description ?? '' }}></div>
+                </div>
             </div>
 
             <div>

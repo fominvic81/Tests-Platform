@@ -9,7 +9,6 @@ import axios, { AxiosError } from 'axios';
 import { FormError } from '../../form/error';
 import { useUrlState } from '../../../hooks/useUrlState';
 import { MultipleCorrect } from './MultipleCorrect';
-import { FormToggle } from '../../form/toggle';
 import { Match } from './Match';
 import cn from 'classnames';
 import { FormImage } from '../../form/image';
@@ -83,10 +82,10 @@ export const QuestionEdit: React.FC<Props> = ({ initialQuestion, onSave }) => {
             <CSRF></CSRF>
             <Method method={method}></Method>
             <input type='hidden' name='type' value={ type } />
-            <div className='grid grid-cols-[auto_1fr] gap-4'>
+            <div className='grid md:grid-cols-[auto_1fr] gap-4'>
                 <div>
                     {Object.values(QuestionType).filter((v) => typeof v !== 'number').map((key) => 
-                        <button
+                        QuestionTypeName[QuestionType[key]] && <button
                             type='button'
                             key={ key }
                             className={cn('block w-full p-1 my-2 hover:brightness-90 rounded', type === QuestionType[key] ? 'bg-sky-400' : 'bg-emerald-400 ')}
@@ -96,20 +95,18 @@ export const QuestionEdit: React.FC<Props> = ({ initialQuestion, onSave }) => {
                 </div>
                 <div>
                     <div className='text-2xl indent-1'>{ create ? 'Створити' : 'Редагувати' } питання</div>
-                    <div className='grid grid-cols-[1fr_auto] p-2 border-2'>
+                    <div className='grid md:grid-cols-[1fr_auto] p-2 border-2'>
                         <div className='overflow-hidden'>
                             <label htmlFor='text'>Питання</label>
                             <TextEditor name='text' id='text' defaultValue={ question.text } placeholder='Питання'></TextEditor>
                         </div>
-                        <div className='w-48 row-span-6'>
-                            <div className='aspect-square mx-3 mt-6'>
+                            <div className='row-span-2 w-full h-32 md:w-40 md:h-40 mx-auto md:mx-3 mt-6'>
                                 <FormImage
                                     name='image'
                                     nameDel='del_image'
                                     defaultSrc={ question.image && imagePath(question.image) }
                                 ></FormImage>
                             </div>
-                        </div>
                         <div>
                             <FormTextInput type='number' name='points' label='Бали' defaultValue={question?.points ?? 1} placeholder='Кількість балів'></FormTextInput>
                         </div>
@@ -120,10 +117,10 @@ export const QuestionEdit: React.FC<Props> = ({ initialQuestion, onSave }) => {
             <div className='mt-1 p-2 border-2'>
                 <Component question={ question }></Component>
             </div>
-            <div className='grid grid-cols-2 items-baseline gap-2'>
+            <div className='grid grid-cols-2 items-baseline gap-2 mt-2'>
                 <button
                     type='button'
-                    className='h-10 bg-gray-50 border rounded'
+                    className='h-full bg-gray-50 border rounded'
                     onClick={() => {
                         history.back();
                     }}

@@ -6,9 +6,9 @@ export const QuestionTypeName: Record<QuestionType, string> = {
     [QuestionType.Match]: 'Відповідність',
     [QuestionType.TextInput]: 'Введена відповідь',
     [QuestionType.Sequence]: 'Послідовність',
-    [QuestionType.TextGapsTextInput]: '0',
-    [QuestionType.TextGapsVariantSingleList]: '0',
-    [QuestionType.TextGapsVariantMultipleLists]: '0',
+    [QuestionType.TextGapsTextInput]: '',
+    [QuestionType.TextGapsVariantSingleList]: '',
+    [QuestionType.TextGapsVariantMultipleLists]: '',
 }
 
 export const AccessibilityName: Record<Accessibility, string> = {
