@@ -16,7 +16,7 @@
                 {{ $test->grade->name }}
             @endisset
         </div>
-        <div>{!! $test->description !!}</div>
+        <div class="hidden sm:block">{!! $test->description !!}</div>
     </div>
     <div class="m-1">
         @auth

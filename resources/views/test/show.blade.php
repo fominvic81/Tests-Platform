@@ -37,10 +37,12 @@
         </div>
         <div class="col-span-3">{!! $test->description !!}</div>
     </div>
-    <div class="grid grid-cols-2 mt-4 gap-2 text-3xl font-semibold">
-        <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="{{ route('test.exam.create', $test->id) }}" >Задати домашнє завдання</a>
-        <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="">Пройти</a>
-    </div>
+    @if (count($test->questions) > 0)
+        <div class="grid grid-cols-2 mt-4 gap-2 text-3xl font-semibold">
+            <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="{{ route('test.exam.create', $test->id) }}" >Задати</a>
+            <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="">Пройти</a>
+        </div>
+    @endif
     <div>
         @foreach ($test->questions as $question)
             <x-question :index="$loop->index" :question="$question"></x-question>

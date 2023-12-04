@@ -7,7 +7,7 @@
         <div>
             <a href="{{ route('user.show', $course->user->id) }}" class="text-blue-600 hover:underline hover:text-blue-400 text-lg font-semibold">{{ $course->user->fullname }}</a>
         </div>
-        <div>{!! $course->description !!}</div>
+        <div class="hidden sm:block">{!! $course->description !!}</div>
     </div>
     <div class="m-1">
         @auth
