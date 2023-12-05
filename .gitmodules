@@ -1,0 +1,3 @@
+[submodule "laradock"]
+	path = laradock-testify
+	url = https://github.com/Laradock/laradock.git
