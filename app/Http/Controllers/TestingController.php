@@ -9,7 +9,7 @@ class TestingController extends Controller
 {
     
     public function show(TestingSession $session) {
-
+        $this->authorize('update', $session);
         if ($session->hasEnded()) return redirect()->route('testing.result', $session->id);
 
         return view('testing.show', [
@@ -26,6 +26,7 @@ class TestingController extends Controller
     }
 
     public function complete(TestingSession $session) {
+        $this->authorize('complete', $session);
         if ($session->hasEnded()) return response(null, 400);
 
         $session->ends_at = now();

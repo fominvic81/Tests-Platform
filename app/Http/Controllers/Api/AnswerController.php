@@ -14,6 +14,7 @@ class AnswerController extends Controller
     
     public function store(AnswerRequest $request, TestingSession $session)
     {
+        $this->authorize('update', $session);
         $data = $request->validated();
         $data['answer'] = QuestionHelper::parseAnswer($data['answer']);
 

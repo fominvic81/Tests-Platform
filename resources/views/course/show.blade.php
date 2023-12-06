@@ -31,7 +31,7 @@
     </div>
     <div class="grid grid-cols-2 w-full max-w-5xl mt-3 pb-10 mx-auto gap-4">
 
-        @if (Auth::user()?->id === $course->user->id)
+        @can('update', $course)
             <a href="{{ route('test.create', ['course' => $course->id]) }}" class="text-center col-span-2 text-2xl p-5 border-2 rounded-md shadow-md bg-white hover:bg-gray-100">
                 Створити тест
             </a>

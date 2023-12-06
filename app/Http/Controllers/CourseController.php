@@ -50,6 +50,7 @@ class CourseController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Course::class);
         return view('course.create');
     }
 
@@ -58,6 +59,7 @@ class CourseController extends Controller
      */
     public function store(CourseRequest $request)
     {
+        $this->authorize('create', Course::class);
         $data = $request->validated();
 
         $data['image'] = isset($data['image']) ? ImageHelper::uploadImage($data['image']) : null;
@@ -84,11 +86,13 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
+        $this->authorize('update', $course);
         return view('course.edit', [ 'course' => $course ]);
     }
 
     public function update(CourseRequest $request, Course $course)
     {
+        $this->authorize('update', $course);
         $data = $request->validated();
 
         $data['image'] =
@@ -121,6 +125,6 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        $this->authorize('delete', $course);
     }
 }

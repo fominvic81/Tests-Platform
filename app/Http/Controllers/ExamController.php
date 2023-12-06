@@ -113,6 +113,7 @@ class ExamController extends Controller
 
     public function join(Request $request)
     {
+        $this->authorize('create', TestingSession::class);
         return view('exam.join', [
             'code' => $request->query('code'),
         ]);
@@ -120,12 +121,13 @@ class ExamController extends Controller
 
     public function start(Request $request)
     {
+        $this->authorize('create', TestingSession::class);
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:50'],
             'code' => ['required', 'integer', 'digits:7'],
         ]);
 
-        $exam = Exam::query()->where('code', '=', $data['code'])->notEnded()->first();
+        $exam = Exam::query()->withoutGlobalScope('allowed')->where('code', '=', $data['code'])->notEnded()->first();
 
         if (!$exam) return redirect()->back()->withInput()->withErrors('Тест таким кодом не знайдено');
         if (!$exam->hasBegun()) return redirect()->back()->withInput()->withErrors('Тест ще не почався');

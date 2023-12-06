@@ -16,6 +16,7 @@ class QuestionController extends Controller
      */
     public function store(QuestionRequest $request, Test $test)
     {
+        $this->authorize('update', $test);
         $data = $request->validated();
         $data['data'] = QuestionHelper::parse($data['data']);
 
@@ -33,6 +34,7 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
+        $this->authorize('update', $question->test);
         return response()->json($question->toArray());
     }
 
@@ -41,6 +43,7 @@ class QuestionController extends Controller
      */
     public function update(QuestionRequest $request, Question $question)
     {
+        $this->authorize('update', $question->test);
         $data = $request->validated();
         $data['data'] = QuestionHelper::parse($data['data'], $question->data);
 
@@ -59,6 +62,7 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
+        $this->authorize('update', $question->test);
         $question->delete();
     }
 }

@@ -51,6 +51,7 @@ class TestController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize('create', Test::class);
         return view('test.create', [
             'courses' => $request->user()->courses,
             'subjects' => Subject::all(),
@@ -63,6 +64,7 @@ class TestController extends Controller
      */
     public function store(TestRequest $request)
     {
+        $this->authorize('create', Test::class);
         $data = $request->validated();
 
         $data['image'] = isset($data['image']) ? ImageHelper::uploadImage($data['image']) : null;
@@ -92,6 +94,7 @@ class TestController extends Controller
      */
     public function edit(Test $test)
     {
+        $this->authorize('update', $test);
         return view('test.edit', [
             'test' => $test,
         ]);
@@ -121,6 +124,7 @@ class TestController extends Controller
      */
     public function destroy(Test $test)
     {
-        //
+        $this->authorize('delete', $test);
+        $test->delete();
     }
 }

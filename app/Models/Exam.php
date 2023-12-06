@@ -12,6 +12,13 @@ class Exam extends Model
 {
     use HasFactory;
 
+    public static function booted(): void
+    {
+        static::addGlobalScope('allowed', function (Builder $builder) {
+            $builder->whereBelongsTo(auth()->user());
+        });
+    }
+
     public function scopeActive(Builder $query): void
     {
         $query->where('begin_at', '<', now())->where('end_at', '>', now());

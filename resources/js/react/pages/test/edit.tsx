@@ -54,7 +54,7 @@ const Component: React.FC = () => {
     return <>
         {page === 'test' && <>
             {showForm && <div onMouseDown={() => setShowForm(false)} className='flex justify-center items-start fixed top-0 left-0 w-full h-full bg-gray-600 bg-opacity-30'>
-                <div onMouseDown={(event) => event.stopPropagation()} className='p-5 mt-24 bg-white rounded-lg font-semibold'>
+                <div onMouseDown={(event) => event.stopPropagation()} className='p-5 mt-24 bg-white rounded-lg font-semibold w-full max-w-5xl'>
                     <form onSubmit={ onSubmit }>
                         <CSRF></CSRF>
                         <Method method='PUT'></Method>

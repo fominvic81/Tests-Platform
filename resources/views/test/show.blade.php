@@ -23,7 +23,7 @@
         </div>
         <div class="grid grid-flow-col gap-1">
             @auth
-                @if (Auth::user()->id === $test->user_id)
+                @can('update', $test)
                     <a
                         href="{{ route('test.edit', $test->id) }}"
                         class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"

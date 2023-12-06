@@ -32,6 +32,7 @@ class TestController extends Controller
      */
     public function update(TestRequest $request, Test $test)
     {
+        $this->authorize('update', $test);
         $data = $request->validated();
 
         $data['image'] =

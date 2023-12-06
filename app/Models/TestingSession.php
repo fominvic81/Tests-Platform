@@ -12,6 +12,15 @@ class TestingSession extends Model
 {
     use HasFactory;
 
+    public static function booted(): void
+    {
+        static::addGlobalScope('allowed', function (Builder $builder) {
+            $user = auth()->user();
+            $builder->where('user_id', null);
+            if ($user) $builder->orWhereBelongsTo($user)->orWhereRelation('exam', 'user_id', $user->id);
+        });
+    }
+
     public function scopeEnded(Builder $query): void
     {
         $query->where('ends_at', '<', now());
@@ -42,7 +51,7 @@ class TestingSession extends Model
 
     public function exam(): BelongsTo
     {
-        return $this->belongsTo(Exam::class);
+        return $this->belongsTo(Exam::class)->withoutGlobalScope('allowed');
     }
 
     public function settings(): BelongsTo
