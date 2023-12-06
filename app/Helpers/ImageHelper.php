@@ -19,9 +19,9 @@ class ImageHelper
         return $name;
     }
 
-    public static function url(string $name)
+    public static function url(string $name = null, string $fallback = null)
     {
-        return Storage::url('public/images/' . $name);
+        return $name ? Storage::url('public/images/' . $name) : $fallback;
     }
 
 }

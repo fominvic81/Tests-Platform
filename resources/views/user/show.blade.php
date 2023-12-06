@@ -1,20 +1,21 @@
 <x-layouts.feed title="Профіль {{ $user->fullname }}">
     {{-- {{ $user->fullname }} --}}
     <div class="grid sm:grid-cols-[auto_1fr_auto] items-center gap-3 p-3 bg-white rounded-md shadow">
-        <div class="w-20 aspect-square rounded-full bg-gray-200 border-2 border-gray-400">
-            <img class="w-full h-full" src="/images/profile.png" alt="">
+        <div class="w-20 aspect-square rounded-full border-2 border-gray-400 overflow-clip">
+            <img class="w-full h-full" src="{{ App\Helpers\ImageHelper::url($user->image, URL::to('/images/profile.png')) }}" alt="">
         </div>
         <div>
             <div class="text-2xl font-semibold">{{ $user->fullname }}</div>
         </div>
         <div>
-            @if (Auth::user()?->id === $user->id)
+            @can('update', $user)
                 <a
                     href="{{ route('user.edit', $user->id) }}"
                     class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"
                 ><x-svg path="common/edit.svg"></x-svg></a>
             @endif
         </div>
+        <div class="col-span-full text-lg indent-2">{{ $user->about }}</div>
     </div>
     <div class="flex gap-3 mt-3">
         <a

@@ -13,10 +13,10 @@
     <div class="flex h-full">
         @auth
             <div class="relative" x-data="{ open: false }" x-on:click.outside="open = false">
-                <button x-on:click="open = !open" class="flex h-full hover:bg-gray-100">
-                    <span class="h-full flex items-center mx-2 whitespace-nowrap">{{ Auth::user()->fullname }}</span>
-                    <div class="w-10 h-10">
-                        <img class="w-full h-full" src="{{ URL::to('/images/profile.png') }}" alt="Profile">
+                <button x-on:click="open = !open" class="flex h-full hover:bg-gray-100 items-center">
+                    <span class="mx-2 whitespace-nowrap">{{ Auth::user()->fullname }}</span>
+                    <div class="w-9 h-9 rounded-full border-2 border-gray-400 overflow-clip">
+                        <img class="w-full h-full" src="{{ App\Helpers\ImageHelper::url(Auth::user()->image, URL::to('/images/profile.png')) }}" alt="Profile">
                     </div>
                 </button>
                 <div x-cloak x-show="open" class="absolute grid w-max right-0 bg-white rounded-b-md border border-t-0 border-gray-300 overflow-clip z-50">
@@ -32,7 +32,7 @@
                     <hr class="my-1">
                     <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('exam.index') }}">Домашні завдання</a>
                     <hr class="my-1">
-                    <a class="hover:bg-gray-100 px-6 py-[2px]" href="">Налаштування</a>
+                    <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('user.edit', Auth::user()) }}">Налаштування</a>
                     <form action="{{ route('logout') }}" method="POST" class="hover:bg-gray-100 px-6 py-[2px]">
                         @csrf
                         <button type="submit" class="w-full text-start">Вийти</button>

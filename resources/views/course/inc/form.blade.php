@@ -4,7 +4,7 @@
         <x-form.textarea name="description" :value="old('description') ?? $course->description ?? ''" label="Опис" placeholder="Опис"></x-form.textarea>
     </div>
     <div class="w-40 h-40 text-base font-normal">
-        <x-form.image :image="isset($course->image) ? App\Helpers\ImageHelper::url($course->image) : null"></x-form.image>
+        <x-form.image :image="App\Helpers\ImageHelper::url($course->image)"></x-form.image>
     </div>
     <x-form.select name="accessibility" label="Доступність" wrap-class="col-span-full">
         @foreach (App\Enums\Accessibility::cases() as $accessibility)

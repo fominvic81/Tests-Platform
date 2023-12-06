@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ImageHelper;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -24,6 +26,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         return view('user.edit', [
             'user'=> $user,
         ]);
@@ -32,9 +35,20 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $this->authorize('update', $user);
+        $data = $request->validated();
+        
+        $data['image'] =
+            (boolval($data['del_image'] ?? null)) ? null :
+            (isset($data['image']) ? ImageHelper::uploadImage($data['image']) :
+            $user->image);
+
+        $user->fill($data);
+        $user->save();
+
+        return redirect()->route('user.show', $user);
     }
 
     /**
@@ -42,6 +56,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $this->authorize('delete', $user);
+        $user->delete();
     }
 }
