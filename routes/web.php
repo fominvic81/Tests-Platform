@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('course', CourseController::class)->only(['index', 'show']);
+
+Route::post('/test/{test}/start', [TestController::class, 'start'])->name('test.start');
 Route::resource('test', TestController::class)->only(['index', 'show']);
 
 Route::get('/join', [ExamController::class, 'join'])->name('exam.join');

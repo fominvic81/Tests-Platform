@@ -20,13 +20,13 @@ class TestingSessionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user = null, TestingSession $testingSession): bool
+    public function update(User $user = null, TestingSession $testingSession, Exam $exam = null): bool
     {
         if ($user && $testingSession->user && $testingSession->user->id !== $user->id) return false;
         return true;
     }
 
-    public function complete(User $user = null, TestingSession $testingSession): bool
+    public function complete(User $user = null, TestingSession $testingSession, Exam $exam = null): bool
     {
         if ($user && $testingSession->user && $testingSession->user->id !== $user->id) return false;
         return true;

@@ -7,6 +7,8 @@ use App\Http\Requests\TestRequest;
 use App\Models\Grade;
 use App\Models\Subject;
 use App\Models\Test;
+use App\Models\TestingSession;
+use App\Models\TestingSessionSettings;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -126,5 +128,30 @@ class TestController extends Controller
     {
         $this->authorize('delete', $test);
         $test->delete();
+    }
+
+    public function start(Request $request, Test $test)
+    {
+        $this->authorize('create', TestingSession::class);
+
+        $settings = new TestingSessionSettings([
+            'shuffle_questions' => false,
+            'shuffle_options' => false,
+            'show_result' => true,
+            'show_answers' => true,
+            'points_min' => 2,
+            'points_max' => 12,
+        ]);
+        $settings->save();
+
+        $session = new TestingSession();
+
+        $session->test()->associate($test);
+        $session->settings()->associate($settings);
+        $session->user()->associate($request->user());
+
+        $session->save();
+
+        return redirect()->route('testing.show', $session->id);
     }
 }

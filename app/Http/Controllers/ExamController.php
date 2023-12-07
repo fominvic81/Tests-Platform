@@ -121,13 +121,15 @@ class ExamController extends Controller
 
     public function start(Request $request)
     {
-        $this->authorize('create', TestingSession::class);
         $data = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:50'],
             'code' => ['required', 'integer', 'digits:7'],
         ]);
 
         $exam = Exam::query()->withoutGlobalScope('allowed')->where('code', '=', $data['code'])->notEnded()->first();
+        if ($request->user()->cannot('create', [TestingSession::class, $exam])) {
+            return redirect()->back()->withInput()->withErrors('Ви не можете приєднатися до цього тесту');
+        }
 
         if (!$exam) return redirect()->back()->withInput()->withErrors('Тест таким кодом не знайдено');
         if (!$exam->hasBegun()) return redirect()->back()->withInput()->withErrors('Тест ще не почався');

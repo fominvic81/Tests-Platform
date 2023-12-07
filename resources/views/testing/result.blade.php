@@ -7,8 +7,12 @@
                 {{ $session->test->name }}
             </div>
             <hr class="my-3">
-            <div class="w-max mx-auto text-lg font-semibold">Задав(ла): {{ $session->exam->user->fullname }}</div>
-            <div class="w-max mx-auto text-lg font-semibold">Виконав(ла): {{ $session->student_name }}</div>
+            @isset($session->exam)
+                <div class="w-max mx-auto text-lg font-semibold">Задав(ла): {{ $session->exam->user->fullname }}</div>
+            @endisset
+            @if ($session->student_name ?? $session->user !== null)
+                <div class="w-max mx-auto text-lg font-semibold">Виконав(ла): {{ $session->student_name ?? $session->user->fullname }}</div>
+            @endisset
             <div class="w-max mx-auto text-lg font-semibold">Почато: {{ App\Helpers\Timezone::getDatetime($session->created_at, 'Y:m:d H:i') }}</div>
             <div class="w-max mx-auto text-lg font-semibold">Витрачено часу: {{ preg_replace('/^00:/', '', date('H:i:s', $session->ends_at->timestamp - $session->created_at->timestamp)) }}</div>
             @if ($session->settings->show_result)

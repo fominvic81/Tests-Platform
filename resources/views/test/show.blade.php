@@ -25,13 +25,13 @@
             @auth
                 @can('update', $test)
                     <a
-                        href="{{ route('test.edit', $test->id) }}"
+                        href="{{ route('test.edit', $test) }}"
                         class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"
                     ><x-svg path="common/edit.svg"></x-svg></a>
                 @endif
                 <x-button.save
                     :saved="Auth::user()->savedTests()->where('test_id', $test->id)->exists()"
-                    :url="route('test.save', $test->id)"
+                    :url="route('test.save', $test)"
                 ></x-button.save>
             @endauth
         </div>
@@ -39,8 +39,11 @@
     </div>
     @if (count($test->questions) > 0)
         <div class="grid grid-cols-2 mt-4 gap-2 text-3xl font-semibold">
-            <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="{{ route('test.exam.create', $test->id) }}" >Задати</a>
-            <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="">Пройти</a>
+            <form action="{{ route('test.start', $test) }}" method="POST" target="_blank">
+                @csrf
+                <button class="w-full py-3 rounded-md bg-white shadow border-2 flex items-center justify-center">Пройти</button>
+            </form>
+            <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="{{ route('test.exam.create', $test) }}">Задати</a>
         </div>
     @endif
     <div>
