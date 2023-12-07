@@ -40,7 +40,7 @@
                         @foreach ($question->data['variants'] as $variant)
                             @php
                                 $correct = $question->data['answer']['match'][$loop->parent->index] === $loop->index;
-                                $chosen = $answer->data['match'][$loop->parent->index] ?? -1 === $loop->index;
+                                $chosen = ($answer->data['match'][$loop->parent->index] ?? -1) === $loop->index;
                             @endphp
                             <td>
                                 <div @class(['w-6 h-6 rounded', 'bg-green-400' => $correct, 'bg-red-600' => $chosen && !$correct, 'bg-gray-200' => !$chosen && !$correct])></div>

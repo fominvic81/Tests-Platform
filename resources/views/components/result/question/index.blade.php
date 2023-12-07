@@ -19,7 +19,7 @@
         @if ($question->type === App\Enums\QuestionType::TextInput)<x-result.question.text-input :question="$question" :answer="$answer"></x-result.question.text-input>@endif
         @if ($question->type === App\Enums\QuestionType::Sequence)<x-result.question.sequence :question="$question" :answer="$answer"></x-result.question.sequence>@endif
     </div>
-    <div @class(['p-2 font-bold text-gray-700', 'bg-red-600' => $answer->accuracy ?? 0 <= 0.4, 'bg-red-400' => $answer->accuracy ?? 0 > 0.4 && $answer->accuracy ?? 0 < 0.99,'bg-green-500' => $answer->accuracy ?? 0 >= 0.99])>
+    <div @class(['p-2 font-bold text-gray-700', 'bg-red-600' => ($answer->accuracy ?? 0) <= 0.4, 'bg-red-400' => ($answer->accuracy ?? 0) > 0.4 && ($answer->accuracy ?? 0) < 0.99,'bg-green-500' => ($answer->accuracy ?? 0) >= 0.99])>
         Бали: {{ round($answer->points ?? 0, 1) }} / {{ $question->points }}
     </div>
 </div>
