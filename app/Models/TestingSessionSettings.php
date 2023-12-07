@@ -26,6 +26,7 @@ class TestingSessionSettings extends Model
         'shuffle_questions',
         'shuffle_options',
         'show_result',
+        'show_answers',
         'points_min',
         'points_max',
     ];

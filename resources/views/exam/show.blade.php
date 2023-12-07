@@ -65,7 +65,7 @@
             <div class="grid md:grid-cols-[1fr_70px_2fr] justify-stretch items-center gap-2 border-2 p-0.5 rounded">
                 <div class="indent-2 font-semibold">{{ $session->student_name }}</div>
                 <div class="bg-gray-200 font-bold text-center rounded border-2 border-gray-400">{{ round($session->stats()['points']) }}/{{ $session->settings->points_max }}</div>
-                <x-session.pointsbar :stats="$session->stats()"></x-session.pointsbar>
+                <x-result.pointsbar :stats="$session->stats()"></x-result.pointsbar>
             </div>
         @endforeach
     </div>

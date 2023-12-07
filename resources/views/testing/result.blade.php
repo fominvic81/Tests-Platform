@@ -1,4 +1,4 @@
-<x-layouts.base class="bg-gray-100" title="Результат тестування">
+<x-layouts.base class="bg-gray-100 overflow-x-hidden" title="Результат тестування">
     <div class="w-full h-14 bg-emerald-400 shadow-md"></div>
 
     <div class="w-full max-w-3xl mx-auto ">
@@ -19,15 +19,26 @@
                     <div>Тестові Бали:</div>
                     <div class="bg-gray-200 max-w-sm ml-2 p-2 grow text-center rounded font-bold">{{ round($session->stats()['correct']) }} / {{ $session->stats()['max'] }}</div>
                 </div>
-                <x-session.pointsbar :stats="$session->stats()" class="mx-8"></x-session.pointsbar>
+                <x-result.pointsbar :stats="$session->stats()" class="mx-8"></x-result.pointsbar>
             @endif
         </div>
+
+        @if ($session->settings->show_answers)
+            @php
+                $answers = App\Models\Answer::query()->whereBelongsTo($session, 'session')->get();
+            @endphp
+            @foreach ($session->test->questions as $question)
+                @php
+                    $answer = $answers->first(fn ($answer) => $answer->question_id === $question->id);
+                @endphp
+                <x-result.question
+                    :index="$loop->index"
+                    :question="$question"
+                    :answer="$answer"
+                ></x-result.question>
+            @endforeach
+        @endif
+
+        <div class="h-4"></div>
     </div>
-
-    @if ($session->settings->show_result)
-        @foreach ($session->test->questions as $question)
-            {{-- TODO --}}
-        @endforeach
-    @endif
-
 </x-layouts.base>

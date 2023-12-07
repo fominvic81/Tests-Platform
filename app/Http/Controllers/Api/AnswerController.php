@@ -23,7 +23,8 @@ class AnswerController extends Controller
         if (!$question) return response(null, 404);
         if (!$session->test->questions()->find($question->id)) return response(null, 403);
 
-        $points = AnswerChecker::check($question->type, $data['answer'], $question->data) * $question->points;
+        $accuracy = AnswerChecker::check($question->type, $data['answer'], $question->data);
+        $points = $accuracy * $question->points;
 
         $answer = Answer::query()->whereBelongsTo($session, 'session')->whereBelongsTo($question)->first();
 
@@ -34,6 +35,7 @@ class AnswerController extends Controller
             $answer->question()->associate($question);
         }
 
+        $answer->accuracy = $accuracy;
         $answer->points = $points;
         $answer->data = $data['answer'];
 

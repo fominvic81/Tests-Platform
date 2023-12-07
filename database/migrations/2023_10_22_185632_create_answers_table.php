@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
             $table->double('points');
+            $table->double('accuracy');
             $table->json('data');
             $table->foreignId('question_id');
             $table->foreignId('testing_session_id');

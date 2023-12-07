@@ -32,6 +32,7 @@ class ExamRequest extends FormRequest
             'shuffle_questions' => ['required', 'boolean'],
             'shuffle_options' => ['required', 'boolean'],
             'show_result' => ['required', 'boolean'],
+            'show_answers' => ['required', 'boolean'],
         ];
     }
 }

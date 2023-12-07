@@ -20,6 +20,7 @@
         <x-form.checkbox name="shuffle_questions" label="Перемішати питання" :value="old('shuffle_questions') ?? $exam->settings->shuffle_questions ?? false" wrap-class="col-span-full"></x-form.checkbox>
         <x-form.checkbox name="shuffle_options" label="Перемішати відповіді" :value="old('shuffle_options') ?? $exam->settings->shuffle_options ?? false" wrap-class="col-span-full"></x-form.checkbox>
         <x-form.checkbox name="show_result" label="Показати результат" :value="old('show_result') ?? $exam->settings->show_result ?? true" wrap-class="col-span-full"></x-form.checkbox>
+        <x-form.checkbox name="show_answers" label="Показати відповіді" :value="old('show_answers') ?? $exam->settings->show_answers ?? false" wrap-class="col-span-full"></x-form.checkbox>
     </div>
 
     <x-form.errors></x-form.errors>
