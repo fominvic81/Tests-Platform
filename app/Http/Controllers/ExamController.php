@@ -76,6 +76,8 @@ class ExamController extends Controller
      */
     public function edit(Exam $exam)
     {
+        if ($exam->hasEnded()) return response(null, 400);
+
         return view('exam.edit', [
             'exam' => $exam,
             'test' => $exam->test,
@@ -87,7 +89,7 @@ class ExamController extends Controller
      */
     public function update(ExamRequest $request, Exam $exam)
     {
-        // TODO: check if exam has ended
+        if ($exam->hasEnded()) return response(null, 400);
 
         $data = $request->validated();
         $data['begin_at'] = Carbon::parse($data['begin_at'], config('app.timezone_client'))->setTimezone(config('app.timezone'));
@@ -96,7 +98,7 @@ class ExamController extends Controller
 
         $exam->settings->fill($data);
         $exam->settings->save();
-        
+
         $exam = $exam->fill($data);
         $exam->save();
 
@@ -108,7 +110,7 @@ class ExamController extends Controller
      */
     public function destroy(Exam $exam)
     {
-        //
+        $exam->delete();
     }
 
     public function join(Request $request)
