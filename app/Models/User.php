@@ -25,7 +25,6 @@ class User extends Authenticatable
         'about',
         'image',
         'email',
-        'password',
     ];
 
     /**
@@ -48,9 +47,42 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function getFullnameAttribute()
+    public function getFullnameAttribute(): string
     {
         return $this->lastname . ' ' . $this->firstname;
+    }
+
+    public function addRole(string $role): void
+    {
+        $this->roles()->attach(Role::getByName($role));
+    }
+
+    public function hasRole(string ...$roles): bool
+    {
+        foreach ($roles as $role) {
+            if ($this->roles->contains('name', $role)) return true;
+        }
+        return false;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole('admin');
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->hasRole('teacher');
+    }
+
+    public function isStudent(): bool
+    {
+        return $this->hasRole('student');
+    }
+
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(Role::class);
     }
 
     public function courses(): HasMany

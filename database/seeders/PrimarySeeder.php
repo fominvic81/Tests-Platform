@@ -15,11 +15,27 @@ class PrimarySeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory()->create([
+        DB::table('roles')->insert(['name' => 'admin']);
+        DB::table('roles')->insert(['name' => 'teacher']);
+        DB::table('roles')->insert(['name' => 'student']);
+
+        $admin = User::factory()->create([
             'firstname' => 'SpongeBob SquarePants',
             'lastname' => '',
             'email' => 'admin@app.com',
         ]);
+
+        $admin->addRole('admin');
+        $admin->addRole('teacher');
+        $admin->addRole('student');
+
+        $editor = User::factory()->create([
+            'firstname' => 'Editor',
+            'lastname' => '',
+            'email' => 'editor@app.com',
+        ]);
+
+        $admin->addRole('teacher');
 
         $subjects = [
             'Українська мова',

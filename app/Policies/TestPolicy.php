@@ -13,7 +13,7 @@ class TestPolicy
      */
     public function create(User $user): bool
     {
-        return true;
+        return $user->hasRole('teacher', 'admin');
     }
 
     /**
@@ -21,7 +21,7 @@ class TestPolicy
      */
     public function update(User $user, Test $test): bool
     {
-        return $test->user_id === $user->id;
+        return $test->user_id === $user->id || $user->hasRole('admin');
     }
 
     /**
@@ -29,6 +29,6 @@ class TestPolicy
      */
     public function delete(User $user, Test $test): bool
     {
-        return $test->user_id === $user->id;
+        return $test->user_id === $user->id || $user->hasRole('admin');
     }
 }

@@ -41,9 +41,13 @@
         <div class="grid grid-cols-2 mt-4 gap-2 text-3xl font-semibold">
             <form action="{{ route('test.start', $test) }}" method="POST" target="_blank">
                 @csrf
-                <button class="w-full py-3 rounded-md bg-white shadow border-2 flex items-center justify-center">Пройти</button>
+                <button class="w-full py-3 rounded-md bg-white shadow border-2 flex items-center justify-center hover:brightness-95">Пройти</button>
             </form>
-            <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center" href="{{ route('test.exam.create', $test) }}">Задати</a>
+            @role(['teacher', 'admin'])
+                <a class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center hover:brightness-95" href="{{ route('test.exam.create', $test) }}">Задати</a>
+            @else
+                <button class="py-3 rounded-md bg-white shadow border-2 flex items-center justify-center brightness-90" disabled="disabled">Задати</button>
+            @endrole
         </div>
     @endif
     <div>

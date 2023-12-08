@@ -12,7 +12,7 @@ use Illuminate\Validation\Rule;
 class RegistrationController extends Controller
 {
 
-    public function index()
+    public function show()
     {
         return view('auth.registration');
     }
@@ -27,14 +27,11 @@ class RegistrationController extends Controller
             'password' => ['required', 'confirmed', 'min:6', 'max:30'],
         ]);
 
-        $user = new User([
-            'firstname' => $credentials['firstname'],
-            'lastname' => $credentials['lastname'],
-            'email' => $credentials['email'],
-            'password' => Hash::make($credentials['password']),
-        ]);
+        $user = new User($credentials);
+        $user->password = Hash::make($credentials['password']);
 
         $user->save();
+        $user->addRole('teacher');
 
         Auth::login($user);
         

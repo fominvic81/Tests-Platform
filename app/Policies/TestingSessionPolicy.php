@@ -12,7 +12,7 @@ class TestingSessionPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user = null): bool
+    public function create(User $user = null, Exam $exam = null): bool
     {
         return true;
     }

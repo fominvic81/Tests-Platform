@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
 
-    public function index()
+    public function show()
     {
         return view('auth.login');
     }
@@ -28,7 +28,7 @@ class LoginController extends Controller
         }
 
         return back()->withInput()->withErrors([
-            'email' => 'Incorrect email or password',
+            'email' => 'Неправильний email або пароль',
         ]);
     }
 

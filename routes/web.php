@@ -26,10 +26,10 @@ Route::get('/home', HomeController::class);
 
 
 Route::middleware('guest')->group(function () {
-    Route::get('/registration', [RegistrationController::class, 'index'])->name('registration');
+    Route::get('/registration', [RegistrationController::class, 'show'])->name('registration');
     Route::post('/registration', [RegistrationController::class, 'store']);
     
-    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::get('/login', [LoginController::class, 'show'])->name('login');
     Route::post('/login', [LoginController::class, 'store']);
 
 });
