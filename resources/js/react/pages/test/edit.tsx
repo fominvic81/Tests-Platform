@@ -17,6 +17,13 @@ import { ImageContain } from '../../components/common/ImageContain';
 
 import EditSVG from '../../../../svg/common/edit.svg?react';
 
+// Prevent users from coming back to ended session
+window.addEventListener('unload', () => {});
+window.addEventListener('beforeunload', () => {});
+window.addEventListener('pageshow', (event) => {
+    if (event.persisted) location.reload();
+});
+
 type AsyncData = [Test<'course' | 'questions'>, TestOptions];
 
 type UrlData = {
