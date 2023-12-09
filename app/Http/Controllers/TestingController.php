@@ -7,7 +7,14 @@ use Illuminate\Http\Request;
 
 class TestingController extends Controller
 {
-    
+
+    public function index(Request $request)
+    {
+        return view('testing.index', [
+            'sessions' => $request->user()->sessions()->latest('testing_sessions.id')->paginate(),
+        ]);
+    }
+
     public function show(TestingSession $session) {
         $this->authorize('update', $session);
         if ($session->hasEnded()) return redirect()->route('testing.result', $session->id);

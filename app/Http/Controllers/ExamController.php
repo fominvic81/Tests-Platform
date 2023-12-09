@@ -18,7 +18,7 @@ class ExamController extends Controller
     public function index(Request $request)
     {
         return view('exam.index', [
-            'exams' => $request->user()->exams()->latest('id')->paginate(20),
+            'exams' => $request->user()->exams()->latest('id')->paginate(),
         ]);
     }
 

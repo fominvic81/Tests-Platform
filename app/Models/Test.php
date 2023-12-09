@@ -30,6 +30,8 @@ class Test extends Model
         });
     }
 
+    protected $perPage = 20;
+
     protected $fillable = [
         'name',
         'image',

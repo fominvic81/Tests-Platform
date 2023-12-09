@@ -24,7 +24,7 @@ class TestController extends Controller
 
         return view('test.index', [
             'title'=> $title,
-            'tests'=> $query->latest('tests.id')->paginate(15),
+            'tests'=> $query->latest('tests.id')->paginate(),
             'subjects' => Subject::all(),
             'grades' => Grade::all(),
         ]);

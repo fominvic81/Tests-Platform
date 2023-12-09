@@ -55,6 +55,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');
     Route::resource('test.exam', ExamController::class)->shallow()->except(['index']);
 
+    route::get('/testing', [TestingController::class, 'index'])->name('testing.index');
+
     Route::resource('user', UserController::class)->only(['edit', 'update', 'destroy']);
 });
 

@@ -38,6 +38,8 @@
                         <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('exam.index') }}">Домашні завдання</a>
                     @endrole
                     <hr class="my-1">
+                    <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('testing.index') }}">Мої результати</a>
+                    <hr class="my-1">
                     <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('user.edit', Auth::user()) }}">Налаштування</a>
                     <form action="{{ route('logout') }}" method="POST" class="hover:bg-gray-100 px-6 py-[2px]">
                         @csrf

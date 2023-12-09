@@ -31,6 +31,8 @@ class TestingSession extends Model
         $query->where('ends_at', '>', now())->orWhereNull('ends_at');
     }
 
+    protected $perPage = 20;
+
     protected $fillable = [
         'student_name',
     ];

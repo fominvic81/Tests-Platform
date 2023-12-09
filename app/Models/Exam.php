@@ -29,6 +29,8 @@ class Exam extends Model
         $query->where('end_at', '>', now());
     }
 
+    protected $perPage = 20;
+
     protected $fillable = [
         'label',
         'begin_at',

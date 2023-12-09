@@ -21,7 +21,7 @@ class CourseController extends Controller
 
         return view('course.index', [
             'title'=> $title,
-            'courses'=> $query->latest('courses.id')->paginate(15),
+            'courses'=> $query->latest('courses.id')->paginate(),
             'subjects' => Subject::all(),
             'grades' => Grade::all(),
         ]);

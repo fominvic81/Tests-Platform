@@ -16,8 +16,8 @@ class UserController extends Controller
     {
         return view('user.show', [
             'user'=> $user,
-            'tests' => $user->tests()->paginate(15),
-            'courses' => $user->courses()->paginate(15),
+            'tests' => $user->tests()->paginate(),
+            'courses' => $user->courses()->paginate(),
         ]);
     }
 
