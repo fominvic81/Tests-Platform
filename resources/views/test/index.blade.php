@@ -17,10 +17,14 @@
             <button class="px-4 md:px-16 py-2 bg-yellow-300 rounded text-yellow-800 hover:brightness-95">Знайти</button>
         </div>
     </form>
-    <div class="grid gap-5">
-        @foreach ($tests as $test)
-            <x-test.card :test="$test"></x-test.card>
-        @endforeach
-        {{ $tests->links() }}
-    </div>
+    @if ($tests->count() === 0)
+        <h2 class="text-2xl text-center font-semibold">Тестів немає</h2>
+    @else
+        <div class="grid gap-5">
+            @foreach ($tests as $test)
+                <x-test.card :test="$test"></x-test.card>
+            @endforeach
+            {{ $tests->links() }}
+        </div>
+    @endif
 </x-layouts.feed>
