@@ -1,5 +1,5 @@
 <x-layouts.modal title="Вхід">
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login.store') }}">
         @csrf
 
         <x-form.input type="email" name="email" label="Email" value="{{ old('email') }}" placeholder="Email"></x-form.input>
@@ -9,6 +9,6 @@
 
         <x-form.submit class="mt-2">Увійти</x-form.submit>
 
-        <x-form.anchor href="{{ route('registration') }}">Зареєструватися</x-form.anchor>
+        <x-form.anchor href="{{ route('registration.show') }}">Зареєструватися</x-form.anchor>
     </form>
 </x-layouts.modal>

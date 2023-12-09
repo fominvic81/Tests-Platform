@@ -47,8 +47,8 @@
             </div>
         @endauth
         @guest
-            <a class="h-full flex items-center px-4" href="{{ route('login') }}">Вхід</a>
-            <a class="h-full flex items-center px-4" href="{{ route('registration') }}">Реєстрація</a>
+            <a class="h-full flex items-center px-4" href="{{ route('login.show') }}">Вхід</a>
+            <a class="h-full flex items-center px-4" href="{{ route('registration.show') }}">Реєстрація</a>
         @endguest
         <div class="relative sm:hidden" x-data="{ open: false }" x-on:click.outside="open = false">
             <button x-on:click="open = !open" class="h-10 w-10">

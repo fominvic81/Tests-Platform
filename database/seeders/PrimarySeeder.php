@@ -35,7 +35,15 @@ class PrimarySeeder extends Seeder
             'email' => 'editor@app.com',
         ]);
 
-        $admin->addRole('teacher');
+        $editor->addRole('teacher');
+
+        $student = User::factory()->create([
+            'firstname' => 'Student',
+            'lastname' => '',
+            'email' => 'student@app.com',
+        ]);
+
+        $student->addRole('student');
 
         $subjects = [
             'Українська мова',

@@ -12,9 +12,11 @@ use Illuminate\Validation\Rule;
 class RegistrationController extends Controller
 {
 
-    public function show()
+    public function show(Request $request)
     {
-        return view('auth.registration');
+        return view('auth.registration', [
+            'student' => $request->routeIs('student.*'),
+        ]);
     }
 
     public function store(Request $request)
@@ -31,7 +33,9 @@ class RegistrationController extends Controller
         $user->password = Hash::make($credentials['password']);
 
         $user->save();
-        $user->addRole('teacher');
+
+        $isStudent = $request->routeIs('student.*');
+        $user->addRole($isStudent ? 'student' : 'teacher');
 
         Auth::login($user);
         

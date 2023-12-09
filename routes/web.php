@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegistrationController;
+use App\Http\Controllers\Auth\StudentLoginController;
+use App\Http\Controllers\Auth\StudentRegistrationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\HomeController;
@@ -26,12 +28,14 @@ Route::get('/home', HomeController::class);
 
 
 Route::middleware('guest')->group(function () {
-    Route::get('/registration', [RegistrationController::class, 'show'])->name('registration');
-    Route::post('/registration', [RegistrationController::class, 'store']);
+    Route::get('/registration', [RegistrationController::class, 'show'])->name('registration.show');
+    Route::post('/registration', [RegistrationController::class, 'store'])->name('registration.store');
     
-    Route::get('/login', [LoginController::class, 'show'])->name('login');
-    Route::post('/login', [LoginController::class, 'store']);
+    Route::get('/login', [LoginController::class, 'show'])->name('login.show');
+    Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 
+    Route::get('/student/registration', [RegistrationController::class, 'show'])->name('student.registration.show');
+    Route::post('/student/registration', [RegistrationController::class, 'store'])->name('student.registration.store');
 });
 
 Route::middleware('auth')->group(function () {

@@ -9,9 +9,9 @@
         <div class="col-span-1">
             <h1 class="text-white text-lg font-bold">Аккаунт</h1>
             @guest
-                <a class="block w-fit text-white hover:text-blue-200" href="{{ route('registration') }}">Реєстрація</a>
-                <a class="block w-fit text-white hover:text-blue-200" href="">Реєстрація для учня</a>
-                <a class="block w-fit text-white hover:text-blue-200" href="{{ route('login') }}">Вхід</a>    
+                <a class="block w-fit text-white hover:text-blue-200" href="{{ route('registration.show') }}">Реєстрація</a>
+                <a class="block w-fit text-white hover:text-blue-200" href="{{ route('student.registration.show')}}">Реєстрація для учня</a>
+                <a class="block w-fit text-white hover:text-blue-200" href="{{ route('login.show') }}">Вхід</a>    
             @endguest
             @auth
                 <form action="{{ route('logout') }}" method="POST">
