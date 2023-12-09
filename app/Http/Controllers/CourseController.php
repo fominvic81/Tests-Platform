@@ -126,5 +126,7 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $this->authorize('delete', $course);
+        $course->delete();
+        return redirect()->route('course.index');
     }
 }

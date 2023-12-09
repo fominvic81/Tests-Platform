@@ -15,12 +15,12 @@
         </div>
         <div class="grid grid-flow-col gap-1">
             @auth
-                @if (Auth::user()->id === $course->user_id)
-                    <a
-                        class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"
-                        href="{{ route('course.edit', $course->id) }}"
-                    ><x-svg path="common/edit.svg"></x-svg></a>
-                @endif
+                @can('update', $course)
+                    <x-button.edit :href="route('course.edit', $course->id)"></x-button.edit>
+                @endcan
+                @can('delete', $course)
+                    <x-button.delete :href="route('course.destroy', $course->id)"></x-button.delete>
+                @endcan
                 <x-button.save
                     :saved="Auth::user()->savedCourses()->where('course_id', $course->id)->exists()"
                     :url="route('course.save', $course->id)"

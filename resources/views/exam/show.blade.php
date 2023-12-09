@@ -13,9 +13,7 @@
             </div>
             <div>
                 @if ($exam->isActive())
-                    <a href="{{ route('exam.edit', $exam->id) }}" class="block w-10 h-10 rounded-md border-2 hover:bg-gray-200">
-                        <x-svg path="common/edit.svg"></x-svg>
-                    </a>
+                    <x-button.edit :href="route('exam.edit', $exam->id)"></x-button.edit>
                 @endif
             </div>
         </div>

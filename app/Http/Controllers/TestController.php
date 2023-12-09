@@ -128,6 +128,7 @@ class TestController extends Controller
     {
         $this->authorize('delete', $test);
         $test->delete();
+        return redirect()->route('test.index');
     }
 
     public function start(Request $request, Test $test)

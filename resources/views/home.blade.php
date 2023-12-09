@@ -7,9 +7,9 @@
             @endcan
         </div>
         <div class="grid grid-cols-[1fr_auto] border-2 rounded-md hover:scale-[99%] transition-all overflow-clip">
-            <a href="{{ route('test.index') }}" class="p-3 bg-white transition-all hover:brightness-95">{{ DB::table('courses')->count() }} Курсів</a>
-            @can('create', App\Models\Test::class)
-                <a href="{{ route('test.create') }}" class="py-3 px-6 bg-yellow-300 transition-all hover:brightness-95">Створити</a>
+            <a href="{{ route('course.index') }}" class="p-3 bg-white transition-all hover:brightness-95">{{ DB::table('courses')->count() }} Курсів</a>
+            @can('create', App\Models\Course::class)
+                <a href="{{ route('course.create') }}" class="py-3 px-6 bg-yellow-300 transition-all hover:brightness-95">Створити</a>
             @endcan
         </div>
     </div>

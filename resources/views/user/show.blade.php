@@ -9,11 +9,8 @@
         </div>
         <div>
             @can('update', $user)
-                <a
-                    href="{{ route('user.edit', $user->id) }}"
-                    class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"
-                ><x-svg path="common/edit.svg"></x-svg></a>
-            @endif
+                <x-button.edit :href="route('user.edit', $user->id)"></x-button.edit>
+            @endcan
         </div>
         <div class="col-span-full text-lg indent-2">{{ $user->about }}</div>
     </div>

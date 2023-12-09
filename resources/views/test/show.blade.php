@@ -24,10 +24,10 @@
         <div class="grid grid-flow-col gap-1">
             @auth
                 @can('update', $test)
-                    <a
-                        href="{{ route('test.edit', $test) }}"
-                        class="block w-9 h-9 rounded-md border-2 hover:bg-gray-200"
-                    ><x-svg path="common/edit.svg"></x-svg></a>
+                    <x-button.edit :href="route('test.edit', $test)"></x-button.edit>
+                @endif
+                @can('delete', $test)
+                    <x-button.delete :href="route('test.destroy', $test)"></x-button.delete>
                 @endif
                 <x-button.save
                     :saved="Auth::user()->savedTests()->where('test_id', $test->id)->exists()"
