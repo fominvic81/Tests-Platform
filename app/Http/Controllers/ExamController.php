@@ -129,7 +129,7 @@ class ExamController extends Controller
         ]);
 
         $exam = Exam::query()->withoutGlobalScope('allowed')->where('code', '=', $data['code'])->notEnded()->first();
-        if ($request->user()->cannot('create', [TestingSession::class, $exam])) {
+        if (!policy(TestingSession::class)->create($request->user(), $exam)) {
             return redirect()->back()->withInput()->withErrors('Ви не можете приєднатися до цього тесту');
         }
 
