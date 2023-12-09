@@ -21,16 +21,16 @@
                 </button>
                 <div x-cloak x-show="open" class="absolute grid w-max right-0 bg-white rounded-b-md border border-t-0 border-gray-300 overflow-clip z-50">
                     <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('user.show', Auth::user()->id )}}">Профіль</a>
+                    <hr class="my-1">
+                    <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('test.saved') }}">Збережені тести</a>
                     @can('create', App\Models\Test::class)
-                        <hr class="my-1">
                         <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('test.my') }}">Мої тести</a>
-                        <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('test.saved') }}">Збережені тести</a>
                         <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('test.create') }}">Створити тест</a>
                     @endcan
+                    <hr class="my-1">
+                    <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('course.saved') }}">Збережені курси</a>
                     @can('create', App\Models\Course::class)
-                        <hr class="my-1">
                         <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('course.my') }}">Мої курси</a>
-                        <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('course.saved') }}">Збережені курси</a>
                         <a class="hover:bg-gray-100 px-6 py-[2px]" href="{{ route('course.create') }}">Створити курс</a>
                     @endcan
                     @role(['teacher', 'admin'])
