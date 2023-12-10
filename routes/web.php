@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\StudentRegistrationController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\TestingController;
 use App\Http\Controllers\UserController;
@@ -73,3 +74,6 @@ Route::delete('/testing/{session}', [TestingController::class, 'complete'])->nam
 Route::get('/testing/{session}/result', [TestingController::class, 'result'])->name('testing.result');
 
 Route::resource('user', UserController::class)->only(['show']);
+
+Route::get('/about', [PagesController::class, 'about'])->name('pages.about');
+Route::get('/zno', [PagesController::class, 'zno'])->name('pages.zno');

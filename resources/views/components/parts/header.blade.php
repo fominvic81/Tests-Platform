@@ -7,7 +7,7 @@
             <a class="h-full flex items-center px-4 hover:bg-gray-100" href="{{ route('home') }}">Головна</a>
             <a class="h-full flex items-center px-4 hover:bg-gray-100" href="{{ route('test.index') }}">Тести</a>
             <a class="h-full flex items-center px-4 hover:bg-gray-100" href="{{ route('course.index') }}">Курси</a>
-            <a class="h-full flex items-center px-4 hover:bg-gray-100" href="">ЗНО</a>
+            <a class="h-full flex items-center px-4 hover:bg-gray-100" href="{{ route('pages.zno') }}">ЗНО</a>
         </div>
     </div>
     <div class="flex h-full">

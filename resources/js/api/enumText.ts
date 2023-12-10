@@ -8,7 +8,8 @@ export const QuestionTypeName: Record<QuestionType, string> = {
     [QuestionType.Sequence]: 'На встановлення послідовності',
     [QuestionType.TextGapsTextInput]: '',
     [QuestionType.TextGapsVariantSingleList]: '',
-    [QuestionType.TextGapsVariant]: 'На вибір варіантів в тексті',
+    // [QuestionType.TextGapsVariant]: 'На вибір варіантів в тексті',
+    [QuestionType.TextGapsVariant]: '',
 }
 
 export const AccessibilityName: Record<Accessibility, string> = {

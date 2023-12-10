@@ -4,7 +4,7 @@
             <h1 class="text-white text-lg font-bold">Розділи</h1>
             <a class="block w-fit text-white hover:text-blue-200" href="{{ route('test.index') }}">Тести</a>
             <a class="block w-fit text-white hover:text-blue-200" href="{{ route('course.index') }}">Курси</a>    
-            <a class="block w-fit text-white hover:text-blue-200" href="">ЗНО</a>
+            <a class="block w-fit text-white hover:text-blue-200" href="{{ route('pages.zno') }}">ЗНО</a>
         </div>
         <div class="col-span-1">
             <h1 class="text-white text-lg font-bold">Аккаунт</h1>
@@ -22,7 +22,7 @@
         </div>
         <div class="col-span-1">
             <h1 class="text-white text-lg font-bold">Про нас</h1>
-            <a class="block w-fit text-white hover:text-blue-200" href="">Про проект</a>
+            <a class="block w-fit text-white hover:text-blue-200" href="{{ route('pages.about' )}}">Про проект</a>
         </div>
     </div>
 </footer>

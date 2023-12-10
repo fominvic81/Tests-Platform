@@ -7,9 +7,5 @@ interface Props {
 
 export const TextGapsVariant: React.FC<Props> = ({ question }) => {
 
-
-
-    return <div className=''>
-        
-    </div>
+    return <div></div>
 }
