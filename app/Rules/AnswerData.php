@@ -44,8 +44,14 @@ class AnswerData implements ValidationRule
                 }
                 $correct = 0;
                 foreach ($value['correct'] as $isCorrect) if ($isCorrect) ++$correct;
+                if ($this->type === QuestionType::MultipleCorrect && $this->data['settings']['showAmountOfCorrect']) {
+                    $amountOfCorrect = count(array_keys($this->data['answer']['correct'], true));
+                    if (count(array_keys($value['correct'], true)) !== $amountOfCorrect) {
+                        $fail("Виберіть $amountOfCorrect " . (($amountOfCorrect % 10 >= 5 || $amountOfCorrect % 10 === 0 || ($amountOfCorrect / 10) % 10 === 1) ? 'віповідей' : ($amountOfCorrect % 10 === 1 ? 'відповідь' : 'відповіді')));
+                    }
+                }
                 if ($correct === 0) $fail('Виберіть хоча б одну відповідь');
-                if ($this->type === QuestionType::OneCorrect && $correct > 1) $fail('Має бути лише один правильна відповідь');
+                if ($this->type === QuestionType::OneCorrect && $correct > 1) $fail('Має бути лише одна правильна відповідь');
                 break;
             case QuestionType::Match:
                 $variantsCount = count($this->data['variants']);

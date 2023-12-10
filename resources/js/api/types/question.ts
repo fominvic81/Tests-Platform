@@ -41,6 +41,7 @@ export interface QuestionDataTemplate {
         text: string;
         image?: string;
     }[];
+    amountOfCorrect?: number;
 }
 
 type Include<T extends keyof QuestionDataTemplate, S extends keyof QuestionDataTemplate['settings'] = never> = {
@@ -54,7 +55,7 @@ type Include<T extends keyof QuestionDataTemplate, S extends keyof QuestionDataT
 export type QuestionData<T extends QuestionType, A extends boolean = true> =
     { answer: A extends true ? Answer<T> : Answer<T> | null | undefined } & (
     T extends QuestionType.OneCorrect ? Include<'options'> :
-    T extends QuestionType.MultipleCorrect ? Include<'options', 'showAmountOfCorrect'> :
+    T extends QuestionType.MultipleCorrect ? Include<'options' | 'amountOfCorrect', 'showAmountOfCorrect'> :
     T extends QuestionType.Match ? Include<'options' | 'variants'> :
     T extends QuestionType.TextInput ? Include<never, 'registerMatters' | 'whitespaceMatters'> :
     T extends QuestionType.Sequence ? Include<'options'> :

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\QuestionType;
 use App\Helpers\Timezone;
 use App\Http\Controllers\Controller;
 use App\Models\Answer;
@@ -20,6 +21,9 @@ class TestingSessionController extends Controller
 
             $q = $question->toArray();
             $q['data']['answer'] = $answer ? $answer->data : null;
+            if ($question->type === QuestionType::MultipleCorrect && $question->data['settings']['showAmountOfCorrect']) {
+                $q['data']['amountOfCorrect'] = count(array_keys($question->data['answer']['correct'], true));
+            }
 
             array_push($questions, $q);
         }

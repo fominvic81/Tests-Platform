@@ -40,7 +40,7 @@ export const QuestionShow: React.FC<Props> = ({ question, index, onDelete, onEdi
         <div>
             <div className='flex justify-between items-center'>
                 <div>
-                    <div className='inline-block border-2 px-2 rounded mr-2 font-mono font-semibold'>Завдання №{ index + 1 }</div>
+                    <div className='inline-block border-2 px-2 rounded mr-2 font-mono font-semibold'>№{ index + 1 }</div>
                     <div className='inline-block border-2 px-2 rounded mr-2 font-mono font-semibold'> { QuestionTypeName[question.type] } </div>
                 </div>
                 <div>
