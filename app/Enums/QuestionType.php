@@ -11,5 +11,5 @@ enum QuestionType: int
     case Sequence = 4;
     case TextGapsTextInput = 5;
     case TextGapsVariantSingleList = 6;
-    case TextGapsVariantMultipleLists = 7;
+    case TextGapsVariant = 7;
 }

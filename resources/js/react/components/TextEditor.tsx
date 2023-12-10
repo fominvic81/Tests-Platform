@@ -1,6 +1,6 @@
 /// <reference types="vite-plugin-svgr/client" />
 
-import React, { useEffect, useState } from 'react';
+import React, { PropsWithChildren, useEffect, useState } from 'react';
 import { EditorContent, useEditor, Editor, ChainedCommands } from '@tiptap/react';
 import ListItem from '@tiptap/extension-list-item';
 import { Color } from '@tiptap/extension-color';
@@ -35,51 +35,10 @@ const MenuButton: React.FC<MenuButtonProps> = ({ editor, action, children, name 
     return <button type='button' 
         onClick={() => action(editor.chain().focus()).run()}
         disabled={!action(editor.can().chain().focus()).run()}
-        className={`mx-1 p-1 w-full aspect-square rounded ${name && editor.isActive(name) ? 'bg-gray-200' : 'bg-white'}`}>{ children }</button>
+        className={`p-1 w-full aspect-square rounded col-span-2 ${name && editor.isActive(name) ? 'bg-gray-200' : 'bg-white'}`}>{ children }</button>
 }
 
-interface MenuBarProps {
-    editor: Editor;
-}
-
-const MenuBar: React.FC<MenuBarProps> = ({ editor }) => {
-
-    return (
-        <div className='border-2 border-b-0 p-2 grid grid-cols-[repeat(auto-fill,24px)]'>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleBold()} name='bold'><BoldSVG></BoldSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleItalic()} name='italic'><ItalicSVG></ItalicSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleStrike()} name='strike'><StrikeSVG></StrikeSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleUnderline()} name='underline'><UnderlineSVG></UnderlineSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleBulletList()} name='bulletList'><UnorderedListSVG></UnorderedListSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleOrderedList()} name='orderedList'><OrderedListSVG></OrderedListSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleCodeBlock()} name='codeBlock'><CodeSVG></CodeSVG></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.toggleBlockquote()} name='blockquote'><QuoteSVG></QuoteSVG></MenuButton>
-            <MenuButton
-                editor={ editor }
-                action={(chain) => {
-                    chain.unsetSubscript();
-                    return chain.toggleSuperscript();
-                }}
-                name='superscript'
-            ><SuperScriptSVG></SuperScriptSVG></MenuButton>
-            <MenuButton
-                editor={ editor }
-                action={(chain) => {
-                    chain.unsetSuperscript();
-                    return chain.toggleSubscript();
-                }}
-                name='subscript'
-            ><SubScriptSVG></SubScriptSVG></MenuButton>
-            {/* <MenuButton editor={ editor } action={(chain) => chain.setHorizontalRule()}>H</MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.setHardBreak()}>N</MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.undo()} name='undo'><Undo className='w-full h-full'></Undo></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => chain.redo()} name='redo'><Undo className='w-full h-full -scale-x-100'></Undo></MenuButton>
-            <MenuButton editor={ editor } action={(chain) => editor.isActive('textStyle', { color: '#958DF1' }) ? chain.unsetColor() : chain.setColor('#958DF1')}>P</MenuButton> */}
-        </div>
-    )
-}
-
-interface Props {
+interface Props extends PropsWithChildren {
     name: string;
     id?: string;
     value?: string;
@@ -88,7 +47,7 @@ interface Props {
     onChange?: (value: string) => any;
 }
 
-export const TextEditor: React.FC<Props> = ({ name, id, value, defaultValue, placeholder, onChange }) => {
+export const TextEditor: React.FC<Props> = ({ children, name, id, value, defaultValue, placeholder, onChange }) => {
     const [currentValue, setCurrentValue] = useState(value ?? defaultValue ?? '');
     const updateValue = (newValue: string) => {
         setCurrentValue(newValue);
@@ -144,7 +103,43 @@ export const TextEditor: React.FC<Props> = ({ name, id, value, defaultValue, pla
 
     return <div className='overflow-hidden break-words rounded'>
         <input type='hidden' name={ name } id={ id } value={ currentValue }></input>
-        <MenuBar editor={ editor }></MenuBar>
+        <div className='border-2 border-b-0 p-2'>
+            <div className='grid grid-cols-[repeat(auto-fill,10px)] gap-1'>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleBold()} name='bold'><BoldSVG></BoldSVG></MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleItalic()} name='italic'><ItalicSVG></ItalicSVG></MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleStrike()} name='strike'><StrikeSVG></StrikeSVG></MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleUnderline()} name='underline'><UnderlineSVG></UnderlineSVG></MenuButton>
+                <div></div>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleBulletList()} name='bulletList'><UnorderedListSVG></UnorderedListSVG></MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleOrderedList()} name='orderedList'><OrderedListSVG></OrderedListSVG></MenuButton>
+                <div></div>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleCodeBlock()} name='codeBlock'><CodeSVG></CodeSVG></MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.toggleBlockquote()} name='blockquote'><QuoteSVG></QuoteSVG></MenuButton>
+                <div></div>
+                <MenuButton
+                    editor={ editor }
+                    action={(chain) => {
+                        chain.unsetSubscript();
+                        return chain.toggleSuperscript();
+                    }}
+                    name='superscript'
+                ><SuperScriptSVG></SuperScriptSVG></MenuButton>
+                <MenuButton
+                    editor={ editor }
+                    action={(chain) => {
+                        chain.unsetSuperscript();
+                        return chain.toggleSubscript();
+                    }}
+                    name='subscript'
+                ><SubScriptSVG></SubScriptSVG></MenuButton>
+                {/* <MenuButton editor={ editor } action={(chain) => chain.setHorizontalRule()}>H</MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.setHardBreak()}>N</MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.undo()} name='undo'><Undo className='w-full h-full'></Undo></MenuButton>
+                <MenuButton editor={ editor } action={(chain) => chain.redo()} name='redo'><Undo className='w-full h-full -scale-x-100'></Undo></MenuButton>
+                <MenuButton editor={ editor } action={(chain) => editor.isActive('textStyle', { color: '#958DF1' }) ? chain.unsetColor() : chain.setColor('#958DF1')}>P</MenuButton> */}
+            </div>
+            { children }
+        </div>
         <EditorContent editor={ editor }></EditorContent>
     </div>;
 }

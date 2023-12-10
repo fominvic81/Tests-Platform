@@ -15,7 +15,7 @@ const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.Sequence]: Sequence,
     [QuestionType.TextGapsTextInput]: () => <></>,
     [QuestionType.TextGapsVariantSingleList]: () => <></>,
-    [QuestionType.TextGapsVariantMultipleLists]: () => <></>,
+    [QuestionType.TextGapsVariant]: () => <></>,
 } as const;
 
 interface Props {

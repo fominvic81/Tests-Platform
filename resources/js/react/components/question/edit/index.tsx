@@ -15,6 +15,7 @@ import { FormImage } from '../../form/image';
 import { imagePath } from '../../../../api/storagePath';
 import { TextInput } from './TextInput';
 import { Sequence } from './Sequence';
+import { TextGapsVariant } from './TextGapsVariant';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: OneCorrect,
@@ -24,7 +25,7 @@ const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.Sequence]: Sequence,
     [QuestionType.TextGapsTextInput]: () => <></>,
     [QuestionType.TextGapsVariantSingleList]: () => <></>,
-    [QuestionType.TextGapsVariantMultipleLists]: () => <></>,
+    [QuestionType.TextGapsVariant]: TextGapsVariant,
 } as const;
 
 const defaultQuestion = (type: QuestionType): Question => {

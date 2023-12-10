@@ -23,6 +23,7 @@ export const QuestionInitialData: {
         answer: {
             correct: [false, false],
         },
+        amountOfCorrect: undefined,
     },
     [QuestionType.Match]: {
         options: [
@@ -61,7 +62,7 @@ export const QuestionInitialData: {
             whitespaceMatters: false,
         },
         answer: {
-            groups: {},
+            groups: [],
         },
     },
     [QuestionType.TextGapsVariantSingleList]: {
@@ -70,13 +71,13 @@ export const QuestionInitialData: {
             { text: '' },
         ],
         answer: {
-            groups: {},
+            groups: [],
         },
     },
-    [QuestionType.TextGapsVariantMultipleLists]: {
-        groups: {},
+    [QuestionType.TextGapsVariant]: {
+        groups: [],
         answer: {
-            groups: {},
+            groups: [],
         },
     },
 }

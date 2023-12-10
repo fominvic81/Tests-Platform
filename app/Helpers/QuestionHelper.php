@@ -73,8 +73,7 @@ class QuestionHelper {
             // 'groups.*' => ['required', 'array:correct,texts'],
 
             'correct' => [
-                'groups.*.correct' => ['required', 'array', 'min:2', 'max:50'],
-                'groups.*.correct.*' => ['required', 'boolean'],
+                'groups.*.correct' => ['required', 'integer'],
             ],
 
             'texts' => [
@@ -113,7 +112,7 @@ class QuestionHelper {
                 QuestionType::TextGapsVariantSingleList->value => [
                     ...QuestionHelper::$rules['options'],
                 ],
-                QuestionType::TextGapsVariantMultipleLists->value => [
+                QuestionType::TextGapsVariant->value => [
                     ...QuestionHelper::$rules['groups'],
                 ],
             ][$type->value],
@@ -145,7 +144,7 @@ class QuestionHelper {
             QuestionType::TextGapsVariantSingleList->value => [
                 ...QuestionHelper::$answerRules['groups']['correct'],
             ],
-            QuestionType::TextGapsVariantMultipleLists->value => [
+            QuestionType::TextGapsVariant->value => [
                 ...QuestionHelper::$answerRules['groups']['correct'],
             ],
         ][$type->value];

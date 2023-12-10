@@ -8,18 +8,18 @@ export type Answer<T extends QuestionType> =
     T extends QuestionType.Sequence ? { sequence: number[] } :
     T extends QuestionType.TextGapsTextInput ? {
         groups: {
-            [key: string]: { texts: string[]; }
-        }
+            texts: string[];
+        }[];
     } : 
     T extends QuestionType.TextGapsVariantSingleList ? {
         groups: {
-            [key: string]: { correct: boolean[]; }
-        }
+            correct: number;
+        }[];
     } :
-    T extends QuestionType.TextGapsVariantMultipleLists ? {
+    T extends QuestionType.TextGapsVariant ? {
         groups: {
-            [key: string]: { correct: boolean[]; }
-        }
+            correct: number;
+        }[];
     } : {};
 
 export interface QuestionDataTemplate {
@@ -29,10 +29,8 @@ export interface QuestionDataTemplate {
         whitespaceMatters: boolean;
     }
     groups: {
-        [key: string]: {
-            text: string;
-        }[];
-    }
+        text: string;
+    }[][];
     options: {
         text: string;
         image?: string;
@@ -61,7 +59,7 @@ export type QuestionData<T extends QuestionType, A extends boolean = true> =
     T extends QuestionType.Sequence ? Include<'options'> :
     T extends QuestionType.TextGapsTextInput ? Include<never, 'registerMatters' | 'whitespaceMatters'> :
     T extends QuestionType.TextGapsVariantSingleList ? Include<'options'> :
-    T extends QuestionType.TextGapsVariantMultipleLists ? Include<'groups'> : {});
+    T extends QuestionType.TextGapsVariant ? Include<'groups'> : {});
 
 export enum QuestionType {
     OneCorrect = 0,
@@ -71,7 +69,7 @@ export enum QuestionType {
     Sequence = 4,
     TextGapsTextInput = 5,
     TextGapsVariantSingleList = 6,
-    TextGapsVariantMultipleLists = 7,
+    TextGapsVariant = 7,
 }
 
 export interface Question<T extends QuestionType = QuestionType, A extends boolean = true> {

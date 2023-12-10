@@ -1,14 +1,14 @@
 import { Accessibility, QuestionType } from './types';
 
 export const QuestionTypeName: Record<QuestionType, string> = {
-    [QuestionType.OneCorrect]: 'Одна правильна відповідь',
-    [QuestionType.MultipleCorrect]: 'Кілька правильних відповідей',
-    [QuestionType.Match]: 'Відповідність',
-    [QuestionType.TextInput]: 'Введена відповідь',
-    [QuestionType.Sequence]: 'Послідовність',
+    [QuestionType.OneCorrect]: 'З однією правильною відповіддю',
+    [QuestionType.MultipleCorrect]: 'З кількома правильними відповідями',
+    [QuestionType.Match]: 'На встановлення відповідності',
+    [QuestionType.TextInput]: 'З полем для вводу відповіді',
+    [QuestionType.Sequence]: 'На встановлення послідовності',
     [QuestionType.TextGapsTextInput]: '',
     [QuestionType.TextGapsVariantSingleList]: '',
-    [QuestionType.TextGapsVariantMultipleLists]: '',
+    [QuestionType.TextGapsVariant]: 'На вибір варіантів в тексті',
 }
 
 export const AccessibilityName: Record<Accessibility, string> = {
