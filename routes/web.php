@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegistrationController;
 use App\Http\Controllers\Auth\StudentLoginController;
@@ -59,6 +60,9 @@ Route::middleware('auth')->group(function () {
     route::get('/testing', [TestingController::class, 'index'])->name('testing.index');
 
     Route::resource('user', UserController::class)->only(['edit', 'update', 'destroy']);
+
+    Route::get('/password/change', [PasswordController::class, 'show'])->name('password.change');
+    Route::post('/password/change', [PasswordController::class, 'store'])->name('password.store');
 });
 
 Route::resource('course', CourseController::class)->only(['index', 'show']);

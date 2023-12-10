@@ -2,8 +2,8 @@
     <form method="POST" action="{{ route('login.store') }}">
         @csrf
 
-        <x-form.input type="email" name="email" label="Email" value="{{ old('email') }}" placeholder="Email"></x-form.input>
-        <x-form.input type="password" name="password" label="Пароль" placeholder="Пароль"></x-form.input>
+        <x-form.input type="email" name="email" label="Email" :value="old('email')" placeholder="Email"></x-form.input>
+        <x-form.input type="password" name="password" label="Пароль" placeholder="Пароль" :value="old('password')"></x-form.input>
 
         <x-form.errors></x-form.errors>
 

@@ -13,8 +13,9 @@
             <div class="col-span-full">
                 <x-form.textarea name="about" :value="$user->about" label="Про себе" placeholder="Я..."></x-form.textarea>
                 <x-form.errors></x-form.errors>
-                <x-form.submit>Зберегти</x-form.submit>
             </div>
+            <a class="block bg-red-400 rounded py-1 text-center" href="{{ route('password.change') }}">Змінити пароль</a>
+            <x-form.submit>Зберегти</x-form.submit>
         </div>
     </form>
 </x-layouts.feed>
