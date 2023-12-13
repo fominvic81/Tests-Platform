@@ -5,7 +5,6 @@ import { TextInput } from './TextInput';
 import { Match } from './Match';
 import { MultipleCorrect } from './MultipleCorrect';
 import { OneCorrect } from './OneCorrect';
-import { ImageContain } from '../../common/ImageContain';
 
 const questionComponentByType: Record<QuestionType, React.FC<any>> = {
     [QuestionType.OneCorrect]: OneCorrect,

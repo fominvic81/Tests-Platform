@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Answer, Question, QuestionType } from '../../../../api';
-import { ImageContain } from '../../common/ImageContain';
 import { imagePath } from '../../../../api/storagePath';
 
 interface Props {

@@ -13,7 +13,6 @@ import { FormImage } from '../../components/form/image';
 import axios, { AxiosError } from 'axios';
 import { FormError } from '../../components/form/error';
 import { TextEditor } from '../../components/TextEditor';
-import { ImageContain } from '../../components/common/ImageContain';
 
 import EditSVG from '../../../../svg/common/edit.svg?react';
 

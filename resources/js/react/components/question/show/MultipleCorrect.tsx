@@ -1,7 +1,6 @@
 import React from 'react';
 import { Question, QuestionType } from '../../../../api';
 import cn from 'classnames';
-import { ImageContain } from '../../common/ImageContain';
 import { imagePath } from '../../../../api/storagePath';
 
 interface Props {

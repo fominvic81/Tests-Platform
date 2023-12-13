@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Question, QuestionType } from '../../../../api';
-import { ImageContain } from '../../common/ImageContain';
 import { imagePath } from '../../../../api/storagePath';
+
+import UpSVG from '../../../../../svg/common/up.svg?react';
 
 interface Props {
     question: Question<QuestionType.Sequence, false>;
@@ -24,8 +25,8 @@ export const Sequence: React.FC<Props> = ({ question }) => {
             const option = question.data.options[seq_index];
             return <div className='flex items-center justify-start' key={ seq_index }>
                 <div>
-                    <button type='button' onClick={() => swap(index, index - 1)} className='border-2 rounded-full w-9 h-9 mr-1'>/\</button>
-                    <button type='button' onClick={() => swap(index, index + 1)} className='border-2 rounded-full w-9 h-9'>\/</button>
+                    <button type='button' onClick={() => swap(index, index - 1)} className='border-2 rounded-full w-9 h-9'><UpSVG className='w-full h-full'></UpSVG></button>
+                    <button type='button' onClick={() => swap(index, index + 1)} className='border-2 rounded-full w-9 h-9'><UpSVG className='w-full h-full -scale-y-100'></UpSVG></button>
                 </div>
                 <div className='flex items-center'>
                     {option.image && <div className='w-48 h-40'><img className='w-full h-full object-contain' src={ imagePath(option.image) } /></div>}

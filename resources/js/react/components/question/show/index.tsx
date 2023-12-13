@@ -5,7 +5,6 @@ import { OneCorrect } from './OneCorrect';
 import { MultipleCorrect } from './MultipleCorrect';
 import { TextInput } from './TextInput';
 import { Match } from './Match';
-import { ImageContain } from '../../common/ImageContain';
 import { Sequence } from './Sequence';
 import cn from 'classnames';
 
