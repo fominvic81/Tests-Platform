@@ -27,7 +27,7 @@
             @endif
         </div>
 
-        @if ($session->settings->show_answers)
+        @if ($session->settings->show_answers || ($session->exam && $session->exam->user_id === Auth::user()?->id))
             @php
                 $answers = App\Models\Answer::query()->whereBelongsTo($session, 'session')->get();
             @endphp

@@ -60,11 +60,24 @@
             <div class="flex justify-center text-xl font-semibold">Результатів ще немає</div>
         @endif
         @foreach ($exam->sessions as $session)
-            <div class="grid md:grid-cols-[1fr_70px_2fr] justify-stretch items-center gap-2 border-2 p-0.5 rounded">
+            @if ($session->hasEnded())
+                <a class="block" href="{{ route('testing.result', $session) }}">
+            @endif
+            <div @class(['grid md:grid-cols-[1fr_auto_70px_2fr] justify-stretch items-center gap-2 border-2 p-0.5 rounded', 'hover:brightness-90' => $session->hasEnded()])>
                 <div class="indent-2 font-semibold">{{ $session->student_name }}</div>
+                <div>
+                    @if (!$session->hasEnded())
+                        <div class="bg-yellow-300 rounded w-fit px-2 mx-3 flex items-center font-bold">
+                            <div class="w-3 h-3 bg-red-600 rounded-full mr-1 animate animate-[pulse_2s_cubic-bezier(0.4,0,0.6,1)_infinite] opacity-0"></div>Активний
+                        </div>
+                    @endif
+                </div>
                 <div class="bg-gray-200 font-bold text-center rounded border-2 border-gray-400">{{ round($session->stats()['points']) }}/{{ $session->settings->points_max }}</div>
                 <x-result.pointsbar :stats="$session->stats()"></x-result.pointsbar>
             </div>
+            @if ($session->hasEnded())
+                </a>
+            @endif
         @endforeach
     </div>
 </x-layouts.feed>
