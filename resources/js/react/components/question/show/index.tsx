@@ -71,7 +71,7 @@ export const QuestionShow: React.FC<Props> = ({ question, index, onDelete, onEdi
                 </div>
             </div>
             <div className='grid grid-cols-[auto_1fr]'>
-                {question.image && <ImageContain src={ imagePath(question.image) }></ImageContain>}
+                {question.image && <div className='w-48 h-40'><img className='w-full h-full object-contain' src={ imagePath(question.image) } /></div>}
                 <div
                     className='ml-3 mt-1'
                     dangerouslySetInnerHTML={{ __html: question.text }}

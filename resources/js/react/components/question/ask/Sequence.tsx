@@ -28,7 +28,7 @@ export const Sequence: React.FC<Props> = ({ question }) => {
                     <button type='button' onClick={() => swap(index, index + 1)} className='border-2 rounded-full w-9 h-9'>\/</button>
                 </div>
                 <div className='flex items-center'>
-                    {option.image && <ImageContain src={ imagePath(option.image) }></ImageContain>}
+                    {option.image && <div className='w-48 h-40'><img className='w-full h-full object-contain' src={ imagePath(option.image) } /></div>}
                     <div className='ml-1 my-2' dangerouslySetInnerHTML={{ __html: option.text }}></div>
                 </div>
             </div>

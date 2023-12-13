@@ -13,7 +13,7 @@ export const OneCorrect: React.FC<Props> = ({ question }) => {
         {question.data.options.map((option, index) => 
             <div key={ index } className='flex items-center'>
                 <div className={cn('w-5 h-5 rounded-full mr-1', question.data.answer.correct[index] ? 'bg-green-500' : 'bg-gray-300')}></div>
-                {option.image && <ImageContain src={ imagePath(option.image) }></ImageContain>}
+                {option.image && <div className='w-48 h-40'><img className='w-full h-full object-contain' src={ imagePath(option.image) } /></div>}
                 <div className='ml-1 my-2' dangerouslySetInnerHTML={{ __html: option.text }}></div>
             </div>
         )}

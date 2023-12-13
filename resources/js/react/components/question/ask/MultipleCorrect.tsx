@@ -30,7 +30,7 @@ export const MultipleCorrect: React.FC<Props> = ({ question }) => {
                         setChosen(chosen.map((value, i) => index === i ? event.target.checked : value))
                     }}
                 />
-                {option.image && <ImageContain src={ imagePath(option.image) }></ImageContain>}
+                {option.image && <div className='w-48 h-40'><img className='w-full h-full object-contain' src={ imagePath(option.image) } /></div>}
                 <div className='ml-1 my-2' dangerouslySetInnerHTML={{ __html: option.text }}></div>
             </label>
         )}

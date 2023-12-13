@@ -1,19 +1,4 @@
 <x-layouts.app title="Головна">
-    {{-- <div class="grid gap-3 w-full max-w-3xl mx-auto mt-5 text-lh font-bold">
-        <div class="grid grid-cols-[1fr_auto] border-2 rounded-md hover:scale-[99%] transition-all overflow-clip">
-            <a href="{{ route('test.index') }}" class="p-3 bg-white transition-all hover:brightness-95">{{ DB::table('tests')->count() }} Тестів</a>
-            @can('create', App\Models\Course::class)
-                <a href="{{ route('test.create') }}" class="py-3 px-6 bg-yellow-300 transition-all hover:brightness-95">Створити</a>
-            @endcan
-        </div>
-        <div class="grid grid-cols-[1fr_auto] border-2 rounded-md hover:scale-[99%] transition-all overflow-clip">
-            <a href="{{ route('course.index') }}" class="p-3 bg-white transition-all hover:brightness-95">{{ DB::table('courses')->count() }} Курсів</a>
-            @can('create', App\Models\Course::class)
-                <a href="{{ route('course.create') }}" class="py-3 px-6 bg-yellow-300 transition-all hover:brightness-95">Створити</a>
-            @endcan
-        </div>
-    </div> --}}
-
     <div class="grid sm:grid-cols-2 items-center gap-3 m-auto max-w-3xl my-5">
         <img class="m-auto w-full" src="{{ URL::to('/images/teacher.png') }}">
         <div class="col-start-1 row-start-1 sm:col-start-2 grid gap-3 h-min items-start bg-blue-200 p-5 rounded-lg shadow-md text-xl">

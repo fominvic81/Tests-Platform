@@ -113,7 +113,7 @@ const Component: React.FC = () => {
             <div className='p-5 my-2 bg-white shadow-md rounded-md'>
                 <div className='grid grid-cols-[min-content_1fr_auto]'>
                     <div>
-                        {test.image && <ImageContain src={ imagePath(test.image) }></ImageContain>}
+                        {test.image && <div className='w-48 h-40'><img className='w-full h-full object-contain' src={ imagePath(test.image) } /></div>}
                     </div>
                     <div>
                         <div className='text-2xl'>{ test.name }</div>

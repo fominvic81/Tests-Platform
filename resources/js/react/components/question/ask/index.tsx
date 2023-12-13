@@ -27,8 +27,8 @@ export const QuestionAsk: React.FC<Props> = ({ question }) => {
     const Component = questionComponentByType[question.type];
 
     return <div>
-        <div className='flex'>
-            {question.image && <ImageContain src={ imagePath(question.image) }></ImageContain>}
+        <div>
+            {question.image && <div className='w-full h-40'><img className='w-full h-full object-contain' src={ imagePath(question.image) } /></div>}
             <div dangerouslySetInnerHTML={{ __html: question.text }}></div>
         </div>
         <Component question={ question }></Component>

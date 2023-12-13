@@ -29,7 +29,7 @@
         </div>
         <div class="col-span-3">{!! $course->description !!}</div>
     </div>
-    <div class="grid grid-cols-2 w-full max-w-5xl mt-3 pb-10 mx-auto gap-4">
+    <div class="grid grid-cols-2 w-full mt-3 gap-4">
 
         @can('update', $course)
             <a href="{{ route('test.create', ['course' => $course->id]) }}" class="text-center col-span-2 text-2xl p-5 border-2 rounded-md shadow-md bg-white hover:bg-gray-100">
@@ -43,9 +43,9 @@
                     <h1 class="text-xl">{{ $test->name }}</h1>
                     <div class="text-gray-500">{{ count($test->questions) }} Завдань</div>
                 </div>
-                <div class="flex justify-center items-center h-full aspect-square bg-gray-200 border border-gray-300 rounded text-2xl font-bold">
+                {{-- <div class="flex justify-center items-center h-full aspect-square bg-gray-200 border border-gray-300 rounded text-2xl font-bold">
                     20%
-                </div>
+                </div> --}}
             </a>
         @endforeach
 
