@@ -8,9 +8,7 @@ interface Props {
 
 export const TextInput: React.FC<Props> = ({ question }) => {
 
-    const [text, setText] = useState(question.data.answer?.texts[0] ?? '');
-
     return <div>
-        <FormTextInput type='text' name='answer[texts][0]' defaultValue={ text }></FormTextInput>
+        <FormTextInput type='text' name='answer[texts][0]' defaultValue={ question.data.answer?.texts[0] }></FormTextInput>
     </div>
 }
