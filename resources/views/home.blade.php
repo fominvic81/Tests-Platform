@@ -11,10 +11,10 @@
     <div class="grid sm:grid-cols-2 items-center gap-3 m-auto max-w-3xl my-5">
         <div class="grid gap-3 h-min items-start bg-orange-200 p-5 rounded-lg shadow-md text-xl">
             <h1 class="font-bold">Тести ЗНО</h1>
-            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 0)}}">Українська мова і література</a>
-            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 0)}}">Математика</a>
-            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 0)}}">Історія України</a>
-            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 0)}}">Англійська мова</a>
+            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 1)}}">Українська мова і література</a>
+            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 2)}}">Математика</a>
+            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 3)}}">Історія України</a>
+            <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('course.show', 4)}}">Англійська мова</a>
             <a class="block w-full p-2 bg-yellow-100 rounded shadow-md transition-all hover:brightness-95" href="{{ route('pages.zno')}}">Інше</a>
         </div>
         <img class="m-auto w-full" src="{{ URL::to('/images/student.png') }}">
