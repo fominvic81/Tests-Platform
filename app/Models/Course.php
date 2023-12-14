@@ -19,7 +19,7 @@ class Course extends Model
     public static function booted(): void
     {
         static::addGlobalScope('allowed', function (Builder $builder) {
-            $builder->where('published', '=', true)->where('accessibility', '=', Accessibility::Public);
+            $builder->where('accessibility', '=', Accessibility::Public);
             $user = auth()->user();
             if ($user) $builder->orWhereBelongsTo($user);
         });
@@ -40,7 +40,7 @@ class Course extends Model
 
     protected $casts = [
         'description' => CleanHtml::class,
-        'acessibility' => Accessibility::class,
+        'accessibility' => Accessibility::class,
     ];
 
     public function user(): BelongsTo

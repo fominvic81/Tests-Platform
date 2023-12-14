@@ -103,8 +103,6 @@ class CourseController extends Controller
         $course->fill($data);
         $course->save();
 
-        $course->save();
-
         return redirect()->route('course.show', $course->id);
     }
 
